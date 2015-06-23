@@ -1,6 +1,6 @@
 from pandac.PandaModules import *
 from direct.showbase.PythonUtil import weightedChoice, randFloat, lerp
-from direct.showbase.PythonUtil import contains, list2dict, clampScalar
+from direct.showbase.PythonUtil import contains, list2dict, bound
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedSmoothNodeAI
 from direct.distributed import DistributedSmoothNodeBase
@@ -463,7 +463,7 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
         return self.trickAptitudes[trickId]
 
     def setTrickAptitude(self, trickId, aptitude, send = 1):
-        aptitude = clampScalar(aptitude, 0.0, 1.0)
+        aptitude = bound(aptitude, 0.0, 1.0)
         aptitudes = self.trickAptitudes
         while len(aptitudes) - 1 < trickId:
             aptitudes.append(0.0)
@@ -724,7 +724,7 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
     def addToMood(self, component, delta):
         value = self.mood.getComponent(component)
         value += delta
-        self.setMoodComponent(component, clampScalar(value, 0.0, 1.0))
+        self.setMoodComponent(component, bound(value, 0.0, 1.0))
 
     def lerpMood(self, component, factor):
         curVal = self.mood.getComponent(component)

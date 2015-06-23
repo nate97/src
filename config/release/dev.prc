@@ -33,9 +33,6 @@ want-resistance-toonup #t
 want-resistance-restock #t
 want-resistance-dance #t
 
-# Optional:
-want-yin-yang #t
-
 # Developer options:
 show-population #t
 force-skip-tutorial #t

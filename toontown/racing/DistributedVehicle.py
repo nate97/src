@@ -6,7 +6,7 @@ from pandac.PandaModules import *
 from direct.fsm import FSM
 from direct.distributed import DistributedSmoothNode
 from direct.interval.IntervalGlobal import *
-from direct.showbase.PythonUtil import clampScalar
+from direct.showbase.PythonUtil import bound
 from otp.otpbase import OTPGlobals
 from otp.avatar import ShadowCaster
 from toontown.racing import Kart
@@ -734,14 +734,14 @@ class DistributedVehicle(DistributedSmoothNode.DistributedSmoothNode, Kart.Kart,
         self.curSpeed = self.smoother.getSmoothForwardVelocity()
         rotSpeed = -1 * self.smoother.getSmoothRotationalVelocity()
         self.leanAmount = self.curSpeed * rotSpeed / 500.0
-        self.leanAmount = clampScalar(self.leanAmount, -10, 10)
+        self.leanAmount = bound(self.leanAmount, -10, 10)
         self.__animate()
         return Task.cont
 
     def __animate(self):
         speed = self.curSpeed
         self.spinWheels(speed / 10)
-        enginePitch = clampScalar(speed / 120.0, 0.5, 15)
+        enginePitch = bound(speed / 120.0, 0.5, 15)
         self.kartLoopSfx.setPlayRate(enginePitch)
         if not self.localVehicle:
             dist = (self.getPos() - localAvatar.getPos()).length()
@@ -873,7 +873,7 @@ class DistributedVehicle(DistributedSmoothNode.DistributedSmoothNode, Kart.Kart,
         pitch = -self.getP() + 5
         accelBase = self.accelerationBase
         pitch += accelBase
-        pitch = clampScalar(pitch, accelBase - 5, accelBase + 5)
+        pitch = bound(pitch, accelBase - 5, accelBase + 5)
         self.accelerationMult = pitch * 2
         if self.groundType == 'ice':
             self.accelerationMult *= iceAccelFactor
@@ -923,7 +923,7 @@ class DistributedVehicle(DistributedSmoothNode.DistributedSmoothNode, Kart.Kart,
             curSpeed = curVelocity.length()
             speedFactor = min(curSpeed, 150) / 162.0
             self.leanAmount = (self.leanAmount + leanIncrement) * speedFactor
-            self.leanAmount = clampScalar(self.leanAmount, -10, 10)
+            self.leanAmount = bound(self.leanAmount, -10, 10)
 
         self.cWallTrav.traverse(render)
         self.curSpeed = curSpeed
@@ -1047,7 +1047,7 @@ class DistributedVehicle(DistributedSmoothNode.DistributedSmoothNode, Kart.Kart,
         right = (rf + rr) / 2
         left = (lf + lr) / 2
         rollVal = right - left
-        rollVal = clampScalar(rollVal, -1, 1)
+        rollVal = bound(rollVal, -1, 1)
         curRoll = self.getR()
         newRoll = curRoll + rollVal * 2.0
         self.setR(newRoll)
@@ -1057,7 +1057,7 @@ class DistributedVehicle(DistributedSmoothNode.DistributedSmoothNode, Kart.Kart,
         rear = (rr + lr) / 2
         center = (front + rear) / 2
         pitchVal = front - rear
-        pitchVal = clampScalar(pitchVal, -1, 1)
+        pitchVal = bound(pitchVal, -1, 1)
         curPitch = self.getP()
         newPitch = curPitch - pitchVal * 2.0
         self.setP((newPitch + curPitch) / 2.0)

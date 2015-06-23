@@ -1,5 +1,5 @@
 from pandac.PandaModules import *
-from direct.showbase.PythonUtil import clampScalar
+from direct.showbase.PythonUtil import bound
 from direct.distributed.ClockDelta import *
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
@@ -336,7 +336,7 @@ class RaceGUI:
             mapT = (curvetime % 1 + self.race.startT / self.race.curve.getMaxT()) % 1 * self.race.curve.getMaxT()
             self.race.curve.getPoint(mapT, pt)
             self.race.curve.getPoint(mapT % self.race.curve.getMaxT(), pt)
-            lapT = clampScalar(curvetime / self.race.lapCount, 0.0, 1.0)
+            lapT = bound(curvetime / self.race.lapCount, 0.0, 1.0)
             faceX = self.faceStartPos[0] * (1 - lapT) + self.faceEndPos[0] * lapT
             racer.update(faceX=faceX, mapspotPt=pt)
             t = time - self.race.baseTime - self.raceTimeDelta
@@ -362,7 +362,7 @@ class RaceGUI:
                         else:
                             lapNotice['text'] = TTLocalizer.KartRace_LapText % str(self.maxLapHit + 1)
                         taskMgr.doMethodLater(2, lapNotice.remove, 'removeIt', extraArgs=[])
-                self.lapLabel['text'] = str(clampScalar(self.maxLapHit + 1, 1, self.race.lapCount)) + '/' + str(self.race.lapCount)
+                self.lapLabel['text'] = str(bound(self.maxLapHit + 1, 1, self.race.lapCount)) + '/' + str(self.race.lapCount)
 
         suffix = {1: TTLocalizer.KartRace_FirstSuffix,
          2: TTLocalizer.KartRace_SecondSuffix,

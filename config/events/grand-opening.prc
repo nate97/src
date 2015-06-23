@@ -33,7 +33,3 @@ want-fishing #f
 want-housing #f
 want-pets #f
 want-parties #f
-
-# Optional:
-want-talkative-tyler #f
-want-yin-yang #f

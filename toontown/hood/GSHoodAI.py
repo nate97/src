@@ -31,8 +31,9 @@ class GSHoodAI(HoodAI.HoodAI):
         self.createStartingBlocks()
         self.createLeaderBoards()
         self.cycleLeaderBoards()
-        if simbase.config.GetBool('want-goofy', True):
-            self.createClassicChar()
+        if simbase.config.GetBool('want-classic-chars', True):
+            if simbase.config.GetBool('want-goofy', True):
+                self.createClassicChar()
 
     def shutdown(self):
         HoodAI.HoodAI.shutdown(self)

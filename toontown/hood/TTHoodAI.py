@@ -18,6 +18,7 @@ class TTHoodAI(HoodAI.HoodAI):
 
         self.trolley = None
         self.classicChar = None
+        self.butterflies = []
 
         self.startup()
 
@@ -32,16 +33,6 @@ class TTHoodAI(HoodAI.HoodAI):
         if simbase.config.GetBool('want-butterflies', True):
             self.createButterflies()
 
-        if simbase.air.wantYinYang:
-            NPCToons.createNPC(
-                simbase.air, 2021,
-                (ToontownGlobals.ToontownCentral, TTLocalizer.NPCToonNames[2021], ('css', 'ms', 'm', 'm', 26, 0, 26, 26, 0, 27, 0, 27, 0, 27), 'm', 1, NPCToons.NPC_YIN),
-                ToontownGlobals.ToontownCentral, posIndex=0)
-            NPCToons.createNPC(
-                simbase.air, 2022,
-                (ToontownGlobals.ToontownCentral, TTLocalizer.NPCToonNames[2022], ('bss', 'ms', 'm', 'm', 0, 0, 0, 0, 0, 31, 0, 31, 0, 31), 'm', 1, NPCToons.NPC_YANG),
-                ToontownGlobals.ToontownCentral, posIndex=0)
-                
         if simbase.air.wantHalloween:
             self.TrickOrTreatTargetManager = DistributedTrickOrTreatTargetAI.DistributedTrickOrTreatTargetAI(self.air)
             self.TrickOrTreatTargetManager.generateWithRequired(2649)
@@ -66,9 +57,11 @@ class TTHoodAI(HoodAI.HoodAI):
         self.classicChar.start()
 
     def createButterflies(self):
-        ButterflyGlobals.generateIndexes(self.zoneId, ButterflyGlobals.TTC)
-        for i in xrange(0, ButterflyGlobals.NUM_BUTTERFLY_AREAS[ButterflyGlobals.TTC]):
-            for _ in xrange(0, ButterflyGlobals.NUM_BUTTERFLIES[ButterflyGlobals.TTC]):
-                butterfly = DistributedButterflyAI(self.air, playground, i, self.zoneId)
+        playground = ButterflyGlobals.TTC
+        for area in range(ButterflyGlobals.NUM_BUTTERFLY_AREAS[playground]):
+            for b in range(ButterflyGlobals.NUM_BUTTERFLIES[playground]):
+                butterfly = DistributedButterflyAI.DistributedButterflyAI(self.air)
+                butterfly.setArea(playground, area)
+                butterfly.setState(0, 0, 0, 1, 1)
                 butterfly.generateWithRequired(self.zoneId)
-                butterfly.start()
+                self.butterflies.append(butterfly)

@@ -502,7 +502,7 @@ class Suit(Avatar.Avatar):
         modelRoot.find('**/torso').setTexture(torsoTex, 1)
         modelRoot.find('**/arms').setTexture(armTex, 1)
         modelRoot.find('**/legs').setTexture(legTex, 1)
-        modelRoot.find('**/hands').setColor(self.handColor)
+        modelRoot.find('**/hands').setColorScale(self.handColor)
         self.leftHand = self.find('**/joint_Lhold')
         self.rightHand = self.find('**/joint_Rhold')
         self.shadowJoint = self.find('**/joint_shadow')

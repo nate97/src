@@ -1,5 +1,5 @@
 from direct.showbase.PythonUtil import randFloat, normalDistrib, Enum
-from direct.showbase.PythonUtil import clampScalar
+from direct.showbase.PythonUtil import bound
 from toontown.toonbase import TTLocalizer, ToontownGlobals
 import random, copy
 TraitDivisor = 10000
@@ -108,7 +108,7 @@ class TraitDistribution:
             howExtreme = (0.5 - percent) * 2.0
         else:
             howExtreme = (percent - 0.5) * 2.0
-        return clampScalar(howExtreme, 0.0, 1.0)
+        return bound(howExtreme, 0.0, 1.0)
 
 
 class PetTraits:

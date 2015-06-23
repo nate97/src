@@ -19,6 +19,7 @@ class DGHoodAI(HoodAI.HoodAI):
         self.trolley = None
         self.flower = None
         self.classicChar = None
+        self.butterflies = []
 
         self.startup()
 
@@ -65,10 +66,12 @@ class DGHoodAI(HoodAI.HoodAI):
         self.classicChar.generateWithRequired(self.zoneId)
         self.classicChar.start()
 
-    def createButterflies(self, playground):
-        ButterflyGlobals.generateIndexes(self.zoneId, ButterflyGlobals.DG)
-        for i in xrange(0, ButterflyGlobals.NUM_BUTTERFLY_AREAS[ButterflyGlobals.DG]):
-            for _ in xrange(0, ButterflyGlobals.NUM_BUTTERFLIES[ButterflyGlobals.DG]):
-                butterfly = DistributedButterflyAI(self.air, playground, i, self.zoneId)
+    def createButterflies(self):
+        playground = ButterflyGlobals.DG
+        for area in range(ButterflyGlobals.NUM_BUTTERFLY_AREAS[playground]):
+            for b in range(ButterflyGlobals.NUM_BUTTERFLIES[playground]):
+                butterfly = DistributedButterflyAI.DistributedButterflyAI(self.air)
+                butterfly.setArea(playground, area)
+                butterfly.setState(0, 0, 0, 1, 1)
                 butterfly.generateWithRequired(self.zoneId)
-                butterfly.start()
+                self.butterflies.append(butterfly)

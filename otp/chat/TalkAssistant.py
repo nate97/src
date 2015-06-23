@@ -573,12 +573,6 @@ class TalkAssistant(DirectObject.DirectObject):
 
     def sendOpenTalk(self, message):
         error = None
-        doId = base.localAvatar.doId
-        if base.config.GetBool('want-talkative-tyler', False):
-            if base.localAvatar.zoneId == 2000:
-                tyler = base.cr.doFind('Talkative Tyler')
-                if tyler:
-                    tyler.sendUpdate('talkMessage', [doId, message])
         if base.cr.wantMagicWords and len(message) > 0 and message[0] == '~':
             messenger.send('magicWord', [message])
             self.receiveDeveloperMessage(message)
