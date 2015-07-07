@@ -23,7 +23,7 @@ dc-file astron/dclass/otp.dc
 want-pets #f
 want-parties #f
 want-cogdominiums #f
-want-achievements #f
+want-code-redemption #t
 
 # Chat:
 want-whitelist #f

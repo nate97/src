@@ -181,8 +181,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self.gmNameTagEnabled = 0
         self.gmNameTagColor = 'whiteGM'
         self.gmNameTagString = ''
-        self.achievements = []
-        self.canEarnAchievements = False
         self.promotionStatus = [0, 0, 0, 0]
         self.buffs = []
 
@@ -2626,10 +2624,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
 
     def setAnimalSound(self, index):
         self.animalSound = index
-
-    def setAchievements(self, achievements):
-        self.achievements = achievements
-        messenger.send(localAvatar.uniqueName('achievementsChange'))
 
     def setBuffs(self, buffs):
         self.buffs = buffs

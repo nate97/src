@@ -21,7 +21,6 @@ from otp.avatar import LocalAvatar
 from otp.avatar import PositionExaminer
 from otp.login import LeaveToPayDialog
 from otp.otpbase import OTPGlobals
-from toontown.achievements import AchievementGui
 from toontown.battle import Fanfare
 from toontown.battle.BattleSounds import *
 from toontown.catalog import CatalogNotifyDialog
@@ -35,7 +34,6 @@ from toontown.parties import PartyGlobals
 from toontown.quest import QuestMap
 from toontown.quest import QuestParser
 from toontown.quest import Quests
-from toontown.shtiker import AchievementsPage
 from toontown.shtiker import DisguisePage
 from toontown.shtiker import EventsPage
 from toontown.shtiker import FishPage
@@ -61,6 +59,7 @@ from toontown.toonbase.ToontownGlobals import *
 from toontown.toontowngui import NewsPageButtonManager
 from toontown.friends.FriendHandle import FriendHandle
 
+from toontown.adminpanel.AdminPanel import AdminPane
 
 WantNewsPage = base.config.GetBool('want-news-page', ToontownGlobals.DefaultWantNewsPageSetting)
 if WantNewsPage:
@@ -373,11 +372,6 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         self.fishPage.setAvatar(self)
         self.fishPage.load()
         self.book.addPage(self.fishPage, pageName=TTLocalizer.FishPageTitle)
-        if base.wantAchievements:
-            self.achievementsPage = AchievementsPage.AchievementsPage()
-            self.achievementsPage.setAvatar(self)
-            self.achievementsPage.load()
-            self.book.addPage(self.achievementsPage, pageName=TTLocalizer.AchievementsPageTitle)
         if base.wantKarts:
             self.addKartPage()
         if self.disguisePageFlag:
@@ -406,6 +400,9 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
             guiButton = loader.loadModel('phase_3/models/gui/quit_button')
             self.purchaseButton = DirectButton(parent=aspect2d, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=0.9, text=TTLocalizer.OptionsPagePurchase, text_scale=0.05, text_pos=(0, -0.01), textMayChange=0, pos=(0.885, 0, -0.94), sortOrder=100, command=self.__handlePurchase)
             base.setCellsActive([base.bottomCells[4]], 0)
+
+        AdminPane()
+
         self.accept('time-insert', self.__beginTossPie)
         self.accept('time-insert-up', self.__endTossPie)
         self.accept('time-delete', self.__beginTossPie)
@@ -418,8 +415,6 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         self.accept('InputState-turnLeft', self.__toonMoved)
         self.accept('InputState-turnRight', self.__toonMoved)
         self.accept('InputState-slide', self.__toonMoved)
-
-        self.achievementGui = AchievementGui.AchievementGui()
 
         QuestParser.init()
         return
@@ -1948,14 +1943,3 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
 
     def hasPet(self):
         return False
-
-    def setAchievements(self, achievements):
-        if base.wantAchievements:
-            if self.canEarnAchievements:
-                for achievementId in achievements:
-                    if not achievementId in self.achievements:
-                        self.achievementGui.earnAchievement(achievementId)
-            else:
-                self.canEarnAchievements = True
-
-        DistributedToon.DistributedToon.setAchievements(self, achievements)

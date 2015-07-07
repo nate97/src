@@ -20,7 +20,6 @@ from otp.avatar import DistributedAvatarAI
 from otp.avatar import DistributedPlayerAI
 from otp.otpbase import OTPGlobals
 from otp.otpbase import OTPLocalizer
-from toontown.achievements import Achievements
 from toontown.battle import SuitBattleGlobals
 from toontown.catalog import CatalogAccessoryItem
 from toontown.catalog import CatalogItem
@@ -103,7 +102,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.experience = None
         self.petId = None
         self.quests = []
-        self.achievements = []
         self.cogs = []
         self.cogCounts = []
         self.NPCFriendsDict = {}
@@ -193,6 +191,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self._gmDisabled = False
         self.promotionStatus = [0, 0, 0, 0]
         self.buffs = []
+        self.redeemedCodes = []
 
     def generate(self):
         DistributedPlayerAI.DistributedPlayerAI.generate(self)
@@ -543,9 +542,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
         self.friendsList.append((friendId, friendCode))
         self.air.questManager.toonMadeFriend(self)
-
-        if self.air.wantAchievements:
-            self.air.achievementsManager.toonMadeFriend(self.doId)
 
     def d_setMaxNPCFriends(self, max):
         self.sendUpdate('setMaxNPCFriends', [max])
@@ -993,6 +989,19 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
     def d_catalogGenAccessories(self):
         self.sendUpdate('catalogGenAccessories', [self.doId])
+
+    def getRedeemedCodes(self):
+        return self.redeemedCodes
+
+    def setRedeemedCodes(self, redeemedCodes):
+        self.redeemedCodes = redeemedCodes
+
+    def b_setRedeemedCodes(self, redeemedCodes):
+        self.setRedeemedCodes(redeemedCodes)
+        self.d_setRedeemedCodes(redeemedCodes)
+
+    def d_setRedeemedCodes(self, redeemedCodes):
+        self.sendUpdate('setRedeemedCodes', [redeemedCodes])
 
     def takeDamage(self, hpLost, quietly = 0, sendTotal = 1):
         if not self.immortalMode:
@@ -4212,43 +4221,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     def getAnimalSound(self):
         return self.animalSound
 
-    def setAchievements(self, achievements):
-        for i in xrange(len(achievements)):
-            if not achievements[i] in xrange(len(Achievements.AchievementsDict)):
-                print 'Unknown AchievementId %s'%(achievements[i])
-                del achievements[i]
-
-        self.achievements = achievements
-
-    def d_setAchievements(self, achievements):
-        for i in xrange(len(achievements)):
-            if not achievements[i] in xrange(len(Achievements.AchievementsDict)):
-                print 'Unknown AchievementId %s'%(achievements[i])
-                del achievements[i]
-
-        self.sendUpdate('setAchievements', args=[achievements])
-
-    def b_setAchievements(self, achievements):
-        self.setAchievements(achievements)
-        self.d_setAchievements(achievements)
-
-    def getAchievements(self):
-        return self.achievements
-
-    def addAchievement(self, achievementId):
-        if achievementId in xrange(len(Achievements.AchievementsDict)):
-            if not achievementId in self.achievements:
-                achievements = self.achievements
-                achievements.append(achievementId)
-
-                self.b_setAchievements(achievements)
-
-    def hasAchievement(self, achievementId):
-        if achievementId in self.achievements:
-            return 1
-
-        return 0
-
     def addBuff(self, id, duration):
         buffCount = len(self.buffs)
         if buffCount <= id:
@@ -5084,24 +5056,6 @@ def suit(command, suitName):
         return "Couldn't spawn a Cog building with: " + suitFullName
     else:
         return 'Invalid command.'
-
-@magicWord(category=CATEGORY_PROGRAMMER, types=[str, int])
-def achievements(command, achId):
-    invoker = spellbook.getInvoker()
-    if command.lower() == 'earn':
-        achievements = invoker.getAchievements()
-        achievements.append(achId)
-
-        invoker.b_setAchievements(achievements)
-        return 'Earnt Achievement %s'%(achId)
-    elif command.lower() == 'remove':
-        achievements = invoker.getAchievements()
-        achievements.remove(achId)
-
-        invoker.b_setAchievements(achievements)
-        return 'Removed Achievement %s'%(achId)
-    else:
-        return "Unknown Command '%s'"%(command)
 
 @magicWord(category=CATEGORY_PROGRAMMER)
 def getZone():

@@ -180,10 +180,8 @@ __builtin__.loader = base.loader
 autoRun = ConfigVariableBool('toontown-auto-run', 1)
 if autoRun:
     try:
-        run()
+        base.run()
     except SystemExit:
         raise
     except:
-        from direct.showbase import PythonUtil
-        print PythonUtil.describeException()
         raise

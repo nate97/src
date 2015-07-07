@@ -5,7 +5,8 @@ icon-filename phase_3/etc/icon.ico
 cursor-filename phase_3/etc/toonmono.cur
 
 # Audio:
-audio-library-name p3fmod_audio
+# Broken on linux
+# audio-library-name p3fmod_audio
 
 # Graphics:
 aux-display pandagl
@@ -41,7 +42,8 @@ account-bridge-filename astron/databases/account-bridge.db
 sync-video #f
 texture-power-2 none
 gl-check-errors #f
-garbage-collect-states #f
+# Garbage collect status is currently broken
+# garbage-collect-states #f
 
 # Egg object types:
 egg-object-type-barrier <Scalar> collide-mask { 0x01 } <Collide> { Polyset descend }
@@ -115,6 +117,7 @@ want-cogbuildings #t
 show-total-population #t
 want-mat-all-tailors #t
 want-long-pattern-game #f
+want-code-redemption #t
 
 # Developer options:
 want-dev #f
