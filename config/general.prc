@@ -13,6 +13,9 @@ aux-display pandagl
 aux-display pandadx9
 aux-display p3tinydisplay
 
+framebuffer-multisample 1
+multisamples 4
+
 # Models:
 model-cache-models #f
 model-cache-textures #f
