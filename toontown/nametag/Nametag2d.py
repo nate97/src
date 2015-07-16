@@ -288,10 +288,18 @@ class Nametag2d(Nametag, Clickable2d, MarginVisible):
             nodePath = self.chatBalloon.textNodePath
 
             left, right, bottom, top = self.chatTextNode.getFrameActual()
+            left -= self.chatBalloon.BALLOON_X_PADDING
+            right += self.chatBalloon.BALLOON_X_PADDING
+            bottom -= self.chatBalloon.BALLOON_Z_PADDING
+            top += self.chatBalloon.BALLOON_Z_PADDING
         elif self.panel is not None:
             nodePath = self.textNodePath
 
             left, right, bottom, top = self.textNode.getFrameActual()
+            left -= self.PANEL_X_PADDING
+            right += self.PANEL_X_PADDING
+            bottom -= self.PANEL_Z_PADDING
+            top += self.PANEL_Z_PADDING
 
             # Compensate for the arrow:
             bottom -= self.ARROW_SCALE

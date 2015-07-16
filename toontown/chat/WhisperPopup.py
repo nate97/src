@@ -327,6 +327,11 @@ class WhisperPopup(Clickable2d, MarginVisible):
         self.draw()
 
         left, right, bottom, top = self.textNode.getFrameActual()
+        left -= self.chatBalloon.BALLOON_X_PADDING
+        right += self.chatBalloon.BALLOON_X_PADDING
+        bottom -= self.chatBalloon.BALLOON_Z_PADDING
+        top += self.chatBalloon.BALLOON_Z_PADDING
+
         if self.cell in base.bottomCells:
             # Move the origin to the bottom center of the chat balloon:
             origin = self.contents.getRelativePoint(
