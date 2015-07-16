@@ -11,8 +11,12 @@ from toontown.catalog.CatalogClothingItem import CatalogClothingItem, getAllClot
 
 import time
 
+
+
 class TTCodeRedemptionMgrAI(DistributedObjectAI):
     notify = DirectNotifyGlobal.directNotify.newCategory("TTCodeRedemptionMgrAI")
+
+
 
     # TODO: Possibly place these in a better location
     Success = 0
@@ -22,6 +26,8 @@ class TTCodeRedemptionMgrAI(DistributedObjectAI):
     AwardError = 4
     TooManyFails = 5
     ServiceUnavailable = 6
+
+
 
     def __init__(self, air):
         DistributedObjectAI.__init__(self, air)
@@ -48,6 +54,8 @@ class TTCodeRedemptionMgrAI(DistributedObjectAI):
             self.air.writeServerEvent('suspicious', avId=avId, issue='Invalid avatar tried to redeem a code')
             return
 
+
+
         ### VALIDATEE THIS      ###
         valid = True            ###
         #eligible = True         ###
@@ -56,6 +64,7 @@ class TTCodeRedemptionMgrAI(DistributedObjectAI):
         ###########################
 
        # TODO: Come up with a way to determine if the toon is eligible for the prize
+
 
 
         # Get our redeemed Codes
@@ -139,6 +148,8 @@ class TTCodeRedemptionMgrAI(DistributedObjectAI):
 
     def redeemCodeResult(self, todo0, todo1, todo2):
         pass
+
+
 
     ### Helper Methods ###
 
