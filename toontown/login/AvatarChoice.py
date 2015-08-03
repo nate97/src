@@ -143,7 +143,7 @@ class AvatarChoice(DirectButton):
             self.headModel.setScale(bodyScale / 0.75)
             self.headModel.startBlink()
             self.headModel.startLookAround()
-            self.headModel.flattenLight()
+            #self.headModel.flattenLight()
             trashcanGui = loader.loadModel('phase_3/models/gui/trashcan_gui')
             self.deleteButton = DirectButton(parent=self, image=(trashcanGui.find('**/TrashCan_CLSD'), trashcanGui.find('**/TrashCan_OPEN'), trashcanGui.find('**/TrashCan_RLVR')), text=('', TTLocalizer.AvatarChoiceDelete, TTLocalizer.AvatarChoiceDelete), text_fg=(1, 1, 1, 1), text_shadow=(0, 0, 0, 1), text_scale=0.15, text_pos=(0, -0.1), text_font=ToontownGlobals.getInterfaceFont(), relief=None, pos=DELETE_POSITIONS[position], scale=0.45, command=self.__handleDelete)
             self.deleteButton.flattenMedium()
