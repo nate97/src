@@ -21,7 +21,7 @@ dc-file astron/dclass/otp.dc
 
 # Core features:
 want-pets #f
-want-parties #f
+want-parties #t
 want-cogdominiums #f
 want-code-redemption #t
 

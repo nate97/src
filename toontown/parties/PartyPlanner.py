@@ -15,7 +15,7 @@ from otp.otpbase import OTPLocalizer
 from toontown.friends.FriendsListPanel import determineFriendName
 from toontown.nametag.Nametag import Nametag
 from toontown.nametag.NametagFloat2d import *
-from toontown.nametag.NametagGlobals import *
+from toontown.nametag import NametagGlobals
 from toontown.nametag.NametagGroup import NametagGroup
 from toontown.parties import PartyGlobals
 from toontown.parties import PartyUtils
