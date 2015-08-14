@@ -207,8 +207,8 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         self.sendSetAvatarIdMsg(0)
         self.clearFriendState()
         if self.music == None and base.musicManagerIsValid:
-            themeList = ('phase_3/audio/bgm/tti_theme.ogg', 'phase_3/audio/bgm/tti_theme_2.ogg')
-            self.music = base.musicManager.getSound(random.choice(themeList))
+            theme = 'phase_3/audio/bgm/tt_theme.ogg'
+            self.music = base.musicManager.getSound(theme)
             if self.music:
                 self.music.setLoop(1)
                 self.music.setVolume(0.9)
