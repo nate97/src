@@ -57,7 +57,7 @@ class DistributedSellbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         self.cageShadow = None
         self.cageIndex = 0
         self.everThrownPie = 0
-        self.battleThreeMusicTime = 0
+        #self.battleThreeMusicTime = 0
         self.insidesANodePath = None
         self.insidesBNodePath = None
         self.rampA = None
@@ -141,7 +141,7 @@ class DistributedSellbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         self.promotionMusic.stop()
         self.stingMusic.stop()
         self.battleTwoMusic.stop()
-        self.battleThreeMusic.stop()
+        #self.battleThreeMusic.stop()
         self.epilogueMusic.stop()
         while len(self.toonMopathInterval):
             toonMopath = self.toonMopathInterval[0]
@@ -554,7 +554,7 @@ class DistributedSellbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         self.promotionMusic = base.loadMusic('phase_7/audio/bgm/encntr_suit_winning_indoor.ogg')
         self.betweenBattleMusic = base.loadMusic('phase_9/audio/bgm/encntr_toon_winning.ogg')
         self.battleTwoMusic = base.loadMusic('phase_7/audio/bgm/encntr_suit_winning_indoor.ogg')
-        self.battleThreeMusic = base.loadMusic('phase_9/audio/bgm/encntr_vp_boss.ogg')
+        #self.battleThreeMusic = base.loadMusic('phase_9/audio/bgm/encntr_vp_boss.ogg')
         self.geom.reparentTo(render)
 
     def unloadEnvironment(self):
@@ -893,7 +893,7 @@ class DistributedSellbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         self.resetMaxDamage()
         self.bossDamageToMovie = self.bossDamageMovie.getDuration() / self.bossMaxDamage
         self.bossDamageMovie.setT(self.bossDamage * self.bossDamageToMovie)
-        base.playMusic(self.battleThreeMusic, looping=1, volume=0.9)
+        #base.playMusic(self.battleThreeMusic, looping=1, volume=0.9)
 
     def __doneBattleThree(self):
         self.setState('NearVictory')
@@ -918,8 +918,8 @@ class DistributedSellbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         self.unstickBoss()
         taskName = 'RecoverBossDamage'
         taskMgr.remove(taskName)
-        self.battleThreeMusicTime = self.battleThreeMusic.getTime()
-        self.battleThreeMusic.stop()
+        #self.battleThreeMusicTime = self.battleThreeMusic.getTime()
+        #self.battleThreeMusic.stop()
 
     def enterNearVictory(self):
         self.cleanupIntervals()
@@ -943,7 +943,7 @@ class DistributedSellbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         self.forward = 1
         self.doAnimate()
         self.setDizzy(1)
-        base.playMusic(self.battleThreeMusic, looping=1, volume=0.9, time=self.battleThreeMusicTime)
+        #base.playMusic(self.battleThreeMusic, looping=1, volume=0.9, time=self.battleThreeMusicTime)
 
     def exitNearVictory(self):
         self.ignore('enterCage')
@@ -955,8 +955,8 @@ class DistributedSellbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         localAvatar.setCameraFov(ToontownGlobals.CogHQCameraFov)
         self.__removeCageShadow()
         self.setDizzy(0)
-        self.battleThreeMusicTime = self.battleThreeMusic.getTime()
-        self.battleThreeMusic.stop()
+        #self.battleThreeMusicTime = self.battleThreeMusic.getTime()
+        #self.battleThreeMusic.stop()
 
     def enterVictory(self):
         self.cleanupIntervals()
@@ -976,7 +976,7 @@ class DistributedSellbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         self.forward = 1
         self.doAnimate('Fb_fall', now=1)
         self.acceptOnce(self.animDoneEvent, self.__continueVictory)
-        base.playMusic(self.battleThreeMusic, looping=1, volume=0.9, time=self.battleThreeMusicTime)
+        #base.playMusic(self.battleThreeMusic, looping=1, volume=0.9, time=self.battleThreeMusicTime)
 
     def __continueVictory(self):
         self.stopAnimate()
@@ -988,8 +988,8 @@ class DistributedSellbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         self.unstash()
         self.__removeCageShadow()
         localAvatar.setCameraFov(ToontownGlobals.CogHQCameraFov)
-        self.battleThreeMusicTime = self.battleThreeMusic.getTime()
-        self.battleThreeMusic.stop()
+        #self.battleThreeMusicTime = self.battleThreeMusic.getTime()
+        #self.battleThreeMusic.stop()
 
     def enterReward(self):
         self.cleanupIntervals()
@@ -1017,7 +1017,7 @@ class DistributedSellbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         ival.delayDeletes = delayDeletes
         ival.start()
         self.storeInterval(ival, intervalName)
-        base.playMusic(self.battleThreeMusic, looping=1, volume=0.9, time=self.battleThreeMusicTime)
+        #base.playMusic(self.battleThreeMusic, looping=1, volume=0.9, time=self.battleThreeMusicTime)
 
     def __doneReward(self):
         self.doneBarrier('Reward')
@@ -1030,8 +1030,8 @@ class DistributedSellbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         self.rewardPanel.destroy()
         del self.rewardPanel
         self.__removeCageShadow()
-        self.battleThreeMusicTime = 0
-        self.battleThreeMusic.stop()
+        #self.battleThreeMusicTime = 0
+        #self.battleThreeMusic.stop()
 
     def enterEpilogue(self):
         self.cleanupIntervals()
