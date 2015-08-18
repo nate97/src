@@ -28,8 +28,6 @@ class BossbotHQAI(CogHQAI.CogHQAI):
         self.createCogKarts()
         if simbase.config.GetBool('want-boarding-groups', True):
             self.createCourseBoardingParty()
-        if simbase.config.GetBool('want-suit-planners', True):
-            self.createSuitPlanners()
 
     def createCogKarts(self):
         posList = (
@@ -54,11 +52,3 @@ class BossbotHQAI(CogHQAI.CogHQAI):
             cogKartIdList.append(cogKart.doId)
         self.courseBoardingParty = DistributedBoardingPartyAI(self.air, cogKartIdList, 4)
         self.courseBoardingParty.generateWithRequired(self.zoneId)
-
-    def createSuitPlanners(self):
-        suitPlanner = DistributedSuitPlannerAI.DistributedSuitPlannerAI(self.air, self.zoneId)
-        suitPlanner.generateWithRequired(self.zoneId)
-        suitPlanner.d_setZoneId(self.zoneId)
-        suitPlanner.initTasks()
-        self.suitPlanners.append(suitPlanner)
-        self.air.suitPlanners[self.zoneId] = suitPlanner
