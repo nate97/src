@@ -59,6 +59,7 @@ def setChatBalloon3dModel(model):
     global chatBalloon3dWidth
     global chatBalloon3dHeight
     chatBalloon3dModel = loader.loadModel(model)
+    # Sets height and width of chat bubble!
     chatBalloon3dWidth, chatBalloon3dHeight = getModelWidthHeight(chatBalloon3dModel)
 
 
