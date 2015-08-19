@@ -7617,10 +7617,7 @@ NPCToonNames = {20000: 'Tutorial Tom',
  7006: 'Gimmy Ahand',
  7007: 'Dewin Tymme',
  7008: 'Ima Cagedtoon',
- 7009: 'Jimmy Thelock',
-# Start with 91913.
-91917: 'Magic Cat',
-91918: 'Trap Cat'}
+ 7009: 'Jimmy Thelock'}
 zone2TitleDict = {2513: ('Toon Hall', ''),
  2514: ('Toontown Bank', ''),
  2516: ('Toontown School House', ''),

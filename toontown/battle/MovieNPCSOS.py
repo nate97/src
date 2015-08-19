@@ -92,60 +92,31 @@ def __getSoundTrack(level, delay, duration = None, node = None):
 
 
 def teleportIn(attack, npc, pos = Point3(0, 0, 0), hpr = Vec3(180.0, 0.0, 0.0)):
-    if npc.getName() == 'Magic Cat':
-        LaughingManGlobals.addToonEffect(npc)
-        npc.nametag3d.hide()
     a = Func(npc.reparentTo, attack['battle'])
     b = Func(npc.setPos, pos)
     c = Func(npc.setHpr, hpr)
     d = Func(npc.pose, 'teleport', npc.getNumFrames('teleport') - 1)
     e = npc.getTeleportInTrack()
     ee = Func(npc.addActive)
-    if npc.getName() == 'Trap Cat':
-        f = Func(npc.setChatAbsolute, 'We are team trap! Fear me %s' % attack['toon'].getName() + ' for I am the Notorious T-Cat', CFSpeech | CFTimeout)
-    else:
-        f = Func(npc.setChatAbsolute, TTLocalizer.MovieNPCSOSGreeting % attack['toon'].getName(), CFSpeech | CFTimeout)
-    if npc.getName() == 'Trap Cat':
-        g = ActorInterval(npc, 'angry')
-    else:
-        g = ActorInterval(npc, 'wave')
+    f = Func(npc.setChatAbsolute, TTLocalizer.MovieNPCSOSGreeting % attack['toon'].getName(), CFSpeech | CFTimeout)
+    g = ActorInterval(npc, 'wave')
     h = Func(npc.loop, 'neutral')
     seq = Sequence(a, b, c, d, e, ee, f, g, h)
-    if npc.getName() == 'Trap Cat':
-        seq.append(Wait(3))
     seq.append(Func(npc.clearChat))
-    if npc.getName() == 'Magic Cat':
-        magicCatTrack = Sequence()
-        magicCatTrack.append(Func(npc.setChatAbsolute, "I've got this, so start dancing!", CFSpeech | CFTimeout))
-        magicCatTrack.append(Func(attack['toon'].loop, 'victory'))
-        seq.append(magicCatTrack)
     return seq
 
 
 def teleportOut(attack, npc):
-    if npc.getName() == 'Trap Cat':
-        a = ActorInterval(npc, 'neutral')
+    if npc.style.getGender() == 'm':
+        a = ActorInterval(npc, 'bow')
     else:
-        if npc.style.getGender() == 'm':
-            a = ActorInterval(npc, 'bow')
-        else:
-            a = ActorInterval(npc, 'curtsy')
-    if npc.getName() == 'Trap Cat':
-        b = Func(npc.setChatAbsolute, 'Drat, my hacks failed... Oh well, I will just disconnect you all!', CFSpeech | CFTimeout)
-    else:
-        b = Func(npc.setChatAbsolute, TTLocalizer.MovieNPCSOSGoodbye, CFSpeech | CFTimeout)
-    if npc.getName() == 'Trap Cat':
-        c = Func(npc.loop, 'neutral')
-    else:
-        c = npc.getTeleportOutTrack()
+        a = ActorInterval(npc, 'curtsy')
+    b = Func(npc.setChatAbsolute, TTLocalizer.MovieNPCSOSGoodbye, CFSpeech | CFTimeout)
+    c = npc.getTeleportOutTrack()
     seq = Sequence(a, b, c)
-    if npc.getName() == 'Trap Cat':
-        seq.append(Wait(3))
     seq.append(Func(npc.removeActive))
     seq.append(Func(npc.detachNode))
     seq.append(Func(npc.delete))
-    if npc.getName() == 'Trap Cat':
-        seq.append(Wait(3))
     return seq
 
 
