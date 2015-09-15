@@ -37,3 +37,7 @@ want-resistance-dance #t
 show-population #t
 force-skip-tutorial #t
 want-instant-parties #t
+
+
+want-halloween #t
+active-holidays 26, 27, 13

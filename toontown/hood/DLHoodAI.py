@@ -1,4 +1,5 @@
 from toontown.classicchars import DistributedDonaldAI
+from toontown.classicchars import DistributedFrankenDonaldAI
 from toontown.hood import HoodAI
 from toontown.safezone import DistributedTrolleyAI
 from toontown.toonbase import ToontownGlobals
@@ -44,6 +45,9 @@ class DLHoodAI(HoodAI.HoodAI):
         self.trolley.start()
 
     def createClassicChar(self):
-        self.classicChar = DistributedDonaldAI.DistributedDonaldAI(self.air)
+        if simbase.air.wantHalloween:
+            self.classicChar = DistributedFrankenDonaldAI.DistributedFrankenDonaldAI(self.air)
+        else:
+            self.classicChar = DistributedDonaldAI.DistributedDonaldAI(self.air)
         self.classicChar.generateWithRequired(self.zoneId)
         self.classicChar.start()

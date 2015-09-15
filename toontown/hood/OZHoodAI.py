@@ -3,6 +3,8 @@ from toontown.toonbase import ToontownGlobals
 from toontown.distributed.DistributedTimerAI import DistributedTimerAI
 from toontown.classicchars import DistributedChipAI
 from toontown.classicchars import DistributedDaleAI
+from toontown.classicchars import DistributedPoliceChipAI
+from toontown.classicchars import DistributedJailbirdDaleAI
 from toontown.dna.DNAParser import DNAGroup, DNAVisGroup
 from toontown.safezone.DistributedPicnicBasketAI import DistributedPicnicBasketAI
 from toontown.safezone import DistributedGameTableAI
@@ -39,10 +41,17 @@ class OZHoodAI(HoodAI.HoodAI):
         self.timer.generateWithRequired(self.zoneId)
 
     def createClassicChars(self):
-        self.classicCharChip = DistributedChipAI.DistributedChipAI(self.air)
+        if simbase.air.wantHalloween:
+            self.classicCharChip = DistributedPoliceChipAI.DistributedPoliceChipAI(self.air) 
+        else:
+            self.classicCharChip = DistributedChipAI.DistributedChipAI(self.air)
         self.classicCharChip.generateWithRequired(self.zoneId)
         self.classicCharChip.start()
-        self.classicCharDale = DistributedDaleAI.DistributedDaleAI(self.air, self.classicCharChip.doId)
+        
+        if simbase.air.wantHalloween:
+            self.classicCharDale = DistributedJailbirdDaleAI.DistributedJailbirdDaleAI(self.air, self.classicCharChip.doId)
+        else:
+            self.classicCharDale = DistributedDaleAI.DistributedDaleAI(self.air, self.classicCharChip.doId)
         self.classicCharDale.generateWithRequired(self.zoneId)
         self.classicCharDale.start()
         self.classicCharChip.setDaleId(self.classicCharDale.doId)

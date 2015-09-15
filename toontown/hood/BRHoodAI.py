@@ -1,4 +1,5 @@
 from toontown.classicchars import DistributedPlutoAI
+from toontown.classicchars import DistributedWesternPlutoAI
 from toontown.hood import HoodAI
 from toontown.safezone import DistributedTrolleyAI
 from toontown.toonbase import ToontownGlobals
@@ -44,6 +45,10 @@ class BRHoodAI(HoodAI.HoodAI):
         self.trolley.start()
 
     def createClassicChar(self):
-        self.classicChar = DistributedPlutoAI.DistributedPlutoAI(self.air)
+        if simbase.air.wantHalloween:
+            self.classicChar = DistributedWesternPlutoAI.DistributedWesternPlutoAI(self.air)
+        else:
+            self.classicChar = DistributedPlutoAI.DistributedPlutoAI(self.air)
+        
         self.classicChar.generateWithRequired(self.zoneId)
         self.classicChar.start()

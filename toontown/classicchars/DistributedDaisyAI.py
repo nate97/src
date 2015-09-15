@@ -1,5 +1,3 @@
-# File: D (Python 2.4)
-
 from otp.ai.AIBaseGlobal import *
 import DistributedCCharBaseAI
 from direct.directnotify import DirectNotifyGlobal

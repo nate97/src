@@ -1,4 +1,5 @@
 from toontown.classicchars import DistributedMinnieAI
+from toontown.classicchars import DistributedWitchMinnieAI
 from toontown.hood import HoodAI
 from toontown.safezone import DistributedTrolleyAI
 from toontown.toonbase import ToontownGlobals
@@ -40,6 +41,9 @@ class MMHoodAI(HoodAI.HoodAI):
         self.trolley.start()
 
     def createClassicChar(self):
-        self.classicChar = DistributedMinnieAI.DistributedMinnieAI(self.air)
+        if simbase.air.wantHalloween:
+            self.classicChar = DistributedWitchMinnieAI.DistributedWitchMinnieAI(self.air)
+        else:
+            self.classicChar = DistributedMinnieAI.DistributedMinnieAI(self.air)
         self.classicChar.generateWithRequired(self.zoneId)
         self.classicChar.start()

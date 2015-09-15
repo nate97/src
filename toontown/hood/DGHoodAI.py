@@ -1,4 +1,5 @@
 from toontown.classicchars import DistributedDaisyAI
+from toontown.classicchars import DistributedSockHopDaisyAI
 from toontown.hood import HoodAI
 from toontown.safezone import ButterflyGlobals
 from toontown.safezone import DistributedButterflyAI
@@ -62,7 +63,10 @@ class DGHoodAI(HoodAI.HoodAI):
         self.flower.start()
 
     def createClassicChar(self):
-        self.classicChar = DistributedDaisyAI.DistributedDaisyAI(self.air)
+        if simbase.air.wantHalloween:
+            self.classicChar = DistributedSockHopDaisyAI.DistributedSockHopDaisyAI(self.air)
+        else:
+            self.classicChar = DistributedDaisyAI.DistributedDaisyAI(self.air)
         self.classicChar.generateWithRequired(self.zoneId)
         self.classicChar.start()
 

@@ -1,4 +1,5 @@
 from toontown.classicchars import DistributedMickeyAI
+from toontown.classicchars import DistributedVampireMickeyAI
 from toontown.hood import HoodAI
 from toontown.safezone import ButterflyGlobals
 from toontown.safezone import DistributedButterflyAI
@@ -52,7 +53,10 @@ class TTHoodAI(HoodAI.HoodAI):
         self.trolley.start()
 
     def createClassicChar(self):
-        self.classicChar = DistributedMickeyAI.DistributedMickeyAI(self.air)
+        if simbase.air.wantHalloween:
+            self.classicChar = DistributedVampireMickeyAI.DistributedVampireMickeyAI(self.air)
+        else:
+            self.classicChar = DistributedMickeyAI.DistributedMickeyAI(self.air)
         self.classicChar.generateWithRequired(self.zoneId)
         self.classicChar.start()
 

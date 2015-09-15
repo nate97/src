@@ -1,4 +1,5 @@
 from toontown.classicchars import DistributedGoofySpeedwayAI
+from toontown.classicchars import DistributedSuperGoofyAI
 from toontown.dna.DNAParser import DNAGroup, DNAVisGroup
 from toontown.hood import HoodAI
 from toontown.hood import ZoneUtil
@@ -150,6 +151,9 @@ class GSHoodAI(HoodAI.HoodAI):
         taskMgr.doMethodLater(10, self.cycleLeaderBoards, 'leaderBoardSwitch')
 
     def createClassicChar(self):
-        self.classicChar = DistributedGoofySpeedwayAI.DistributedGoofySpeedwayAI(self.air)
+        if simbase.air.wantHalloween:
+            self.classicChar = DistributedSuperGoofyAI.DistributedSuperGoofyAI(self.air)
+        else:
+            self.classicChar = DistributedGoofySpeedwayAI.DistributedGoofySpeedwayAI(self.air)
         self.classicChar.generateWithRequired(self.zoneId)
         self.classicChar.start()
