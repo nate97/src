@@ -310,6 +310,8 @@ class CatalogItem:
         if store & DeliveryDate:
             dg.addUint32(self.deliveryDate)
         if store & Location:
+
+            # This needs fixed !
             dg.putArg(self.posHpr[0], STInt16, 10)
             dg.putArg(self.posHpr[1], STInt16, 10)
             dg.putArg(self.posHpr[2], STInt16, 100)

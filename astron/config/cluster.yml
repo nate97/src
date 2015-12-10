@@ -76,7 +76,7 @@ roles:
         max: 399999999
       backend:
         type: yaml
-        foldername: ../databases/astrondb
+        directory: ../databases/astrondb
 
     - type: dbss
       database: 4003
