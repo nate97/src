@@ -317,7 +317,6 @@ class CatalogItem:
             # Changed from 256 to 254. 256 goes over value limit!
             # Had issue with furniture roation crashing ai
             dg.putArg(self.posHpr[3], STInt8, 254.0 / 360.0)
-
             dg.putArg(self.posHpr[4], STInt8, 254.0 / 360.0)
             dg.putArg(self.posHpr[5], STInt8, 254.0 / 360.0)
         if store & GiftTag:
