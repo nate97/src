@@ -134,5 +134,4 @@ want-old-fireworks #t
 # Live updates:
 want-live-updates #t
 
-want-christmas #t
-active-holidays 4, 57
+active-holidays 59

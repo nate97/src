@@ -4,6 +4,7 @@ from toontown.toonbase.ToontownGlobals import *
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
 from toontown.safezone import TreasureGlobals
+from toontown.toonbase import ToontownGlobals
 
 class DistributedTreasure(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedTreasure')
@@ -22,6 +23,9 @@ class DistributedTreasure(DistributedObject.DistributedObject):
         self.zOffset = 0.0
         self.billboard = 0
         self.treasureType = None
+
+        # Vday holiday
+        self.heartThrobIval = None
         return
 
     def disable(self):
@@ -30,6 +34,7 @@ class DistributedTreasure(DistributedObject.DistributedObject):
         DistributedObject.DistributedObject.disable(self)
 
     def delete(self):
+        self.stopAnimation()
         if self.treasureFlyTrack:
             self.treasureFlyTrack.finish()
             self.treasureFlyTrack = None
@@ -96,6 +101,8 @@ class DistributedTreasure(DistributedObject.DistributedObject):
 
     def setTreasureType(self, treasureType):
         self.treasureType = treasureType
+        # Handle valentine day heart transformation
+        self.handleHolidays()
 
     def setPosition(self, x, y, z):
         if not self.nodePath:
@@ -159,4 +166,22 @@ class DistributedTreasure(DistributedObject.DistributedObject):
         return (self.nodePath, Point3())
 
     def startAnimation(self):
-        pass
+        holidayIds = base.cr.newsManager.getHolidayIdList()
+        if ToontownGlobals.VALENTINES_DAY in holidayIds:
+            originalScale = self.nodePath.getScale()
+            throbScale = VBase3(0.85, 0.85, 0.85)
+            throbInIval = LerpScaleInterval(self.nodePath, 0.3, scale=throbScale, startScale=originalScale, blendType='easeIn')
+            throbOutIval = LerpScaleInterval(self.nodePath, 0.3, scale=originalScale, startScale=throbScale, blendType='easeOut')
+            self.heartThrobIval = Sequence(throbInIval, throbOutIval, Wait(0.75))
+            self.heartThrobIval.loop()
+
+    def stopAnimation(self):
+        if self.heartThrobIval:
+            self.heartThrobIval.finish()
+            self.heartThrobIval = None
+        return
+
+    def handleHolidays(self):
+        holidayIds = base.cr.newsManager.getHolidayIdList()
+        if ToontownGlobals.VALENTINES_DAY in holidayIds:
+            self.treasureType = TreasureGlobals.TreasureV

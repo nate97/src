@@ -8,6 +8,7 @@ TreasureMM = 4
 TreasureDL = 5
 TreasureOZ = 6
 TreasureE  = 7
+TreasureV  = 8
 
 TreasureModels = {
     TreasureTT: (
@@ -40,6 +41,10 @@ TreasureModels = {
     ),
     TreasureE: (
         'phase_5.5/models/props/popsicle_treasure',
+        'phase_4/audio/sfx/SZ_DD_treasure.ogg',
+    ),
+    TreasureV: (
+        'phase_4/models/props/tt_m_ara_ext_heart',
         'phase_4/audio/sfx/SZ_DD_treasure.ogg',
     ),
 }
