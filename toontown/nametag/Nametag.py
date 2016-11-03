@@ -33,6 +33,7 @@ class Nametag:
         self.chatBalloonType = NametagGlobals.CHAT_BALLOON
 
         self.nametagColor = NametagGlobals.NametagColors[NametagGlobals.CCNormal]
+        self.arrowColor = NametagGlobals.NametagColors[NametagGlobals.CCNormal]
         self.chatColor = NametagGlobals.ChatColors[NametagGlobals.CCNormal]
         self.speedChatColor = self.chatColor[0][1]
 
@@ -171,6 +172,12 @@ class Nametag:
 
     def getNametagColor(self):
         return self.nametagColor
+
+    def setArrowColor(self, arrowColor):
+        self.arrowColor = arrowColor
+
+    def getArrowColor(self):
+        return self.arrowColor
 
     def setChatColor(self, chatColor):
         self.chatColor = chatColor

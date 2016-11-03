@@ -90,7 +90,6 @@ from toontown.building import DistributedPetshopInterior/AI
 from toontown.building import DistributedKartShopInterior/AI
 from toontown.building import DistributedBankInterior/AI
 from toontown.building import DistributedBankCollectable/AI
-from toontown.building import DistributedLibraryInterior/AI
 from toontown.building import DistributedDoor/AI
 from toontown.building import DistributedAnimDoor/AI
 from toontown.estate import DistributedHouseDoor/AI
@@ -1770,10 +1769,6 @@ dclass DistributedKartShopInterior : DistributedObject {
 dclass DistributedBankInterior : DistributedObject {
   setZoneIdAndBlock(uint32, uint16) required broadcast ram;
   setState(string, int16) broadcast ram;
-};
-
-dclass DistributedLibraryInterior : DistributedObject {
-  setZoneIdAndBlock(uint32, uint16) required broadcast ram;
 };
 
 dclass DistributedDoor : DistributedObject {

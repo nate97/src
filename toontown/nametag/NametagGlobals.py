@@ -134,6 +134,8 @@ def getModelWidthHeight(model):
     minPoint, maxPoint = tightBounds
     width = maxPoint.getX() - minPoint.getX()
     height = maxPoint.getZ() - minPoint.getZ()
+    
+    width = width + 0.6
     return (width, height)
 
 
@@ -158,10 +160,10 @@ NametagColors = {
         (VBase4(0.8, 0.4, 0.0, 1.0), VBase4(0.8, 0.8, 0.8, 0.375))    # Disabled
     ),
     CCSuit: (
-        (VBase4(0.2, 0.2, 0.2, 1.0), VBase4(0.8, 0.8, 0.8, 0.375)),   # Normal
-        (VBase4(0.2, 0.2, 0.2, 1.0), VBase4(0.2, 0.2, 0.2, 0.1875)),  # Down
-        (VBase4(0.4, 0.4, 0.4, 1.0), VBase4(1.0, 1.0, 1.0, 0.5625)),  # Rollover
-        (VBase4(0.2, 0.2, 0.2, 1.0), VBase4(0.8, 0.8, 0.8, 0.375))    # Disabled
+        (VBase4(0.0, 0.0, 0.0, 1.0), VBase4(0.8, 0.8, 0.8, 0.5)),   # Normal
+        (VBase4(0.2, 0.2, 0.2, 1.0), VBase4(0.2, 0.2, 0.2, 0.6)),  # Down
+        (VBase4(0.0, 0.0, 0.0, 1.0), VBase4(1.0, 1.0, 1.0, 0.7)),  # Rollover
+        (VBase4(0.2, 0.2, 0.2, 1.0), VBase4(0.8, 0.8, 0.8, 0.5))    # Disabled
     ),
     CCSuitBuilding: (
         (VBase4(0.5, 0.5, 0.5, 1.0), VBase4(0.8, 0.8, 0.8, 0.375)),   # Normal

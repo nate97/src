@@ -244,7 +244,7 @@ class Nametag2d(Nametag, Clickable2d, MarginVisible):
         self.arrow = NametagGlobals.arrowModel.copyTo(self.contents)
         self.arrow.setZ(self.ARROW_OFFSET + self.textNode.getBottom())
         self.arrow.setScale(self.ARROW_SCALE)
-        self.arrow.setColor(self.nametagColor[0][0])
+        self.arrow.setColor(self.arrowColor[0][0])
 
     def marginVisibilityChanged(self):
         if self.cell is not None:

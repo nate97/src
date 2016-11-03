@@ -240,6 +240,7 @@ class DistributedHouse(DistributedObject.DistributedObject):
         self.nametag.hideThought()
         nametagColor = NametagGlobals.NametagColors[NametagGlobals.CCToonBuilding]
         self.nametag.setNametagColor(nametagColor)
+        self.nametag.setArrowColor(nametagColor)
         self.nametag.setActive(False)
         self.nametag.setAvatar(self.house)
         self.nametag.setText(houseName)

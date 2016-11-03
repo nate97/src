@@ -47,6 +47,7 @@ class DistributedElevatorExt(DistributedElevator.DistributedElevator):
             self.nametag.hideThought()
             nametagColor = NametagGlobals.NametagColors[NametagGlobals.CCSuitBuilding]
             self.nametag.setNametagColor(nametagColor)
+            self.nametag.setArrowColor(nametagColor)
             self.nametag.setActive(False)
             self.nametag.setAvatar(self.getElevatorModel())
             name = self.cr.playGame.dnaStore.getTitleFromBlockNumber(self.bldg.block)

@@ -288,6 +288,7 @@ class PartyPlanner(DirectFrame, FSM):
             self.nametagGroup.manage(base.marginManager)
             nametagColor = NametagGlobals.NametagColors[NametagGlobals.CCNonPlayer]
             self.nametagGroup.setNametagColor(nametagColor)
+            self.nametagGroup.setArrowColor(nametagColor)
             chatColor = NametagGlobals.ChatColors[NametagGlobals.CCNonPlayer]
             self.nametagGroup.setChatColor(chatColor)
             nametag2d = self.nametagGroup.getNametag2d()

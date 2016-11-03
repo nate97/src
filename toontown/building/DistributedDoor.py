@@ -114,6 +114,7 @@ class DistributedDoor(DistributedObject.DistributedObject, DelayDeletable):
             self.nametag.hideThought()
             nametagColor = NametagGlobals.NametagColors[NametagGlobals.CCToonBuilding]
             self.nametag.setNametagColor(nametagColor)
+            self.nametag.setArrowColor(nametagColor)
             self.nametag.setActive(False)
             self.nametag.setAvatar(self.getDoorNodePath())
             name = self.cr.playGame.dnaStore.getTitleFromBlockNumber(self.block)

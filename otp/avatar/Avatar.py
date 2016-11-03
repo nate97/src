@@ -124,11 +124,13 @@ class Avatar(Actor, ShadowCaster):
         if self.isUnderstandable():
             nametagColor = NametagGlobals.NametagColors[self.playerType]
             self.nametag.setNametagColor(nametagColor)
+            self.nametag.setArrowColor(nametagColor)
             chatColor = NametagGlobals.ChatColors[self.playerType]
             self.nametag.setChatColor(chatColor)
         else:
             nametagColor = NametagGlobals.NametagColors[NametagGlobals.CCNoChat]
             self.nametag.setNametagColor(nametagColor)
+            self.nametag.setArrowColor(nametagColor)
             chatColor = NametagGlobals.ChatColors[NametagGlobals.CCNoChat]
             self.nametag.setChatColor(chatColor)
         self.nametag.updateAll()
@@ -175,6 +177,7 @@ class Avatar(Actor, ShadowCaster):
                 self.understandable = 1
                 nametagColor = NametagGlobals.NametagColors[NametagGlobals.CCFreeChat]
                 self.nametag.setNametagColor(nametagColor)
+                self.nametag.setArrowColor(nametagColor)
                 chatColor = NametagGlobals.ChatColors[NametagGlobals.CCFreeChat]
                 self.nametag.setChatColor(chatColor)
                 self.nametag.updateAll()
@@ -191,6 +194,14 @@ class Avatar(Actor, ShadowCaster):
         else:
             nametagColor = NametagGlobals.NametagColors[self.playerType]
             self.nametag.setNametagColor(nametagColor)
+            
+            # Set different arrow color than nametag color for suits
+            if self.playerType == NametagGlobals.CCSuit:
+                arrowColor = NametagGlobals.NametagColors[NametagGlobals.CCNonPlayer]
+                self.nametag.setArrowColor(arrowColor)
+            else:
+                self.nametag.setArrowColor(nametagColor)
+            
             chatColor = NametagGlobals.ChatColors[self.playerType]
             self.nametag.setChatColor(chatColor)
             self.nametag.updateAll()
