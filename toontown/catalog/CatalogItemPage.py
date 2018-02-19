@@ -8,7 +8,7 @@ class CatalogItemPage(NodePath):
     def __init__(self, parent, category, pageNum):
         NodePath.__init__(self, parent.attachNewNode(category))
 
-        self.parent = parent
+        self.parent_ = parent
         self.pageNum = pageNum
         self.category = category
         self.catalogItems = []
@@ -32,7 +32,7 @@ class CatalogItemPage(NodePath):
         self.textNode.setScale(CatalogGlobals.ItemPageTextScale)
         self.textNode.setColor(0, 0, 0, 1)
         for (x, item) in enumerate(self.catalogItems):
-            itemFrame = CatalogItemPanel(parent=self, parentCatalogScreen=self.parent, item=item)
+            itemFrame = CatalogItemPanel(parent=self, parentCatalogScreen=self.parent_, item=item)
             itemFrame.load()
             itemFrame.setPos(*CatalogGlobals.CatalogPropPos[x])
             self.itemFrames.append(itemFrame)

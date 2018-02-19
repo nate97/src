@@ -16,7 +16,7 @@ class SummonCogDialog(DirectFrame, StateData.StateData):
     notify.setInfo(True)
 
     def __init__(self, suitIndex):
-        DirectFrame.__init__(self, parent=aspect2dp, pos=(0, 0, 0.3), relief=None, image=DGG.getDefaultDialogGeom(), image_scale=(1.6, 1, 0.7), image_pos=(0, 0, 0.18), image_color=ToontownGlobals.GlobalDialogColor, text=TTL.SummonDlgTitle, text_scale=0.12, text_pos=(0, 0.4), borderWidth=(0.01, 0.01), sortOrder=NO_FADE_SORT_INDEX)
+        DirectFrame.__init__(self, parent=aspect2dp, pos=(0, 0, 0.3), relief=None, image=DGG.getDefaultDialogGeom(), image_scale=(1.6, 1, 0.7), image_pos=(0, 0, 0.18), image_color=ToontownGlobals.GlobalDialogColor, text=TTL.SummonDlgTitle, text_scale=0.12, text_pos=(0, 0.4), borderWidth=(0.01, 0.01))
         StateData.StateData.__init__(self, 'summon-cog-done')
         self.initialiseoptions(SummonCogDialog)
         self.suitIndex = suitIndex
@@ -140,7 +140,7 @@ class SummonCogDialog(DirectFrame, StateData.StateData):
         def handleResponse(resp):
             self.popup.cleanup()
             self.popup = None
-            self.reparentTo(self.getParent(), NO_FADE_SORT_INDEX)
+            self.reparentTo(self.getParent())
             base.transitions.fadeScreen(0.5)
             if resp == DGG.DIALOG_OK:
                 self.notify.info('issuing %s summons for %s' % (summonsType, self.suitIndex))

@@ -28,7 +28,7 @@ class HtmlView(DirectObject):
 
     def __init__(self, parent = aspect2d):
         global GlobalWebcore
-        self.parent = parent
+        self.parent_ = parent
         self.mx = 0
         self.my = 0
         self.htmlFile = 'index.html'
@@ -105,7 +105,7 @@ class HtmlView(DirectObject):
         cm.setUvRange(Point2(0, 1 - bottomRightY), Point2(bottomRightX, 1))
         card = cm.generate()
         self.quad = NodePath(card)
-        self.quad.reparentTo(self.parent)
+        self.quad.reparentTo(self.parent_)
         self.guiTex = Texture('guiTex')
         self.guiTex.setupTexture(Texture.TT2dTexture, WEB_WIDTH, WEB_HEIGHT, 1, Texture.TUnsignedByte, Texture.FRgba)
         self.guiTex.setMinfilter(Texture.FTLinear)
@@ -137,7 +137,7 @@ class HtmlView(DirectObject):
         cm.setFrame(-htmlWidth / 2.0, 0, -htmlHeight / 2.0, htmlHeight / 2.0)
         card = cm.generate()
         self.leftQuad = NodePath(card)
-        self.leftQuad.reparentTo(self.parent)
+        self.leftQuad.reparentTo(self.parent_)
         self.leftGuiTex = Texture('guiTex')
         self.leftGuiTex.setupTexture(Texture.TT2dTexture, WEB_HALF_WIDTH, WEB_HEIGHT, 1, Texture.TUnsignedByte, Texture.FRgba)
         self.leftGuiTex.setKeepRamImage(True)
@@ -160,7 +160,7 @@ class HtmlView(DirectObject):
         cm.setFrame(0, htmlWidth / 2.0, -htmlHeight / 2.0, htmlHeight / 2.0)
         card = cm.generate()
         self.rightQuad = NodePath(card)
-        self.rightQuad.reparentTo(self.parent)
+        self.rightQuad.reparentTo(self.parent_)
         self.rightGuiTex = Texture('guiTex')
         self.rightGuiTex.setupTexture(Texture.TT2dTexture, WEB_HALF_WIDTH, WEB_HEIGHT, 1, Texture.TUnsignedByte, Texture.FRgba)
         self.rightGuiTex.setKeepRamImage(True)

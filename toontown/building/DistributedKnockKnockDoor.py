@@ -63,8 +63,8 @@ class DistributedKnockKnockDoor(DistributedAnimatedProp.DistributedAnimatedProp)
     def knockKnockTrack(self, avatar, duration):
         if avatar is None:
             return
-        self.rimshot = base.loadSfx('phase_5/audio/sfx/AA_heal_telljoke.ogg')
-        self.knockSfx = base.loadSfx('phase_5/audio/sfx/GUI_knock_3.ogg')
+        self.rimshot = base.loader.loadSfx('phase_5/audio/sfx/AA_heal_telljoke.ogg')
+        self.knockSfx = base.loader.loadSfx('phase_5/audio/sfx/GUI_knock_3.ogg')
         joke = KnockKnockJokes[self.propId % len(KnockKnockJokes)]
         place = base.cr.playGame.getPlace()
         doorName = TTLocalizer.DoorNametag

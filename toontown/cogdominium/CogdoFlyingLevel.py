@@ -15,7 +15,7 @@ class CogdoFlyingLevel(DirectObject):
     notify = directNotify.newCategory('CogdoFlyingLevel')
 
     def __init__(self, parent, frameModel, startPlatformModel, endPlatformModel, quadLengthUnits, quadVisibilityAhead, quadVisibiltyBehind):
-        self.parent = parent
+        self.parent_ = parent
         self.quadLengthUnits = quadLengthUnits
         self._halfQuadLengthUnits = quadLengthUnits / 2.0
         self.quadVisibiltyAhead = quadVisibilityAhead
@@ -75,7 +75,7 @@ class CogdoFlyingLevel(DirectObject):
         del self.obstacleFactory
         self._initStartEndPlatforms()
         self._frameModel.reparentTo(self.root)
-        self.root.reparentTo(self.parent)
+        self.root.reparentTo(self.parent_)
         self.root.stash()
 
     def _initStartEndPlatforms(self):
@@ -188,7 +188,7 @@ class CogdoFlyingLevel(DirectObject):
 class CogdoFlyingLevelFactory:
 
     def __init__(self, parent, quadLengthUnits, quadVisibilityAhead, quadVisibiltyBehind, rng = None):
-        self.parent = parent
+        self.parent_ = parent
         self.quadLengthUnits = quadLengthUnits
         self.quadVisibiltyAhead = quadVisibilityAhead
         self.quadVisibiltyBehind = quadVisibiltyBehind
@@ -212,7 +212,7 @@ class CogdoFlyingLevelFactory:
         frameModel.find('**/fogTranslucent_top').setBin('fixed', 2)
         frameModel.getChildren().reparentTo(levelNode)
         levelNode.hide()
-        self._level = CogdoFlyingLevel(self.parent, levelNode, startPlatformModel, endPlatformModel, self.quadLengthUnits, self.quadVisibiltyAhead, self.quadVisibiltyBehind)
+        self._level = CogdoFlyingLevel(self.parent_, levelNode, startPlatformModel, endPlatformModel, self.quadLengthUnits, self.quadVisibiltyAhead, self.quadVisibiltyBehind)
         if Globals.Dev.WantTempLevel:
             quads = Globals.Dev.DevQuadsOrder
         else:

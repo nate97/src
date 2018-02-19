@@ -160,7 +160,7 @@ class DistributedBanquetTableAI(DistributedObjectAI.DistributedObjectAI, FSM.FSM
 
     def requestControl(self):
         avId = self.air.getAvatarIdFromSender()
-        if avId in self.boss.involvedToons and self.avId == 0 and self.state == 'Free':
+        if avId in self.boss.involvedToons and self.avId == 0 and self.state_ == 'Free':
             tableId = self.__getTableId(avId)
             if tableId == 0:
                 grantRequest = True
@@ -173,22 +173,22 @@ class DistributedBanquetTableAI(DistributedObjectAI.DistributedObjectAI, FSM.FSM
         self.notify.debug('forceContrl  tableIndex=%d avId=%d' % (self.index, avId))
         tableId = self.__getTableId(avId)
         if tableId == self.doId:
-            if self.state == 'Flat':
+            if self.state_ == 'Flat':
                 self.b_setState('Controlled', avId)
             else:
-                self.notify.warning('invalid forceControl from state %s' % self.state)
+                self.notify.warning('invalid forceControl from state %s' % self.state_)
         else:
             self.notify.warning('tableId %d  != self.doId %d ' % (tableId, self.doId))
 
     def requestFree(self, gotHitByBoss):
         avId = self.air.getAvatarIdFromSender()
         if avId == self.avId:
-            if self.state == 'Controlled':
+            if self.state_ == 'Controlled':
                 self.b_setState('Free', extraInfo=gotHitByBoss)
                 if self.boss:
                     self.boss.toonLeftTable(self.index)
             else:
-                self.notify.debug('requestFree denied in state %s' % self.state)
+                self.notify.debug('requestFree denied in state %s' % self.state_)
 
     def __getTableId(self, avId):
         if self.boss and self.boss.tables != None:

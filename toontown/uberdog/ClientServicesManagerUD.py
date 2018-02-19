@@ -368,7 +368,7 @@ class LoginAccountFSM(OperationFSM):
             self.__handleCreate)
 
     def __handleCreate(self, accountId):
-        if self.state != 'CreateAccount':
+        if self.state_ != 'CreateAccount':
             self.notify.warning('Received a create account response outside of the CreateAccount state.')
             return
 
@@ -592,7 +592,7 @@ class GetAvatarsFSM(AvatarOperationFSM):
                 self.pendingAvatars.add(avId)
 
                 def response(dclass, fields, avId=avId):
-                    if self.state != 'QueryAvatars':
+                    if self.state_ != 'QueryAvatars':
                         return
                     if dclass != self.csm.air.dclassesByName['DistributedToonUD']:
                         self.demand('Kill', "One of the account's avatars is invalid!")

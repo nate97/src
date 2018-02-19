@@ -1,4 +1,4 @@
-from direct.showbase import PythonUtil
+#from direct.showbase import PythonUtil
 
 class MagicError(Exception): pass
 
@@ -34,7 +34,9 @@ class Spellbook:
         except MagicError as e:
             return e.message
         except Exception:
-            return PythonUtil.describeException(backTrace=1)
+            #error = PythonUtil.describeException(backTrace=1)
+            error = ("Error...")
+            return error
         finally:
             self.currentInvoker = None
             self.currentTarget = None

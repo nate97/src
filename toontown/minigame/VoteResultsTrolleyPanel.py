@@ -101,12 +101,12 @@ class VoteResultsTrolleyPanel(DirectFrame):
         self.upArrowSfx = []
         self.downArrowSfx = []
         for i in xrange(5):
-            self.upArrowSfx.append(base.loadSfx('phase_4/audio/sfx/MG_sfx_travel_game_blue_arrow.ogg'))
-            self.downArrowSfx.append(base.loadSfx('phase_4/audio/sfx/MG_sfx_travel_game_red_arrow.ogg'))
+            self.upArrowSfx.append(base.loader.loadSfx('phase_4/audio/sfx/MG_sfx_travel_game_blue_arrow.ogg'))
+            self.downArrowSfx.append(base.loader.loadSfx('phase_4/audio/sfx/MG_sfx_travel_game_red_arrow.ogg'))
 
-        self.winVoteSfx = base.loadSfx('phase_4/audio/sfx/MG_sfx_travel_game_win_vote.ogg')
-        self.noVoteSfx = base.loadSfx('phase_4/audio/sfx/MG_sfx_travel_game_square_no_vote_1.ogg')
-        self.loseVoteSfx = base.loadSfx('phase_4/audio/sfx/MG_sfx_travel_game_lose_vote.ogg')
+        self.winVoteSfx = base.loader.loadSfx('phase_4/audio/sfx/MG_sfx_travel_game_win_vote.ogg')
+        self.noVoteSfx = base.loader.loadSfx('phase_4/audio/sfx/MG_sfx_travel_game_square_no_vote_1.ogg')
+        self.loseVoteSfx = base.loader.loadSfx('phase_4/audio/sfx/MG_sfx_travel_game_lose_vote.ogg')
         self.localAvatarWon = False
         self.localAvatarLost = False
         localIndex = self.avIdList.index(base.localAvatar.doId)

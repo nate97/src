@@ -175,9 +175,9 @@ class DistributedPartyTrampolineActivity(DistributedPartyActivity):
         return
 
     def loadSounds(self):
-        self.jellyBeanSound = base.loadSfx('phase_4/audio/sfx/sparkly.ogg')
-        self.boingSound = base.loadSfx('phase_4/audio/sfx/target_trampoline_2.ogg')
-        self.whistleSound = base.loadSfx('phase_4/audio/sfx/AA_sound_whistle.ogg')
+        self.jellyBeanSound = base.loader.loadSfx('phase_4/audio/sfx/sparkly.ogg')
+        self.boingSound = base.loader.loadSfx('phase_4/audio/sfx/target_trampoline_2.ogg')
+        self.whistleSound = base.loader.loadSfx('phase_4/audio/sfx/AA_sound_whistle.ogg')
 
     def loadIntervals(self):
 

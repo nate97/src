@@ -10,7 +10,7 @@ class DistributedCogdoBarrel(DistributedObject.DistributedObject):
     def __init__(self, cr):
         DistributedObject.DistributedObject.__init__(self, cr)
         self.index = None
-        self.state = None
+        self.state_ = None
         self.model = None
         self.collSphere = None
         self.collNode = None
@@ -21,8 +21,8 @@ class DistributedCogdoBarrel(DistributedObject.DistributedObject):
 
     def generate(self):
         DistributedObject.DistributedObject.generate(self)
-        self.bumpSound = base.loadSfx(CogdoBarrelRoomConsts.BarrelBumpSound)
-        self.grabSound = base.loadSfx(CogdoBarrelRoomConsts.BarrelGrabSound)
+        self.bumpSound = base.loader.loadSfx(CogdoBarrelRoomConsts.BarrelBumpSound)
+        self.grabSound = base.loader.loadSfx(CogdoBarrelRoomConsts.BarrelGrabSound)
 
     def __setModel(self):
         self.model = loader.loadModel(CogdoBarrelRoomConsts.BarrelModel)
@@ -79,21 +79,21 @@ class DistributedCogdoBarrel(DistributedObject.DistributedObject):
         return CogdoBarrelRoomConsts.BarrelProps[self.index][prop]
 
     def setState(self, state):
-        self.state = state
+        self.state_ = state
         self.__updateState()
 
     def __updateState(self):
-        if self.state == CogdoBarrelRoomConsts.StateAvailable:
+        if self.state_ == CogdoBarrelRoomConsts.StateAvailable:
             if self.model:
                 self.model.unstash()
                 self.model.setTexture(self.availableTex, 100)
             self.accept(self.uniqueName('enterbarrelSphere'), self.handleEnterSphere)
-        elif self.state == CogdoBarrelRoomConsts.StateUsed:
+        elif self.state_ == CogdoBarrelRoomConsts.StateUsed:
             if self.model:
                 self.model.unstash()
                 self.model.setTexture(self.usedTex, 100)
             self.ignore(self.uniqueName('enterbarrelSphere'))
-        elif self.state == CogdoBarrelRoomConsts.StateHidden or self.state == CogdoBarrelRoomConsts.StateCrushed:
+        elif self.state_ == CogdoBarrelRoomConsts.StateHidden or self.state_ == CogdoBarrelRoomConsts.StateCrushed:
             if self.model:
                 self.model.stash()
             self.ignore(self.uniqueName('enterbarrelSphere'))

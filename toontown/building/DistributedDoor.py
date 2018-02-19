@@ -21,8 +21,8 @@ from toontown.nametag.Nametag import Nametag
 class DistributedDoor(DistributedObject.DistributedObject, DelayDeletable):
     def __init__(self, cr):
         DistributedObject.DistributedObject.__init__(self, cr)
-        self.openSfx = base.loadSfx('phase_3.5/audio/sfx/Door_Open_1.ogg')
-        self.closeSfx = base.loadSfx('phase_3.5/audio/sfx/Door_Close_1.ogg')
+        self.openSfx = base.loader.loadSfx('phase_3.5/audio/sfx/Door_Open_1.ogg')
+        self.closeSfx = base.loader.loadSfx('phase_3.5/audio/sfx/Door_Close_1.ogg')
         self.nametag = None
         self.fsm = ClassicFSM.ClassicFSM(
             'DistributedDoor_right',

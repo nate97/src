@@ -236,15 +236,15 @@ class OptionsTabPage(DirectFrame):
     ChangeDisplayAPI = base.config.GetBool('change-display-api', 0)
 
     def __init__(self, parent = aspect2d):
-        self.parent = parent
+        self._parent_aspect2d = parent
         self.currentSizeIndex = None
 
-        DirectFrame.__init__(self, parent=self.parent, relief=None, pos=(0.0, 0.0, 0.0), scale=(1.0, 1.0, 1.0))
+        DirectFrame.__init__(self, parent=self._parent_aspect2d, relief=None, pos=(0.0, 0.0, 0.0), scale=(1.0, 1.0, 1.0))
 
         self.load()
 
     def destroy(self):
-        self.parent = None
+        self._parent_aspect2d = None
 
         DirectFrame.destroy(self)
 
@@ -315,7 +315,7 @@ class OptionsTabPage(DirectFrame):
         self.speedChatStyleText.enter()
         self.speedChatStyleIndex = base.localAvatar.getSpeedChatStyleIndex()
         self.updateSpeedChatStyle()
-        if self.parent.book.safeMode:
+        if self._parent_aspect2d.book.safeMode:
             self.exitButton.hide()
         else:
             self.exitButton.show()
@@ -539,7 +539,7 @@ class OptionsTabPage(DirectFrame):
     def __handleExitShowWithConfirm(self):
         self.confirm = TTDialog.TTGlobalDialog(doneEvent='confirmDone', message=TTLocalizer.OptionsPageExitConfirm, style=TTDialog.TwoChoice)
         self.confirm.show()
-        self.parent.doneStatus = {'mode': 'exit',
+        self._parent_aspect2d.doneStatus = {'mode': 'exit',
          'exitTo': 'closeShard'}
         self.accept('confirmDone', self.__handleConfirm)
 
@@ -550,20 +550,20 @@ class OptionsTabPage(DirectFrame):
         del self.confirm
         if status == 'ok':
             base.cr._userLoggingOut = True
-            messenger.send(self.parent.doneEvent)
+            messenger.send(self._parent_aspect2d.doneEvent)
 
 
 class CodesTabPage(DirectFrame):
     notify = directNotify.newCategory('CodesTabPage')
 
     def __init__(self, parent = aspect2d):
-        self.parent = parent
-        DirectFrame.__init__(self, parent=self.parent, relief=None, pos=(0.0, 0.0, 0.0), scale=(1.0, 1.0, 1.0))
+        self._parent_aspect2d = parent
+        DirectFrame.__init__(self, parent=self._parent_aspect2d, relief=None, pos=(0.0, 0.0, 0.0), scale=(1.0, 1.0, 1.0))
         self.load()
         return
 
     def destroy(self):
-        self.parent = None
+        self._parent_aspect2d = None
         DirectFrame.destroy(self)
         return
 
@@ -575,8 +575,8 @@ class CodesTabPage(DirectFrame):
         self.resultPanelSuccessGui = cdrGui.find('**/tt_t_gui_sbk_cdrResultPanel_success')
         self.resultPanelFailureGui = cdrGui.find('**/tt_t_gui_sbk_cdrResultPanel_failure')
         self.resultPanelErrorGui = cdrGui.find('**/tt_t_gui_sbk_cdrResultPanel_error')
-        self.successSfx = base.loadSfx('phase_3.5/audio/sfx/tt_s_gui_sbk_cdrSuccess.ogg')
-        self.failureSfx = base.loadSfx('phase_3.5/audio/sfx/tt_s_gui_sbk_cdrFailure.ogg')
+        self.successSfx = base.loader.loadSfx('phase_3.5/audio/sfx/tt_s_gui_sbk_cdrSuccess.ogg')
+        self.failureSfx = base.loader.loadSfx('phase_3.5/audio/sfx/tt_s_gui_sbk_cdrFailure.ogg')
         self.instructionPanel = DirectFrame(parent=self, relief=None, image=instructionGui, image_scale=0.8, text=TTLocalizer.CdrInstructions, text_pos=TTLocalizer.OPCodesInstructionPanelTextPos, text_align=TextNode.ACenter, text_scale=TTLocalizer.OPCodesResultPanelTextScale, text_wordwrap=TTLocalizer.OPCodesInstructionPanelTextWordWrap, pos=(-0.429, 0, -0.05))
         self.codeBox = DirectFrame(parent=self, relief=None, image=codeBoxGui, pos=(0.433, 0, 0.35))
         self.flippyFrame = DirectFrame(parent=self, relief=None, image=flippyGui, pos=(0.44, 0, -0.353))

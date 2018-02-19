@@ -1,7 +1,7 @@
 from direct.actor.Actor import Actor
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import ClockDelta
-from direct.showbase.PythonUtil import recordCreationStack
+#from direct.showbase.PythonUtil import recordCreationStack
 from pandac.PandaModules import *
 import random
 
@@ -32,7 +32,7 @@ class Avatar(Actor, ShadowCaster):
     ManagesNametagAmbientLightChanged = False
 
     def __init__(self, other = None):
-        self.name = ''
+        self._actor_name = ''
         try:
             self.Avatar_initialized
             return
@@ -251,7 +251,7 @@ class Avatar(Actor, ShadowCaster):
         return OTPGlobals.AvatarDefaultRadius
 
     def getName(self):
-        return self.name
+        return self._actor_name
 
     def getType(self):
         return self.avatarType
@@ -260,7 +260,7 @@ class Avatar(Actor, ShadowCaster):
         if hasattr(self, 'isDisguised'):
             if self.isDisguised:
                 return
-        self.name = name
+        self._actor_name = name
         if hasattr(self, 'nametag'):
             self.nametag.setText(name)
 

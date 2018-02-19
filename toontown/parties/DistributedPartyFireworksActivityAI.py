@@ -12,7 +12,7 @@ class DistributedPartyFireworksActivityAI(DistributedPartyActivityAI, FSM):
     def __init__(self, air, parent, activityTuple):
         DistributedPartyActivityAI.__init__(self, air, parent, activityTuple)
         FSM.__init__(self, 'DistributedPartyActivityAI')
-        self.state = 'Idle'
+        self.state_ = 'Idle'
         
     def getEventId(self):
         return PartyGlobals.FireworkShows.Summer
@@ -26,7 +26,7 @@ class DistributedPartyFireworksActivityAI(DistributedPartyActivityAI, FSM):
     def toonJoinRequest(self):
         avId = self.air.getAvatarIdFromSender()
         host = self.air.doId2do[self.parent].hostId
-        if avId == host and self.state == 'Idle':
+        if avId == host and self.state_ == 'Idle':
             self.request('Active')
             return
         self.sendUpdateToAvatarId(avId, 'joinRequestDenied', [1])

@@ -305,7 +305,7 @@ class DistributedBossCog(DistributedAvatar.DistributedAvatar, BossCog.BossCog):
         self.request(state)
 
     def gotToon(self, toon):
-        stateName = self.state
+        stateName = self.state_
 
     def __gotAllToons(self, toons):
         self.gotAllToons = 1
@@ -553,10 +553,10 @@ class DistributedBossCog(DistributedAvatar.DistributedAvatar, BossCog.BossCog):
         self.rightDoor = self.elevatorModel.find('**/right-door')
         if self.rightDoor.isEmpty():
             self.rightDoor = self.elevatorModel.find('**/right_door')
-        self.openSfx = base.loadSfx('phase_9/audio/sfx/CHQ_FACT_door_open_sliding.ogg')
-        self.finalOpenSfx = base.loadSfx('phase_9/audio/sfx/CHQ_FACT_door_open_final.ogg')
-        self.closeSfx = base.loadSfx('phase_9/audio/sfx/CHQ_FACT_door_open_sliding.ogg')
-        self.finalCloseSfx = base.loadSfx('phase_9/audio/sfx/CHQ_FACT_door_open_final.ogg')
+        self.openSfx = base.loader.loadSfx('phase_9/audio/sfx/CHQ_FACT_door_open_sliding.ogg')
+        self.finalOpenSfx = base.loader.loadSfx('phase_9/audio/sfx/CHQ_FACT_door_open_final.ogg')
+        self.closeSfx = base.loader.loadSfx('phase_9/audio/sfx/CHQ_FACT_door_open_sliding.ogg')
+        self.finalCloseSfx = base.loader.loadSfx('phase_9/audio/sfx/CHQ_FACT_door_open_final.ogg')
         self.openDoors = ElevatorUtils.getOpenInterval(self, self.leftDoor, self.rightDoor, self.openSfx, self.finalOpenSfx, self.elevatorType)
         self.closeDoors = ElevatorUtils.getCloseInterval(self, self.leftDoor, self.rightDoor, self.closeSfx, self.finalCloseSfx, self.elevatorType)
         self.closeDoors.start()
@@ -747,7 +747,7 @@ class DistributedBossCog(DistributedAvatar.DistributedAvatar, BossCog.BossCog):
         zapTrack.append(toonTrack)
         if toon == localAvatar:
             zapTrack.append(Func(self.disableLocalToonSimpleCollisions))
-            currentState = self.state
+            currentState = self.state_
             if currentState == 'BattleThree':
                 zapTrack.append(Func(self.toFinalBattleMode))
             elif hasattr(self, 'chairs'):
@@ -912,11 +912,11 @@ class DistributedBossCog(DistributedAvatar.DistributedAvatar, BossCog.BossCog):
             self.zapLocalToon(ToontownGlobals.BossCogAreaAttack)
 
     def loadEnvironment(self):
-        self.elevatorMusic = base.loadMusic('phase_7/audio/bgm/tt_elevator.ogg')
-        self.stingMusic = base.loadMusic('phase_7/audio/bgm/encntr_suit_winning_indoor.ogg')
-        self.battleOneMusic = base.loadMusic('phase_3.5/audio/bgm/encntr_general_bg.ogg')
-        self.battleThreeMusic = base.loadMusic('phase_7/audio/bgm/encntr_suit_winning_indoor.ogg')
-        self.epilogueMusic = base.loadMusic('phase_9/audio/bgm/encntr_hall_of_fame.ogg')
+        self.elevatorMusic = base.loader.loadMusic('phase_7/audio/bgm/tt_elevator.ogg')
+        self.stingMusic = base.loader.loadMusic('phase_7/audio/bgm/encntr_suit_winning_indoor.ogg')
+        self.battleOneMusic = base.loader.loadMusic('phase_3.5/audio/bgm/encntr_general_bg.ogg')
+        self.battleThreeMusic = base.loader.loadMusic('phase_7/audio/bgm/encntr_suit_winning_indoor.ogg')
+        self.epilogueMusic = base.loader.loadMusic('phase_9/audio/bgm/encntr_hall_of_fame.ogg')
 
     def unloadEnvironment(self):
         pass
@@ -1034,7 +1034,7 @@ class DistributedBossCog(DistributedAvatar.DistributedAvatar, BossCog.BossCog):
 
     def __clickedNameTag(self, avatar):
         self.notify.debug('__clickedNameTag')
-        if not (self.state == 'BattleThree' or self.state == 'BattleFour'):
+        if not (self.state_ == 'BattleThree' or self.state_ == 'BattleFour'):
             return
         if not self.allowClickedNameTag:
             return
@@ -1045,7 +1045,7 @@ class DistributedBossCog(DistributedAvatar.DistributedAvatar, BossCog.BossCog):
 
     def __handleFriendAvatar(self, avId, avName, avDisableName):
         self.notify.debug('__handleFriendAvatar')
-        if not (self.state == 'BattleThree' or self.state == 'BattleFour'):
+        if not (self.state_ == 'BattleThree' or self.state_ == 'BattleFour'):
             return
         if not self.allowClickedNameTag:
             return
@@ -1056,7 +1056,7 @@ class DistributedBossCog(DistributedAvatar.DistributedAvatar, BossCog.BossCog):
 
     def __handleAvatarDetails(self, avId, avName, playerId = None):
         self.notify.debug('__handleAvatarDetails')
-        if not (self.state == 'BattleThree' or self.state == 'BattleFour'):
+        if not (self.state_ == 'BattleThree' or self.state_ == 'BattleFour'):
             return
         if not self.allowClickedNameTag:
             return

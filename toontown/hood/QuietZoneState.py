@@ -1,5 +1,6 @@
 from pandac.PandaModules import *
-from direct.showbase.PythonUtil import Functor, PriorityCallbacks
+from direct.showbase.PythonUtil import Functor
+from PriorityCallback import PriorityCallbacks
 from direct.task import Task
 from toontown.distributed.ToontownMsgTypes import *
 from otp.otpbase import OTPGlobals

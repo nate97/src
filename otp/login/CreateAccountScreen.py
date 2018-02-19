@@ -57,7 +57,7 @@ class CreateAccountScreen(StateData.StateData, GuiScreen.GuiScreen):
         linePos -= buttonLineHeight
         self.dialogDoneEvent = 'createAccountDialogAck'
         dialogClass = OTPGlobals.getGlobalDialogClass()
-        self.dialog = dialogClass(dialogName='createAccountDialog', doneEvent=self.dialogDoneEvent, message='', style=OTPDialog.Acknowledge, sortOrder=NO_FADE_SORT_INDEX + 100)
+        self.dialog = dialogClass(dialogName='createAccountDialog', doneEvent=self.dialogDoneEvent, message='', style=OTPDialog.Acknowledge)
         self.dialog.hide()
         return
 

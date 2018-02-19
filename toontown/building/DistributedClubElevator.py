@@ -52,7 +52,7 @@ class DistributedClubElevator(DistributedElevatorFSM.DistributedElevatorFSM):
         self.doorsNeedToClose = 0
         self.wantState = 0
         self.latch = None
-        self.lastState = self.state
+        self.lastState = self.state_
         self.kartModelPath = 'phase_12/models/bossbotHQ/Coggolf_cart3.bam'
         self.leftDoor = None
         self.rightDoor = None
@@ -199,7 +199,7 @@ class DistributedClubElevator(DistributedElevatorFSM.DistributedElevatorFSM):
             self.notify.warning('Tried to board elevator with hp: %d' % base.localAvatar.hp)
 
     def enterWaitEmpty(self, ts):
-        self.lastState = self.state
+        self.lastState = self.state_
         self.elevatorSphereNodePath.unstash()
         self.forceDoorsOpen()
         self.accept(self.uniqueName('enterelevatorSphere'), self.handleEnterSphere)
@@ -207,26 +207,26 @@ class DistributedClubElevator(DistributedElevatorFSM.DistributedElevatorFSM):
         DistributedElevatorFSM.DistributedElevatorFSM.enterWaitEmpty(self, ts)
 
     def exitWaitEmpty(self):
-        self.lastState = self.state
+        self.lastState = self.state_
         self.elevatorSphereNodePath.stash()
         self.ignore(self.uniqueName('enterelevatorSphere'))
         self.ignore(self.uniqueName('enterElevatorOK'))
         DistributedElevatorFSM.DistributedElevatorFSM.exitWaitEmpty(self)
 
     def enterWaitCountdown(self, ts):
-        self.lastState = self.state
+        self.lastState = self.state_
         DistributedElevatorFSM.DistributedElevatorFSM.enterWaitCountdown(self, ts)
         self.forceDoorsOpen()
         self.accept(self.uniqueName('enterElevatorOK'), self.handleEnterElevator)
         self.startCountdownClock(self.countdownTime, ts)
 
     def exitWaitCountdown(self):
-        self.lastState = self.state
+        self.lastState = self.state_
         self.ignore(self.uniqueName('enterElevatorOK'))
         DistributedElevatorFSM.DistributedElevatorFSM.exitWaitCountdown(self)
 
     def enterClosing(self, ts):
-        self.lastState = self.state
+        self.lastState = self.state_
         taskMgr.doMethodLater(1.0, self._delayIris, 'delayedIris')
         DistributedElevatorFSM.DistributedElevatorFSM.enterClosing(self, ts)
 
@@ -248,20 +248,20 @@ class DistributedClubElevator(DistributedElevatorFSM.DistributedElevatorFSM):
         return
 
     def exitClosing(self):
-        self.lastState = self.state
+        self.lastState = self.state_
         DistributedElevatorFSM.DistributedElevatorFSM.exitClosing(self)
 
     def enterClosed(self, ts):
-        self.lastState = self.state
+        self.lastState = self.state_
         self.forceDoorsClosed()
         self.__doorsClosed(self.getZoneId())
 
     def exitClosed(self):
-        self.lastState = self.state
+        self.lastState = self.state_
         DistributedElevatorFSM.DistributedElevatorFSM.exitClosed(self)
 
     def enterOff(self):
-        self.lastState = self.state
+        self.lastState = self.state_
         if self.wantState == 'closed':
             self.demand('Closing')
         elif self.wantState == 'waitEmpty':
@@ -269,11 +269,11 @@ class DistributedClubElevator(DistributedElevatorFSM.DistributedElevatorFSM):
         DistributedElevatorFSM.DistributedElevatorFSM.enterOff(self)
 
     def exitOff(self):
-        self.lastState = self.state
+        self.lastState = self.state_
         DistributedElevatorFSM.DistributedElevatorFSM.exitOff(self)
 
     def enterOpening(self, ts):
-        self.lastState = self.state
+        self.lastState = self.state_
         DistributedElevatorFSM.DistributedElevatorFSM.enterOpening(self, ts)
 
     def exitOpening(self):
@@ -321,7 +321,7 @@ class DistributedClubElevator(DistributedElevatorFSM.DistributedElevatorFSM):
     def setLocked(self, locked):
         self.isLocked = locked
         if locked:
-            if self.state == 'WaitEmpty':
+            if self.state_ == 'WaitEmpty':
                 self.request('Closing')
             if self.countFullSeats() == 0:
                 self.wantState = 'closed'
@@ -329,7 +329,7 @@ class DistributedClubElevator(DistributedElevatorFSM.DistributedElevatorFSM):
                 self.wantState = 'opening'
         else:
             self.wantState = 'waitEmpty'
-            if self.state == 'Closed':
+            if self.state_ == 'Closed':
                 self.request('Opening')
 
     def getLocked(self):
@@ -348,7 +348,7 @@ class DistributedClubElevator(DistributedElevatorFSM.DistributedElevatorFSM):
         pass
 
     def enterOff(self):
-        self.lastState = self.state
+        self.lastState = self.state_
 
     def exitOff(self):
         pass

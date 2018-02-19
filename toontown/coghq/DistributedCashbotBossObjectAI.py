@@ -49,7 +49,7 @@ class DistributedCashbotBossObjectAI(DistributedSmoothNodeAI.DistributedSmoothNo
 
     def requestGrab(self):
         avId = self.air.getAvatarIdFromSender()
-        if self.state != 'Grabbed' and self.state != 'Off':
+        if self.state_ != 'Grabbed' and self.state_ != 'Off':
             craneId, objectId = self.__getCraneAndObject(avId)
             if craneId != 0 and objectId == 0:
                 self.demand('Grabbed', avId, craneId)
@@ -58,14 +58,14 @@ class DistributedCashbotBossObjectAI(DistributedSmoothNodeAI.DistributedSmoothNo
 
     def requestDrop(self):
         avId = self.air.getAvatarIdFromSender()
-        if avId == self.avId and self.state == 'Grabbed':
+        if avId == self.avId and self.state_ == 'Grabbed':
             craneId, objectId = self.__getCraneAndObject(avId)
             if craneId != 0 and objectId == self.doId:
                 self.demand('Dropped', avId, craneId)
 
     def hitFloor(self):
         avId = self.air.getAvatarIdFromSender()
-        if avId == self.avId and self.state == 'Dropped':
+        if avId == self.avId and self.state_ == 'Dropped':
             self.demand('SlidingFloor', avId)
 
     def requestFree(self, x, y, z, h):

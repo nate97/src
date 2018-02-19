@@ -308,7 +308,7 @@ class ItemSelector(DirectFrame):
         def __init__(self, avatar, parent = aspect2d):
             self.currItem = None
             self.itemList = None
-            self.parent = parent
+            self.parent_ = parent
             self.avatar = avatar
             self.currAccessoryType = None
             self.texCount = 1
@@ -322,7 +322,7 @@ class ItemSelector(DirectFrame):
             self.leftArrowButton.destroy()
             self.rightArrowButton.destroy()
             del self.avatar
-            del self.parent
+            del self.parent_
             del self.currItem
             del self.itemList
             del self.uiBgFrame
@@ -516,7 +516,7 @@ class ItemSelector(DirectFrame):
             self.__updateViewerUI()
             self.notify.debug('__handleItemChange: currItem %s' % self.currItem)
             self.updatedDNA[self.currAccessoryType] = self.currItem
-            kart = self.parent.parent.getKartViewer().getKart()
+            kart = self.parent_.parent.getKartViewer().getKart()
             kart.updateDNAField(self.currAccessoryType, self.currItem)
 
         def __handleShowItem(self):
@@ -540,7 +540,7 @@ class ItemSelector(DirectFrame):
                 else:
                     self.uiImagePlane.component('geom0').setColorScale(getAccessory(self.currItem))
             elif self.currAccessoryType == KartDNA.decalType:
-                kart = self.parent.parent.getKartViewer().getKart()
+                kart = self.parent_.parent.getKartViewer().getKart()
                 kartDecal = getDecalId(kart.kartDNA[KartDNA.bodyType])
                 texNodePath = getTexCardNode(self.currItem)
                 tex = loader.loadTexture('phase_6/maps/%s.jpg' % texNodePath % kartDecal, 'phase_6/maps/%s_a.rgb' % texNodePath % kartDecal)
@@ -583,13 +583,13 @@ class ItemSelector(DirectFrame):
                     if self.updatedDNA[KartDNA.accColor] == deletedItem:
                         self.avatar.requestKartDNAFieldUpdate(KartDNA.accColor, self.currItem)
                         self.updatedDNA[KartDNA.accColor] = self.currItem
-                        kart = self.parent.parent.getKartViewer().getKart()
+                        kart = self.parent_.parent.getKartViewer().getKart()
                         kart.updateDNAField(KartDNA.accColor, self.currItem)
                 elif self.currAccessoryType == KartDNA.accColor:
                     if self.updatedDNA[KartDNA.bodyColor] == deletedItem:
                         self.avatar.requestKartDNAFieldUpdate(KartDNA.bodyColor, self.currItem)
                         self.updatedDNA[KartDNA.bodyColor] = self.currItem
-                        kart = self.parent.parent.getKartViewer().getKart()
+                        kart = self.parent_.parent.getKartViewer().getKart()
                         kart.updateDNAField(KartDNA.bodyColor, self.currItem)
 
             self.notify.debug('__handleItemDelete: Delete request on accessory %s' % self.currItem)
@@ -602,7 +602,7 @@ class ItemSelector(DirectFrame):
             self.currItem = InvalidEntry
             self.__updateViewerUI()
             self.updatedDNA[self.currAccessoryType] = self.currItem
-            kart = self.parent.parent.getKartViewer().getKart()
+            kart = self.parent_.parent.getKartViewer().getKart()
             kart.updateDNAField(self.currAccessoryType, self.currItem)
             if self.avatar.getAccessoryByType(self.currAccessoryType) == deletedItem:
                 self.avatar.requestKartDNAFieldUpdate(self.currAccessoryType, self.currItem)
@@ -613,11 +613,11 @@ class ItemSelector(DirectFrame):
                 self.setViewerText(TTLocalizer.KartShtikerNo % getattr(TTLocalizer, AccessoryTypeNameDict[self.currAccessoryType]))
 
     def __init__(self, avatar, parent = aspect2d):
-        self.state = InvalidEntry
+        self.state_ = InvalidEntry
         self.avatar = avatar
         self.itemViewers = {}
         self.buttonDict = {}
-        self.parent = parent
+        self.parent_ = parent
         DirectFrame.__init__(self, parent=parent, relief=None, pos=(0, 0, 0), scale=(1.0, 1.0, 1.0))
         return
 
@@ -694,7 +694,7 @@ class ItemSelector(DirectFrame):
             self.itemViewers['main'].disable()
             self.itemViewers['main'].setViewerText(TTLocalizer.KartShtikerNoAccessories)
             return
-        self.__changeItemCategory(self.state)
+        self.__changeItemCategory(self.state_)
 
     def resetAccessoryIcons(self):
         for key in self.buttonDict.keys():
@@ -702,7 +702,7 @@ class ItemSelector(DirectFrame):
 
         self.itemViewers['main'].show()
         self.itemViewers['main'].setViewerText('')
-        self.state = InvalidEntry
+        self.state_ = InvalidEntry
         self.itemViewers['main'].resetViewer()
 
     def __changeItemCategory(self, buttonType):
@@ -743,10 +743,10 @@ class ItemSelector(DirectFrame):
             self.itemViewers['main'].setupViewer(buttonType)
         else:
             raise StandardError, 'KartPage.py::__changeItemCategory - INVALID Category Type!'
-        if self.state != buttonType and self.state != InvalidEntry:
-            self.buttonDict[self.state]['state'] = DGG.NORMAL
-            self.buttonDict[self.state].setColorScale(1, 1, 1, 1)
-        self.state = buttonType
+        if self.state_ != buttonType and self.state_ != InvalidEntry:
+            self.buttonDict[self.state_]['state'] = DGG.NORMAL
+            self.buttonDict[self.state_].setColorScale(1, 1, 1, 1)
+        self.state_ = buttonType
 
 
 class KartViewer(DirectFrame):
@@ -755,7 +755,7 @@ class KartViewer(DirectFrame):
     def __init__(self, dna, parent):
         self.kart = None
         self.dna = dna
-        self.parent = parent
+        self.parent_ = parent
         self.kartFrame = None
         self.bounds = None
         self.colors = None
@@ -787,7 +787,7 @@ class KartViewer(DirectFrame):
         if hasattr(self, 'dna'):
             del self.dna
         if hasattr(self, 'parent'):
-            del self.parent
+            del self.parent_
         DirectFrame.destroy(self)
         return
 

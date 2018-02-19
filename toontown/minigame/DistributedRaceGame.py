@@ -300,11 +300,11 @@ class DistributedRaceGame(DistributedMinigame):
          self.dice2,
          self.dice3,
          self.dice4]
-        self.music = base.loadMusic('phase_4/audio/bgm/minigame_race.ogg')
-        self.posBuzzer = base.loadSfx('phase_4/audio/sfx/MG_pos_buzzer.ogg')
-        self.negBuzzer = base.loadSfx('phase_4/audio/sfx/MG_neg_buzzer.ogg')
-        self.winSting = base.loadSfx('phase_4/audio/sfx/MG_win.ogg')
-        self.loseSting = base.loadSfx('phase_4/audio/sfx/MG_lose.ogg')
+        self.music = base.loader.loadMusic('phase_4/audio/bgm/minigame_race.ogg')
+        self.posBuzzer = base.loader.loadSfx('phase_4/audio/sfx/MG_pos_buzzer.ogg')
+        self.negBuzzer = base.loader.loadSfx('phase_4/audio/sfx/MG_neg_buzzer.ogg')
+        self.winSting = base.loader.loadSfx('phase_4/audio/sfx/MG_win.ogg')
+        self.loseSting = base.loader.loadSfx('phase_4/audio/sfx/MG_lose.ogg')
         self.diceButtonList = []
         for i in xrange(1, 5):
             button = self.dice.find('**/dice_button' + str(i))
@@ -323,7 +323,7 @@ class DistributedRaceGame(DistributedMinigame):
         self.chanceCard = loader.loadModel('phase_4/models/minigames/chance_card')
         self.chanceCardText = OnscreenText('', fg=(1.0, 0, 0, 1), scale=0.14, font=ToontownGlobals.getSignFont(), wordwrap=14, pos=(0.0, 0.2), mayChange=1)
         self.chanceCardText.hide()
-        self.cardSound = base.loadSfx('phase_3.5/audio/sfx/GUI_stickerbook_turn.ogg')
+        self.cardSound = base.loader.loadSfx('phase_3.5/audio/sfx/GUI_stickerbook_turn.ogg')
         self.chanceMarkers = []
         return
 

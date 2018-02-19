@@ -17,7 +17,7 @@ class DistributedLift(BasicEntities.DistributedNodePathEntity):
     def generateInit(self):
         self.notify.debug('generateInit')
         BasicEntities.DistributedNodePathEntity.generateInit(self)
-        self.moveSnd = base.loadSfx('phase_9/audio/sfx/CHQ_FACT_elevator_up_down.ogg')
+        self.moveSnd = base.loader.loadSfx('phase_9/audio/sfx/CHQ_FACT_elevator_up_down.ogg')
         self.fsm = ClassicFSM.ClassicFSM('DistributedLift', [State.State('off', self.enterOff, self.exitOff, ['moving']), State.State('moving', self.enterMoving, self.exitMoving, ['waiting']), State.State('waiting', self.enterWaiting, self.exitWaiting, ['moving'])], 'off', 'off')
         self.fsm.enterInitialState()
 
@@ -39,7 +39,7 @@ class DistributedLift(BasicEntities.DistributedNodePathEntity):
         self.notify.debug('announceGenerate')
         BasicEntities.DistributedNodePathEntity.announceGenerate(self)
         self.initPlatform()
-        self.state = None
+        self.state_ = None
         self.fsm.request('moving', [self.initialState, self.initialFromState, self.initialStateTimestamp])
         del self.initialState
         del self.initialStateTimestamp
@@ -156,7 +156,7 @@ class DistributedLift(BasicEntities.DistributedNodePathEntity):
 
     def enterMoving(self, toState, fromState, arrivalTimestamp):
         self.notify.debug('enterMoving, %s->%s' % (fromState, toState))
-        if self.state == toState:
+        if self.state_ == toState:
             self.notify.warning('already in state %s' % toState)
         startPos = self.getPosition(fromState)
         endPos = self.getPosition(toState)
@@ -174,7 +174,7 @@ class DistributedLift(BasicEntities.DistributedNodePathEntity):
             return
 
         def doneMoving(self = self, guard = endGuard, boardColl = endBoardColl, newState = toState):
-            self.state = newState
+            self.state_ = newState
             if hasattr(self, 'soundIval'):
                 self.soundIval.pause()
                 del self.soundIval

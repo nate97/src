@@ -155,12 +155,12 @@ class DistributedLawbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FSM
 
     def finalPieSplat(self):
         self.notify.debug('finalPieSplat')
-        if self.state != 'NearVictory':
+        if self.state_ != 'NearVictory':
             return
         self.b_setState('Victory')
 
     def doTaunt(self):
-        if not self.state == 'BattleThree':
+        if not self.state_ == 'BattleThree':
             return
         tauntIndex = random.randrange(len(TTLocalizer.LawbotBossTaunts))
         extraInfo = 0
@@ -802,7 +802,7 @@ class DistributedLawbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FSM
         if chairIndex < 0 or chairIndex >= len(self.chairs):
             self.notify.warning('invalid chairIndex = %d' % chairIndex)
             return
-        if not self.state == 'BattleTwo':
+        if not self.state_ == 'BattleTwo':
             return
         self.chairs[chairIndex].b_setToonJurorIndex(npcToonIndex)
         self.chairs[chairIndex].requestToonJuror()

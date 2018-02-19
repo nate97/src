@@ -71,9 +71,9 @@ want-daisys-garden #t
 want-minnies-melodyland #t
 want-the-burrrgh #t
 want-donalds-dreamland #t
-want-goofy-speedway #t
-want-outdoor-zone #t
-want-golf-zone #t
+want-goofy-speedway #f
+want-outdoor-zone #f
+want-golf-zone #f
 
 # Safe zone settings:
 want-treasure-planners #t
@@ -81,15 +81,15 @@ want-suit-planners #t
 want-butterflies #t
 
 # Classic characters:
-want-classic-chars #t
-want-mickey #t
-want-donald-dock #t
-want-daisy #t
-want-minnie #t
-want-pluto #t
-want-donald-dreamland #t
-want-chip-and-dale #t
-want-goofy #t
+want-classic-chars #f
+want-mickey #f
+want-donald-dock #f
+want-daisy #f
+want-minnie #f
+want-pluto #f
+want-donald-dreamland #f
+want-chip-and-dale #f
+want-goofy #f
 
 # Trolley minigames:
 want-minigames #t
@@ -100,11 +100,11 @@ want-travel-game #f
 want-game-tables #f
 
 # Cog headquarters:
-want-cog-headquarters #t
-want-sellbot-headquarters #t
-want-cashbot-headquarters #t
-want-lawbot-headquarters #t
-want-bossbot-headquarters #t
+want-cog-headquarters #f
+want-sellbot-headquarters #f
+want-cashbot-headquarters #f
+want-lawbot-headquarters #f
+want-bossbot-headquarters #fd
 
 # Cashbot boss:
 want-resistance-toonup #f
@@ -121,7 +121,7 @@ want-cogbuildings #t
 show-total-population #t
 want-mat-all-tailors #t
 want-long-pattern-game #f
-want-code-redemption #t
+want-code-redemption #f
 
 # Developer options:
 want-dev #f
@@ -134,5 +134,7 @@ want-old-fireworks #t
 # Live updates:
 want-live-updates #t
 
-want-halloween #t
-active-holidays 26, 27, 13
+
+# Halloween
+#want-halloween #t
+#active-holidays 26, 27, 13

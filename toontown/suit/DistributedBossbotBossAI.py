@@ -275,7 +275,7 @@ class DistributedBossbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
     def requestGetFood(self, beltIndex, foodIndex, foodNum):
         grantRequest = False
         avId = self.air.getAvatarIdFromSender()
-        if self.state != 'BattleTwo':
+        if self.state_ != 'BattleTwo':
             grantRequest = False
         elif (beltIndex, foodNum) not in self.toonFoodStatus.values():
             if avId not in self.toonFoodStatus:
@@ -293,7 +293,7 @@ class DistributedBossbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
     def requestServeFood(self, tableIndex, chairIndex):
         grantRequest = False
         avId = self.air.getAvatarIdFromSender()
-        if self.state != 'BattleTwo':
+        if self.state_ != 'BattleTwo':
             grantRequest = False
         elif tableIndex < len(self.tables):
             table = self.tables[tableIndex]
@@ -868,7 +868,7 @@ class DistributedBossbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
     def requestGetToonup(self, beltIndex, toonupIndex, toonupNum):
         grantRequest = False
         avId = self.air.getAvatarIdFromSender()
-        if self.state != 'BattleFour':
+        if self.state_ != 'BattleFour':
             grantRequest = False
         elif (beltIndex, toonupNum) not in self.toonupsGranted:
             toon = simbase.air.doId2do.get(avId)
@@ -897,7 +897,7 @@ class DistributedBossbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
                 self.waitForNextAttack(0)
 
     def getBattleFourTime(self):
-        if self.state != 'BattleFour':
+        if self.state_ != 'BattleFour':
             t1 = 0
         else:
             elapsed = globalClock.getFrameTime() - self.battleFourStart

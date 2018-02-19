@@ -53,10 +53,10 @@ class ToontownLoadingScreen():
             self.waitBar.reparentTo(self.gui)
             self.title.reparentTo(self.gui)
             self.logo.reparentTo(self.gui)
-            self.gui.reparentTo(aspect2dp, NO_FADE_SORT_INDEX)
+            self.gui.reparentTo(aspect2dp)
         else:
-            self.waitBar.reparentTo(aspect2dp, NO_FADE_SORT_INDEX)
-            self.title.reparentTo(aspect2dp, NO_FADE_SORT_INDEX)
+            self.waitBar.reparentTo(aspect2dp)
+            self.title.reparentTo(aspect2dp)
             self.logo.reparentTo(hidden)
             self.gui.reparentTo(hidden)
         self.waitBar.update(self.__count)

@@ -426,7 +426,7 @@ class DistributedGolfSpot(DistributedObject.DistributedObject, FSM.FSM):
     def __beginFireBall(self):
         if self.aimStart != None:
             return
-        if not self.state == 'Controlled':
+        if not self.state_ == 'Controlled':
             return
         if not self.avId == localAvatar.doId:
             return
@@ -439,7 +439,7 @@ class DistributedGolfSpot(DistributedObject.DistributedObject, FSM.FSM):
     def __endFireBall(self):
         if self.aimStart == None:
             return
-        if not self.state == 'Controlled':
+        if not self.state_ == 'Controlled':
             return
         if not self.avId == localAvatar.doId:
             return

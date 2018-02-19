@@ -37,7 +37,7 @@ class DirectNewsFrame(DirectObject.DirectObject):
         DirectObject.DirectObject.__init__(self)
         self.accept('newsSnapshot', self.doSnapshot)
         self.active = False
-        self.parent = parent
+        self.parent_ = parent
         self.issues = []
         self.accept('newsChangeWeek', self.changeWeek)
         self.curIssueIndex = 0
@@ -154,7 +154,7 @@ class DirectNewsFrame(DirectObject.DirectObject):
         upsellBackground = loader.loadModel('phase_3.5/models/gui/tt_m_gui_ign_newsStatusBackground')
         imageScaleX = self.FrameDimensions[1] - self.FrameDimensions[0]
         imageScaleY = self.FrameDimensions[3] - self.FrameDimensions[2]
-        self.backFrame = DirectFrame(parent=self.parent, image=upsellBackground, image_scale=(imageScaleX, 1, imageScaleY), frameColor=(1, 1, 1, 0), frameSize=self.FrameDimensions, pos=(0, 0, 0), relief=DGG.FLAT, text=TTLocalizer.NewsPageDownloadingNews1, text_scale=0.06, text_pos=(0, -0.4))
+        self.backFrame = DirectFrame(parent=self.parent_, image=upsellBackground, image_scale=(imageScaleX, 1, imageScaleY), frameColor=(1, 1, 1, 0), frameSize=self.FrameDimensions, pos=(0, 0, 0), relief=DGG.FLAT, text=TTLocalizer.NewsPageDownloadingNews1, text_scale=0.06, text_pos=(0, -0.4))
 
     def addDownloadingTextTask(self):
         self.removeDownloadingTextTask()

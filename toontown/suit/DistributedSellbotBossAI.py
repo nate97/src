@@ -104,7 +104,7 @@ class DistributedSellbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
             self.__goodJump(avId)
 
     def finalPieSplat(self):
-        if self.state != 'NearVictory':
+        if self.state_ != 'NearVictory':
             return
         self.b_setState('Victory')
 

@@ -156,7 +156,8 @@ class TimeManager(DistributedObject.DistributedObject):
         self.sendUpdate('setDisconnectReason', [disconnectCode])
 
     def setExceptionInfo(self):
-        info = PythonUtil.describeException()
+        #info = PythonUtil.describeException()
+        info = ("Error...")
         self.notify.info('Client exception: %s' % info)
         self.sendUpdate('setExceptionInfo', [info])
         self.cr.flush()

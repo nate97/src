@@ -7,7 +7,7 @@ class BlinkingArrows:
         self.arrow1 = loader.loadModel('phase_3/models/props/arrow')
         self.arrow2 = loader.loadModel('phase_3/models/props/arrow')
         self.arrowTrack = None
-        self.parent = parent
+        self.parent_ = parent
         self.otherNode = otherNode
         return
 
@@ -22,8 +22,8 @@ class BlinkingArrows:
         self.stopArrowsFlashing()
         self.arrow1.setBin('gui-popup', 0)
         self.arrow2.setBin('gui-popup', 0)
-        self.arrow1.reparentTo(self.parent)
-        self.arrow2.reparentTo(self.parent)
+        self.arrow1.reparentTo(self.parent_)
+        self.arrow2.reparentTo(self.parent_)
         self.arrow1.setScale(0.2)
         self.arrow2.setScale(0.2)
         self.arrow1.setPos(x1, 0, y1)

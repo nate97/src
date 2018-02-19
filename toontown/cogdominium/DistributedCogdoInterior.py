@@ -38,8 +38,8 @@ class DistributedCogdoInterior(DistributedObject.DistributedObject):
         DistributedObject.DistributedObject.__init__(self, cr)
         self.toons = []
         self.activeIntervals = {}
-        self.openSfx = base.loadSfx('phase_5/audio/sfx/elevator_door_open.ogg')
-        self.closeSfx = base.loadSfx('phase_5/audio/sfx/elevator_door_close.ogg')
+        self.openSfx = base.loader.loadSfx('phase_5/audio/sfx/elevator_door_open.ogg')
+        self.closeSfx = base.loader.loadSfx('phase_5/audio/sfx/elevator_door_close.ogg')
         self.suits = []
         self.reserveSuits = []
         self.joiningReserves = []
@@ -80,8 +80,8 @@ class DistributedCogdoInterior(DistributedObject.DistributedObject):
         self.penthouseOutroTrack = None
         self.penthouseOutroChatDoneTrack = None
         self.penthouseIntroTrack = None
-        self.waitMusic = base.loadMusic('phase_7/audio/bgm/encntr_toon_winning_indoor.ogg')
-        self.elevatorMusic = base.loadMusic('phase_7/audio/bgm/tt_elevator.ogg')
+        self.waitMusic = base.loader.loadMusic('phase_7/audio/bgm/encntr_toon_winning_indoor.ogg')
+        self.elevatorMusic = base.loader.loadMusic('phase_7/audio/bgm/tt_elevator.ogg')
         self.fsm = ClassicFSM.ClassicFSM('DistributedCogdoInterior', [State.State('WaitForAllToonsInside', self.enterWaitForAllToonsInside, self.exitWaitForAllToonsInside, ['Elevator']),
          State.State('Elevator', self.enterElevator, self.exitElevator, ['Game']),
          State.State('Game', self.enterGame, self.exitGame, ['Resting', 'Failed', 'BattleIntro']),

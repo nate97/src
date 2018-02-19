@@ -40,6 +40,6 @@ def spooky():
         1.5, Vec4(0.55, 0.55, 0.65, 1), startColorScale=Vec4(1, 1, 1, 1),
         blendType='easeInOut')
     fadeOut.start()
-    spookySfx = base.loadSfx('phase_4/audio/sfx/spooky.ogg')
+    spookySfx = base.loader.loadSfx('phase_4/audio/sfx/spooky.ogg')
     spookySfx.play()
     return 'Activating the spooky effect...'

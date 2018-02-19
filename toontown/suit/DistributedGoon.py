@@ -354,7 +354,7 @@ class DistributedGoon(DistributedCrushableEntity.DistributedCrushableEntity, Goo
     def handleToonDetect(self, collEntry = None):
         if base.localAvatar.isStunned:
             return
-        if self.state == 'Off':
+        if self.state_ == 'Off':
             return
         self.stopToonDetect()
         self.request('Battle', base.localAvatar.doId)
@@ -390,10 +390,10 @@ class DistributedGoon(DistributedCrushableEntity.DistributedCrushableEntity, Goo
          pauseTime,
          ts))
         if mode == GOON_MOVIE_BATTLE:
-            if self.state != 'Battle':
+            if self.state_ != 'Battle':
                 self.request('Battle', avId, ts)
         elif mode == GOON_MOVIE_STUNNED:
-            if self.state != 'Stunned':
+            if self.state_ != 'Stunned':
                 toon = base.cr.doId2do.get(avId)
                 if toon:
                     toonDistance = self.getPos(toon).length()
@@ -403,13 +403,13 @@ class DistributedGoon(DistributedCrushableEntity.DistributedCrushableEntity, Goo
                     else:
                         self.request('Stunned', ts)
         elif mode == GOON_MOVIE_RECOVERY:
-            if self.state != 'Recovery':
+            if self.state_ != 'Recovery':
                 self.request('Recovery', ts, pauseTime)
         elif mode == GOON_MOVIE_SYNC:
             if self.walkTrack:
                 self.walkTrack.pause()
                 self.paused = 1
-            if self.state == 'Off' or self.state == 'Walk':
+            if self.state_ == 'Off' or self.state_ == 'Walk':
                 self.request('Walk', avId, pauseTime + ts)
         else:
             if self.walkTrack:

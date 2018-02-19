@@ -207,7 +207,7 @@ class DistributedLawbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         self.sendUpdate('hitToon', [toonId])
 
     def gotToon(self, toon):
-        stateName = self.state
+        stateName = self.state_
         if stateName == 'Elevator':
             self.placeToonInElevator(toon)
 
@@ -395,9 +395,9 @@ class DistributedLawbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         elevatorModel = loader.loadModel('phase_11/models/lawbotHQ/LB_Elevator')
         elevatorModel.reparentTo(self.elevatorEntrance)
         self.setupElevator(elevatorModel)
-        self.promotionMusic = base.loadMusic('phase_7/audio/bgm/encntr_suit_winning_indoor.ogg')
-        self.betweenBattleMusic = base.loadMusic('phase_9/audio/bgm/encntr_toon_winning.ogg')
-        self.battleTwoMusic = base.loadMusic('phase_11/audio/bgm/LB_juryBG.ogg')
+        self.promotionMusic = base.loader.loadMusic('phase_7/audio/bgm/encntr_suit_winning_indoor.ogg')
+        self.betweenBattleMusic = base.loader.loadMusic('phase_9/audio/bgm/encntr_toon_winning.ogg')
+        self.battleTwoMusic = base.loader.loadMusic('phase_11/audio/bgm/LB_juryBG.ogg')
         floor = self.geom.find('**/MidVaultFloor1')
         if floor.isEmpty():
             floor = self.geom.find('**/CR3_Floor')
@@ -1778,8 +1778,8 @@ class DistributedLawbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         if not hasattr(self, 'state'):
             self.notify.warning('returning from setTaunt, no attr state')
             gotError = True
-        elif not self.state == 'BattleThree':
-            self.notify.warning('returning from setTaunt, not in battle three state, state=%s', self.state)
+        elif not self.state_ == 'BattleThree':
+            self.notify.warning('returning from setTaunt, not in battle three state, state=%s', self.state_)
             gotError = True
         if not hasattr(self, 'nametag'):
             self.notify.warning('returning from setTaunt, no attr nametag')

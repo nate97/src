@@ -20,7 +20,7 @@ class PartyEditor(DirectObject, FSM):
     def __init__(self, partyPlanner, parent):
         FSM.__init__(self, self.__class__.__name__)
         self.partyPlanner = partyPlanner
-        self.parent = parent
+        self.parent_ = parent
         self.partyEditorGrid = PartyEditorGrid(self)
         self.currentElement = None
         self.defaultTransitions = {'Hidden': ['Idle', 'Cleanup'],
@@ -39,7 +39,7 @@ class PartyEditor(DirectObject, FSM):
         self.activityIconsModel = loader.loadModel('phase_4/models/parties/eventSignIcons')
         self.decorationModels = loader.loadModel('phase_4/models/parties/partyDecorations')
         pos = self.partyPlanner.gui.find('**/step_05_activitiesIcon_locator').getPos()
-        self.elementList = DirectScrolledList(parent=self.parent, relief=None, decButton_image=(self.partyPlanner.gui.find('**/activitiesButtonUp_up'),
+        self.elementList = DirectScrolledList(parent=self.parent_, relief=None, decButton_image=(self.partyPlanner.gui.find('**/activitiesButtonUp_up'),
          self.partyPlanner.gui.find('**/activitiesButtonUp_down'),
          self.partyPlanner.gui.find('**/activitiesButtonUp_rollover'),
          self.partyPlanner.gui.find('**/activitiesButtonUp_inactive')), decButton_relief=None, decButton_pos=(-0.05, 0.0, -0.38), incButton_image=(self.partyPlanner.gui.find('**/activitiesButtonDown_up'),
@@ -81,7 +81,7 @@ class PartyEditor(DirectObject, FSM):
 
     def initTrashCan(self):
         trashcanGui = loader.loadModel('phase_3/models/gui/trashcan_gui')
-        self.trashCanButton = DirectButton(parent=self.parent, relief=None, pos=Point3(*PartyGlobals.TrashCanPosition), scale=PartyGlobals.TrashCanScale, geom=(trashcanGui.find('**/TrashCan_CLSD'),
+        self.trashCanButton = DirectButton(parent=self.parent_, relief=None, pos=Point3(*PartyGlobals.TrashCanPosition), scale=PartyGlobals.TrashCanScale, geom=(trashcanGui.find('**/TrashCan_CLSD'),
          trashcanGui.find('**/TrashCan_OPEN'),
          trashcanGui.find('**/TrashCan_RLVR'),
          trashcanGui.find('**/TrashCan_RLVR')), command=self.trashCanClicked)

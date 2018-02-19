@@ -87,10 +87,10 @@ class DistributedClubElevatorAI(DistributedElevatorFSMAI.DistributedElevatorFSMA
         DistributedElevatorFSMAI.DistributedElevatorFSMAI.acceptBoarder(self, avId, seatIndex)
         self.acceptOnce(self.air.getAvatarExitEvent(avId), self._DistributedClubElevatorAI__handleUnexpectedExit, extraArgs = [
             avId])
-        if self.state == 'WaitEmpty' and self.countFullSeats() < self.countAvsInZone():
+        if self.state_ == 'WaitEmpty' and self.countFullSeats() < self.countAvsInZone():
             self.request('WaitCountdown')
             self.bldg.elevatorAlert(avId)
-        elif self.state in ('WaitCountdown', 'WaitEmpty') and self.countFullSeats() >= self.countAvsInZone():
+        elif self.state_ in ('WaitCountdown', 'WaitEmpty') and self.countFullSeats() >= self.countAvsInZone():
             taskMgr.doMethodLater(ElevatorConstants.TOON_BOARD_ELEVATOR_TIME, self.goAllAboard, self.quickBoardTask)
 
     def countAvsInZone(self):
@@ -148,7 +148,7 @@ class DistributedClubElevatorAI(DistributedElevatorFSMAI.DistributedElevatorFSMA
         return Task.done
 
     def enterWaitEmpty(self):
-        self.lastState = self.state
+        self.lastState = self.state_
         for i in xrange(len(self.seats)):
             self.seats[i] = None
         print self.seats
@@ -159,7 +159,7 @@ class DistributedClubElevatorAI(DistributedElevatorFSMAI.DistributedElevatorFSMA
             self.accepting = 1
 
     def enterWaitCountdown(self):
-        self.lastState = self.state
+        self.lastState = self.state_
         DistributedElevatorFSMAI.DistributedElevatorFSMAI.enterWaitCountdown(self)
         taskMgr.doMethodLater(self.countdownTime, self.timeToGoTask, self.uniqueName('countdown-timer'))
         if self.lastState == 'WaitCountdown':
@@ -228,7 +228,7 @@ class DistributedClubElevatorAI(DistributedElevatorFSMAI.DistributedElevatorFSMA
     def setLocked(self, locked):
         self.isLocked = locked
         if locked:
-            if self.state == 'WaitEmpty':
+            if self.state_ == 'WaitEmpty':
                 self.request('Closing')
 
             if self.countFullSeats() == 0:
@@ -237,7 +237,7 @@ class DistributedClubElevatorAI(DistributedElevatorFSMAI.DistributedElevatorFSMA
                 self.wantState = 'opening'
         else:
             self.wantState = 'waitEmpty'
-            if self.state == 'Closed':
+            if self.state_ == 'Closed':
                 self.request('Opening')
 
     def getLocked(self):
@@ -271,7 +271,7 @@ class DistributedClubElevatorAI(DistributedElevatorFSMAI.DistributedElevatorFSMA
         self.demand('Opening')
 
     def enterOff(self):
-        self.lastState = self.state
+        self.lastState = self.state_
         if self.wantState == 'closed':
             self.demand('Closing')
         elif self.wantState == 'waitEmpty':

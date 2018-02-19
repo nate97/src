@@ -154,7 +154,9 @@ class DistributedAvatar(DistributedActor, Avatar):
 
     def setName(self, name):
         try:
-            self.node().setName('%s-%d' % (name, self.doId))
+            self.node().setName(name)
+            # Appends name and ID, but why??? NF
+            #self.node().setName('%s-%d' % (name, self.doId))
             self.gotName = 1
         except:
             pass

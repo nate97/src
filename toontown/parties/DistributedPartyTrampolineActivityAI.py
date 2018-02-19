@@ -25,7 +25,7 @@ class DistributedPartyTrampolineActivityAI(DistributedPartyActivityAI, FSM):
         if avId != self.currentAv:
             self.air.writeServerEvent('suspicious',avId,'Tried to give beans while not using the trampoline!')
             return
-        if self.state != 'Active':
+        if self.state_ != 'Active':
             self.air.writeServerEvent('suspicious',avId,'Toon tried to award beans while the game wasn\'t running!')
             return
         if numBeans != self.collected:
@@ -74,7 +74,7 @@ class DistributedPartyTrampolineActivityAI(DistributedPartyActivityAI, FSM):
         
     def requestAnim(self, anim):
         avId = self.air.getAvatarIdFromSender()
-        if self.state != 'Active':
+        if self.state_ != 'Active':
             self.air.writeServerEvent('suspicious',avId,'Toon tried to request an animation while not playing!')
             return
         if self.currentAv != avId:
@@ -84,7 +84,7 @@ class DistributedPartyTrampolineActivityAI(DistributedPartyActivityAI, FSM):
 
     def removeBeans(self, beans):
         avId = self.air.getAvatarIdFromSender()
-        if self.state != 'Active':
+        if self.state_ != 'Active':
             self.air.writeServerEvent('suspicious',avId,'Toon tried to collect jellybeans while not playing!')
             return
         if self.currentAv != avId:
@@ -106,7 +106,7 @@ class DistributedPartyTrampolineActivityAI(DistributedPartyActivityAI, FSM):
 
     def toonJoinRequest(self):
         avId = self.air.getAvatarIdFromSender()
-        if self.state == 'Active':
+        if self.state_ == 'Active':
             self.sendUpdateToAvatarId(avId, 'joinRequestDenied', [1])
             return
         self.currentAv = avId
@@ -115,7 +115,7 @@ class DistributedPartyTrampolineActivityAI(DistributedPartyActivityAI, FSM):
 
     def toonExitRequest(self):
         avId = self.air.getAvatarIdFromSender()
-        if self.state != 'Active':
+        if self.state_ != 'Active':
             self.air.writeServerEvent('suspicious',avId,'Toon tried to leave a trampoline that was not running!')
             return
         if self.currentAv != avId:  
@@ -133,7 +133,7 @@ class DistributedPartyTrampolineActivityAI(DistributedPartyActivityAI, FSM):
         
     def toonReady(self):
         avId = self.air.getAvatarIdFromSender()
-        if self.state != 'Rules':
+        if self.state_ != 'Rules':
             self.air.writeServerEvent('suspicious',avId,'Toon tried to verify rules while the rules were not running!')
             return
         if avId != self.currentAv:

@@ -162,7 +162,7 @@ class DistributedRacePad(DistributedKartPad, FSM):
 
     def addStartingBlock(self, block):
         DistributedKartPad.addStartingBlock(self, block)
-        if self.state == 'WaitCountdown':
+        if self.state_ == 'WaitCountdown':
             self.startCountdown()
 
     def makeClockGui(self):

@@ -558,7 +558,7 @@ class OTPClientRepository(ClientRepositoryBase):
         whisper = WhisperPopup(message, OTPGlobals.getInterfaceFont(), WTSystem)
         whisper.manage(base.marginManager)
         if not self.systemMessageSfx:
-            self.systemMessageSfx = base.loadSfx('phase_3/audio/sfx/clock03.ogg')
+            self.systemMessageSfx = base.loader.loadSfx('phase_3/audio/sfx/clock03.ogg')
         if self.systemMessageSfx:
             base.playSfx(self.systemMessageSfx)
 
@@ -1730,7 +1730,7 @@ class OTPClientRepository(ClientRepositoryBase):
         OTPClientRepository.notify.debug('waiting for database timeout %s at %s' % (requestName, globalClock.getFrameTime()))
         self.cleanupWaitingForDatabase()
         globalClock.tick()
-        taskMgr.doMethodLater((OTPGlobals.DatabaseDialogTimeout + extraTimeout) * choice(__dev__, 10, 1), self.__showWaitingForDatabase, 'waitingForDatabase', extraArgs=[requestName])
+        taskMgr.doMethodLater((OTPGlobals.DatabaseDialogTimeout + extraTimeout), self.__showWaitingForDatabase, 'waitingForDatabase', extraArgs=[requestName])
 
     def cleanupWaitingForDatabase(self):
         if self.waitingForDatabase:
