@@ -3,7 +3,7 @@ from direct.distributed.ClockDelta import globalClockDelta
 from direct.fsm import FSM
 from direct.interval.IntervalGlobal import LerpPosInterval
 import math
-from pandac.PandaModules import Point3
+from panda3d.core import Point3
 import random
 
 from otp.ai.MagicWordGlobal import *

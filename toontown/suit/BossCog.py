@@ -5,7 +5,7 @@ from direct.fsm import State
 from direct.interval.IntervalGlobal import *
 from direct.showbase.PythonUtil import Functor
 from direct.task.Task import Task
-from pandac.PandaModules import *
+from panda3d.core import *
 import string
 import types
 

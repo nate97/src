@@ -1,6 +1,6 @@
 # SuitGlobals are used to set the appearance of Cogs.
 from toontown.suit import SuitDNA
-from pandac.PandaModules import VBase4
+from panda3d.core import VBase4
 
 SCALE_INDEX = 0 # The scale of the cog
 HAND_COLOR_INDEX = 1 # The hand color

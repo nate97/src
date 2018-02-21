@@ -1,5 +1,5 @@
 from direct.task.Task import Task
-from pandac.PandaModules import VBase4, PandaNode
+from panda3d.core import VBase4, PandaNode
 
 from toontown.margins.MarginVisible import MarginVisible
 from toontown.nametag import NametagGlobals

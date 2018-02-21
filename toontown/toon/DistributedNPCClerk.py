@@ -1,6 +1,6 @@
 from direct.interval.IntervalGlobal import Sequence
 from direct.task.Task import Task
-from pandac.PandaModules import *
+from panda3d.core import *
 
 from DistributedNPCToonBase import *
 import NPCToons

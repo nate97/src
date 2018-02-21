@@ -3,7 +3,7 @@ from direct.fsm import ClassicFSM
 from direct.fsm import State
 from direct.gui.DirectGui import *
 from direct.showbase import DirectObject
-from pandac.PandaModules import *
+from panda3d.core import *
 
 from otp.login import LeaveToPayDialog
 from otp.login import PrivacyPolicyPanel

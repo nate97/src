@@ -1,4 +1,4 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from DNAError import DNAError
 from DNASuitPoint import DNASuitPoint
 from DNASuitPath import DNASuitPath

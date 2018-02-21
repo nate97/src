@@ -2,7 +2,7 @@ from direct.actor.Actor import Actor
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import ClockDelta
 #from direct.showbase.PythonUtil import recordCreationStack
-from pandac.PandaModules import *
+from panda3d.core import *
 import random
 
 from otp.ai import MagicWordManager

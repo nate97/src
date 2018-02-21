@@ -6,7 +6,7 @@ from direct.distributed.ClockDelta import *
 from direct.fsm import ClassicFSM, State
 from direct.interval.IntervalGlobal import *
 from direct.task.Task import Task
-from pandac.PandaModules import *
+from panda3d.core import *
 from toontown.distributed import DelayDelete
 from toontown.distributed.DelayDeletable import DelayDeletable
 from toontown.hood import ZoneUtil

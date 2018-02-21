@@ -1,4 +1,4 @@
-from pandac.PandaModules import NodePath
+from panda3d.core import NodePath
 from direct.gui.DirectButton import DirectButton
 from toontown.catalog import CatalogGlobals
 

@@ -2,7 +2,7 @@ from direct.directnotify.DirectNotifyGlobal import directNotify
 from direct.gui.DirectGui import *
 from direct.showbase import PythonUtil
 from direct.task import Task
-from pandac.PandaModules import *
+from panda3d.core import *
 
 import DisplaySettingsDialog
 import ShtikerPage

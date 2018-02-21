@@ -2,7 +2,7 @@ from direct.distributed.ClockDelta import *
 from direct.distributed.DistributedObject import DistributedObject
 from direct.fsm import ClassicFSM, State
 from direct.interval.IntervalGlobal import *
-from pandac.PandaModules import *
+from panda3d.core import *
 import random
 
 import ToonInteriorColors

@@ -5,7 +5,7 @@ from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from direct.fsm.StatePush import StateVar, FunctionCall
 from direct.interval.IntervalGlobal import *
-from pandac.PandaModules import NodePath
+from panda3d.core import NodePath
 import random
 
 from CogdoElevatorMovie import CogdoElevatorMovie

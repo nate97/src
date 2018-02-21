@@ -1,6 +1,6 @@
 import argparse
 
-from pandac.PandaModules import *
+from panda3d.core import *
 
 
 parser = argparse.ArgumentParser()

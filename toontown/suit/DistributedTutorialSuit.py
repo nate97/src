@@ -2,7 +2,7 @@ import DistributedSuitBase
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
-from pandac.PandaModules import *
+from panda3d.core import *
 from toontown.distributed.DelayDeletable import DelayDeletable
 
 

@@ -3,7 +3,7 @@ import math
 from direct.distributed import DistributedObject
 from direct.fsm import ClassicFSM, State
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
+from panda3d.core import *
 from toontown.distributed.DelayDelete import *
 from toontown.safezone import PicnicGameGlobals
 from toontown.safezone.PicnicGameSelectMenu import PicnicGameSelectMenu

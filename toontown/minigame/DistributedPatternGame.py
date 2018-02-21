@@ -2,8 +2,8 @@ from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from direct.gui.DirectGui import *
 from direct.interval.IntervalGlobal import *
-from pandac.PandaModules import *
-from pandac.PandaModules import *
+from panda3d.core import *
+from panda3d.core import *
 import random
 import string
 

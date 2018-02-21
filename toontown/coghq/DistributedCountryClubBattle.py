@@ -6,7 +6,7 @@ from direct.fsm import State
 from direct.interval.IntervalGlobal import *
 from otp.avatar import Emote
 from toontown.nametag import NametagGlobals
-from pandac.PandaModules import *
+from panda3d.core import *
 from toontown.battle import SuitBattleGlobals
 from toontown.battle.BattleBase import *
 from toontown.coghq import DistributedLevelBattle

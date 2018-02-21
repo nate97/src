@@ -5,7 +5,7 @@ from direct.interval.IntervalGlobal import Sequence, Wait, Func, LerpHprInterval
 from direct.showbase import PythonUtil
 from direct.task import Task
 import math
-from pandac.PandaModules import VBase3, CollisionPlane, CollisionNode, CollisionSphere, CollisionTube, NodePath, Plane, Vec3, Vec2, Point3, BitMask32, CollisionHandlerEvent, TextureStage, VBase4, BoundingSphere
+from panda3d.core import VBase3, CollisionPlane, CollisionNode, CollisionSphere, CollisionTube, NodePath, Plane, Vec3, Vec2, Point3, BitMask32, CollisionHandlerEvent, TextureStage, VBase4, BoundingSphere
 import random
 
 from toontown.battle import MovieToonVictory

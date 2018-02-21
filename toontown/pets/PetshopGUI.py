@@ -1,7 +1,7 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.gui.DirectGui import *
 from direct.showbase.DirectObject import DirectObject
-from pandac.PandaModules import *
+from panda3d.core import *
 import random
 import string
 

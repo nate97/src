@@ -3,7 +3,7 @@ from direct.distributed.ClockDelta import *
 from direct.fsm import ClassicFSM
 from direct.fsm import State
 from direct.interval.IntervalGlobal import *
-from pandac.PandaModules import *
+from panda3d.core import *
 
 import DistributedElevator
 from ElevatorConstants import *

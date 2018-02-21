@@ -1,4 +1,4 @@
-from pandac.PandaModules import Vec4
+from panda3d.core import Vec4
 
 from toontown.safezone.OZSafeZoneLoader import OZSafeZoneLoader
 from toontown.toonbase import ToontownGlobals

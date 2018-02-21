@@ -7,7 +7,7 @@ from direct.showbase import PythonUtil
 from direct.showbase.DirectObject import *
 from direct.task import Task
 import os
-from pandac.PandaModules import *
+from panda3d.core import *
 import re
 import sys
 import time

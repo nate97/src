@@ -1,4 +1,4 @@
-from pandac.PandaModules import NodePath, Vec4
+from panda3d.core import NodePath, Vec4
 from direct.showbase.DirectObject import DirectObject
 from direct.gui.DirectButton import DirectButton
 from toontown.catalog.CatalogTabButton import CatalogTabButton

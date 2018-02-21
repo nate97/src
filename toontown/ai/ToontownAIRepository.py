@@ -1,5 +1,5 @@
 from direct.distributed.PyDatagram import *
-from pandac.PandaModules import *
+from panda3d.core import *
 
 from otp.ai.AIZoneData import AIZoneDataStore
 from otp.ai.MagicWordManagerAI import MagicWordManagerAI

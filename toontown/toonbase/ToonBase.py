@@ -8,7 +8,7 @@ from direct.showbase.Transitions import Transitions
 from direct.task import *
 import math
 import os
-from pandac.PandaModules import *
+from panda3d.core import *
 import random
 import shutil
 from sys import platform

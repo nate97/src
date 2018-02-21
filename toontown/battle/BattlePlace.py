@@ -1,4 +1,4 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from toontown.hood import Place, ZoneUtil
 from toontown.toon import Toon
 from toontown.toonbase import ToontownGlobals

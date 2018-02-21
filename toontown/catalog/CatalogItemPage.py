@@ -1,4 +1,4 @@
-from pandac.PandaModules import NodePath, TextNode
+from panda3d.core import NodePath, TextNode
 from toontown.catalog import CatalogGlobals
 from toontown.catalog.CatalogItemPanel import CatalogItemPanel
 from toontown.toonbase import ToontownGlobals

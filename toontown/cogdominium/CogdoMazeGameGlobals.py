@@ -1,5 +1,5 @@
 from direct.showbase import PythonUtil
-from pandac.PandaModules import VBase4
+from panda3d.core import VBase4
 GameActions = PythonUtil.Enum(('EnterDoor',
  'RevealDoor',
  'OpenDoor',

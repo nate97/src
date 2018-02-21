@@ -1,5 +1,5 @@
 from direct.interval.IntervalGlobal import *
-from pandac.PandaModules import *
+from panda3d.core import *
 
 from DistributedNPCToonBase import *
 from toontown.chat.ChatGlobals import *

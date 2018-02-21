@@ -2,7 +2,7 @@
 import argparse
 import hashlib
 import os
-from pandac.PandaModules import *
+from panda3d.core import *
 import shutil
 
 

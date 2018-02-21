@@ -3,7 +3,7 @@ from direct.distributed import DistributedNode
 from direct.interval.IntervalGlobal import *
 from direct.showbase import PythonUtil
 from direct.task import Task
-from pandac.PandaModules import *
+from panda3d.core import *
 
 from Avatar import Avatar
 from otp.ai.MagicWordGlobal import *
@@ -155,7 +155,8 @@ class DistributedAvatar(DistributedActor, Avatar):
     def setName(self, name):
         try:
             self.node().setName(name)
-            # Appends name and ID, but why??? NF
+            # NF
+            # Appends name and ID, but why???
             #self.node().setName('%s-%d' % (name, self.doId))
             self.gotName = 1
         except:

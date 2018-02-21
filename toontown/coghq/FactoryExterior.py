@@ -3,7 +3,7 @@ from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
 from toontown.nametag import NametagGlobals
-from pandac.PandaModules import *
+from panda3d.core import *
 from toontown.battle import BattlePlace
 from toontown.building import Elevator
 from toontown.dna.DNAParser import loadDNAFileAI, DNAStorage

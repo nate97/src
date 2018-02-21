@@ -1,4 +1,4 @@
-from pandac.PandaModules import CompassEffect, NodePath
+from panda3d.core import CompassEffect, NodePath
 from direct.task.Task import Task
 
 

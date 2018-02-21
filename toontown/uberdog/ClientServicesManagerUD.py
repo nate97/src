@@ -7,7 +7,7 @@ from direct.fsm.FSM import FSM
 import hashlib
 import hmac
 import json
-from pandac.PandaModules import *
+from panda3d.core import *
 import time
 import urllib2
 

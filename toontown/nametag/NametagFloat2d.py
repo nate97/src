@@ -1,4 +1,4 @@
-from pandac.PandaModules import Point3
+from panda3d.core import Point3
 
 from toontown.nametag.NametagFloat3d import NametagFloat3d
 

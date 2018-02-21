@@ -4,7 +4,7 @@ from direct.distributed.ClockDelta import *
 from direct.distributed.MsgTypes import *
 from direct.distributed.PyDatagram import PyDatagram
 from direct.task import Task
-from pandac.PandaModules import *
+from panda3d.core import *
 import random
 import time
 import re

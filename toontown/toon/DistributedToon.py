@@ -10,7 +10,7 @@ from direct.interval.IntervalGlobal import Sequence, Wait, Func, Parallel, Sound
 from direct.showbase import PythonUtil
 from direct.task.Task import Task
 import operator
-from pandac.PandaModules import *
+from panda3d.core import *
 import random
 import time
 

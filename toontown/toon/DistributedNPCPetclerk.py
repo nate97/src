@@ -1,7 +1,7 @@
 from direct.gui.DirectGui import *
 from direct.task.Task import Task
-from pandac.PandaModules import *
-from pandac.PandaModules import *
+from panda3d.core import *
+from panda3d.core import *
 
 from DistributedNPCToonBase import *
 import NPCToons

@@ -4,7 +4,7 @@ from direct.fsm import State
 from direct.fsm import StateData
 from direct.showbase import DirectObject
 from direct.task import Task
-from pandac.PandaModules import *
+from panda3d.core import *
 
 from otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
 from toontown.hood import Place

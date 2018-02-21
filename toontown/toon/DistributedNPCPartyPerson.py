@@ -1,7 +1,7 @@
 from direct.distributed import ClockDelta
 from direct.distributed.DistributedObject import DistributedObject
 from direct.task.Task import Task
-from pandac.PandaModules import *
+from panda3d.core import *
 
 from DistributedNPCToonBase import DistributedNPCToonBase
 from otp.otpbase import OTPLocalizer

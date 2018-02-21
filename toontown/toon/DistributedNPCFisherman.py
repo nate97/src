@@ -1,7 +1,7 @@
 from direct.gui.DirectGui import *
 from direct.interval.LerpInterval import LerpPosHprInterval
 from direct.task.Task import Task
-from pandac.PandaModules import *
+from panda3d.core import *
 import time
 
 from DistributedNPCToonBase import *
