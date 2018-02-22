@@ -88,8 +88,6 @@ from toontown.building import DistributedHQInterior/AI
 from toontown.building import DistributedGagshopInterior/AI
 from toontown.building import DistributedPetshopInterior/AI
 from toontown.building import DistributedKartShopInterior/AI
-from toontown.building import DistributedBankInterior/AI
-from toontown.building import DistributedBankCollectable/AI
 from toontown.building import DistributedDoor/AI
 from toontown.building import DistributedAnimDoor/AI
 from toontown.estate import DistributedHouseDoor/AI
@@ -129,7 +127,6 @@ from toontown.estate import DistributedMailbox/AI
 from toontown.estate import DistributedFurnitureManager/AI
 from toontown.estate import DistributedFurnitureItem/AI
 from toontown.estate import DistributedBank/AI
-from toontown.toon import DistributedNPCBanker/AI
 from toontown.estate import DistributedCloset/AI
 from toontown.estate import DistributedTrunk/AI
 from toontown.estate import DistributedPhone/AI
@@ -1766,11 +1763,6 @@ dclass DistributedKartShopInterior : DistributedObject {
   setZoneIdAndBlock(uint32, uint16) required broadcast ram;
 };
 
-dclass DistributedBankInterior : DistributedObject {
-  setZoneIdAndBlock(uint32, uint16) required broadcast ram;
-  setState(string, int16) broadcast ram;
-};
-
 dclass DistributedDoor : DistributedObject {
   setZoneIdAndBlock(uint32, uint32) required broadcast ram;
   setSwing(int8) required broadcast ram;
@@ -1818,12 +1810,6 @@ dclass DistributedNPCToon : DistributedNPCToonBase {
   setMovieDone() airecv clsend;
   chooseQuest(uint16) airecv clsend;
   chooseTrack(int8) airecv clsend;
-};
-
-dclass DistributedNPCBanker : DistributedNPCToonBase {
-  setMovie(uint8, uint32, int16) broadcast ram;
-  setMovieDone() airecv clsend;
-  transferMoney(int16) airecv clsend;
 };
 
 dclass DistributedNPCSpecialQuestGiver : DistributedNPCToonBase {
@@ -2111,11 +2097,6 @@ dclass DistributedBank : DistributedFurnitureItem {
   freeAvatar();
   setMovie(uint8, uint32, int16) broadcast ram;
   transferMoney(int16) airecv clsend;
-};
-
-dclass DistributedBankCollectable : DistributedObject {
-  requestGrab() airecv clsend;
-  grab(uint32) broadcast ram;
 };
 
 dclass DistributedCloset : DistributedFurnitureItem {

@@ -6,7 +6,6 @@ from toontown.building import GagshopBuildingAI
 from toontown.building import HQBuildingAI
 from toontown.building import KartShopBuildingAI
 from toontown.building import PetshopBuildingAI
-from toontown.building import BankBuildingAI
 from toontown.hood import ZoneUtil
 # from toontown.building import DistributedAnimBuildingAI
 
@@ -60,8 +59,6 @@ class DistributedBuildingMgrAI:
             if isinstance(building, PetshopBuildingAI.PetshopBuildingAI):
                 continue
             if isinstance(building, KartShopBuildingAI.KartShopBuildingAI):
-                continue
-            if isinstance(building, BankBuildingAI.BankBuildingAI):
                 continue
             if not building.isSuitBlock():
                 blocks.append(blockNumber)
@@ -131,8 +128,6 @@ class DistributedBuildingMgrAI:
             self.newPetshopBuilding(block)
         for block in kartshopBlocks:
             self.newKartShopBuilding(block)
-        for block in bankBlocks:
-            self.newBankBuilding(block)
 
     def newBuilding(self, blockNumber, backup=None):
         building = DistributedBuildingAI.DistributedBuildingAI(
@@ -199,16 +194,6 @@ class DistributedBuildingMgrAI:
         exteriorZoneId = ZoneUtil.getTrueZoneId(exteriorZoneId, self.branchId)
         interiorZoneId = (self.branchId - (self.branchId%100)) + 500 + blockNumber
         building = KartShopBuildingAI.KartShopBuildingAI(
-            self.air, exteriorZoneId, interiorZoneId, blockNumber)
-        self.__buildings[blockNumber] = building
-        return building
-
-    def newBankBuilding(self, blockNumber):
-        dnaStore = self.air.dnaStoreMap[self.canonicalBranchId]
-        exteriorZoneId = dnaStore.getZoneFromBlockNumber(blockNumber)
-        exteriorZoneId = ZoneUtil.getTrueZoneId(exteriorZoneId, self.branchId)
-        interiorZoneId = (self.branchId - (self.branchId%100)) + 500 + blockNumber
-        building = BankBuildingAI.BankBuildingAI(
             self.air, exteriorZoneId, interiorZoneId, blockNumber)
         self.__buildings[blockNumber] = building
         return building

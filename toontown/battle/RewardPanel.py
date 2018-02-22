@@ -188,7 +188,7 @@ class RewardPanel(DirectFrame):
         self.cogPartFrame.hide()
         self.missedItemFrame.hide()
         trackBarOffset = 0
-        self.skipButton['state'] = choice(noSkip, DGG.DISABLED, DGG.NORMAL)
+        self.skipButton['state'] = (noSkip, DGG.DISABLED, DGG.NORMAL)
         for i in xrange(len(SuitDNA.suitDepts)):
             meritBar = self.meritBars[i]
             meritLabel = self.meritLabels[i]
