@@ -11,6 +11,7 @@ from panda3d.core import *
 import re
 import sys
 import time
+import traceback
 
 from otp.otpbase import OTPGlobals
 from toontown.chat.ChatGlobals import *
@@ -156,8 +157,7 @@ class TimeManager(DistributedObject.DistributedObject):
         self.sendUpdate('setDisconnectReason', [disconnectCode])
 
     def setExceptionInfo(self):
-        #info = PythonUtil.describeException()
-        info = ("Error...")
+        info = traceback.format_exc()
         self.notify.info('Client exception: %s' % info)
         self.sendUpdate('setExceptionInfo', [info])
         self.cr.flush()

@@ -1,6 +1,6 @@
 from direct.directnotify.DirectNotifyGlobal import directNotify
 from direct.showbase import PythonUtil
-
+import traceback
 
 class ToontownRPCDispatcher:
     notify = directNotify.newCategory('ToontownRPCDispatcher')
@@ -48,5 +48,4 @@ class ToontownRPCDispatcher:
             else:
                 request.result(method(*params))
         except:
-            print ("Error...?")
-            #request.error(-32603, PythonUtil.describeException())
+            request.error(-32603, traceback.format_exc())

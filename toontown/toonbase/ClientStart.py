@@ -183,5 +183,6 @@ if autoRun:
         base.run()
     except SystemExit:
         raise
-    except:
-        raise
+    except Exception:
+        import traceback
+        traceback.print_exc()

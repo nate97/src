@@ -54,4 +54,7 @@ try:
 except SystemExit:
     raise
 except Exception:
+    import traceback
+    info = traceback.format_exc()
+    simbase.air.writeServerEvent('ai-exception', simbase.air.getAvatarIdFromSender(), simbase.air.getAccountIdFromSender(), info)
     raise
