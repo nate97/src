@@ -28,6 +28,6 @@ class DNAAnimBuilding(DNALandmarkBuilding.DNALandmarkBuilding):
         node.setPosHprScale(self.getPos(), self.getHpr(), self.getScale())
         node.setTag('DNAAnim', self.animName)
         self.setupSuitBuildingOrigin(nodePath, node)
-        for child in self.children:
+        for child in self.children_:
             child.traverse(nodePath, dnaStorage)
         nodePath.flattenStrong()

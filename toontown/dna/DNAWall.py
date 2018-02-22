@@ -46,7 +46,7 @@ class DNAWall(DNANode.DNANode):
         self.scale.setZ(self.height)
         node.setPosHprScale(self.pos, self.hpr, self.scale)
         node.setColor(self.color)
-        for child in self.children:
+        for child in self.children_:
             child.traverse(node, dnaStorage)
         node.flattenStrong()
         DNAFlatBuilding.DNAFlatBuilding.currentWallHeight += self.height

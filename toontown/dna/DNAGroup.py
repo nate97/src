@@ -6,18 +6,18 @@ class DNAGroup:
 
     def __init__(self, name):
         self.name = name
-        self.children = []
+        self.children_ = []
         self.parent_ = None
         self.visGroup = None
 
     def add(self, child):
-        self.children += [child]
+        self.children_ += [child]
 
     def remove(self, child):
-        self.children.remove(child)
+        self.children_.remove(child)
 
     def at(self, index):
-        return self.children[index]
+        return self.children_[index]
 
     def setParent(self, parent):
         self.parent_ = parent
@@ -34,7 +34,7 @@ class DNAGroup:
         return self.visGroup
 
     def getNumChildren(self):
-        return len(self.children)
+        return len(self.children_)
 
     def getName(self):
         return self.name
@@ -50,5 +50,5 @@ class DNAGroup:
     def traverse(self, nodePath, dnaStorage):
         node = PandaNode(self.name)
         nodePath = nodePath.attachNewNode(node, 0)
-        for child in self.children:
+        for child in self.children_:
             child.traverse(nodePath, dnaStorage)

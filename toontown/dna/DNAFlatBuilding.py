@@ -104,7 +104,7 @@ class DNAFlatBuilding(DNANode.DNANode):
         scale.setX(self.width)
         internalNode.setScale(scale)
         node.setPosHpr(self.getPos(), self.getHpr())
-        for child in self.children:
+        for child in self.children_:
             if isinstance(child, DNAWall.DNAWall):
                 child.traverse(internalNode, dnaStorage)
             else:

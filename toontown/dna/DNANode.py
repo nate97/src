@@ -50,6 +50,6 @@ class DNANode(DNAGroup.DNAGroup):
         node = PandaNode(self.name)
         node = nodePath.attachNewNode(node, 0)
         node.setPosHprScale(self.pos, self.hpr, self.scale)
-        for child in self.children:
+        for child in self.children_:
             child.traverse(node, dnaStorage)
         node.flattenMedium()

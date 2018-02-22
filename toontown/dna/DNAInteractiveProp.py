@@ -33,5 +33,5 @@ class DNAInteractiveProp(DNAAnimProp.DNAAnimProp):
         node.setPosHprScale(self.getPos(), self.getHpr(), self.getScale())
         node.setColorScale(self.getColor(), 0)
         node.flattenStrong()
-        for child in self.children:
+        for child in self.children_:
             child.traverse(node, dnaStorage)

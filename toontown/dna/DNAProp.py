@@ -25,7 +25,7 @@ class DNAProp(DNANode.DNANode):
     def smartFlatten(self, node):
         if 'trolley' in self.name:
             return
-        elif self.children:
+        elif self.children_:
             node.flattenMedium()
         elif 'HQTelescopeAnimatedProp' in self.name:
             node.flattenMedium()
@@ -62,5 +62,5 @@ class DNAProp(DNANode.DNANode):
         node.setName(self.name)
         node.setColorScale(self.color, 0)
         #self.smartFlatten(node)
-        for child in self.children:
+        for child in self.children_:
             child.traverse(node, dnaStorage)

@@ -39,6 +39,6 @@ class DNASign(DNANode.DNANode):
         node.setPosHprScale(signOrigin, self.pos, self.hpr, self.scale)
         node.setPos(node, 0, -0.1, 0)
         node.setColor(self.color)
-        for child in self.children:
+        for child in self.children_:
             child.traverse(node, dnaStorage)
         node.flattenStrong()

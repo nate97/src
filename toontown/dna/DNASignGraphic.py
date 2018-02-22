@@ -58,5 +58,5 @@ class DNASignGraphic(DNANode.DNANode):
         node.setPos(node, 0, -0.1, 0)
         node.setColor(self.color)
         node.flattenStrong()
-        for child in self.children:
+        for child in self.children_:
             child.traverse(node, dnaStorage)

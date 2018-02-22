@@ -22,16 +22,16 @@ class InGameEditorElement(DirectObject.DirectObject):
         return self.elementId
 
     def getChildren(self):
-        return self.children
+        return self.children_
 
     def setChildren(self, children):
-        self.children = list(children)
+        self.children_ = list(children)
 
     def addChild(self, child):
-        self.children.append(child)
+        self.children_.append(child)
 
     def removeChild(self, child):
-        self.children.remove(child)
+        self.children_.remove(child)
 
     def getNumChildren(self):
-        return len(self.children)
+        return len(self.children_)

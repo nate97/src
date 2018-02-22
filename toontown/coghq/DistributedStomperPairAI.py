@@ -21,7 +21,7 @@ class DistributedStomperPairAI(DistributedEntityAI.DistributedEntityAI):
 
     def setChildren(self, doIds):
         for id in doIds:
-            self.children = simbase.air.doId2do[id]
+            self.children_ = simbase.air.doId2do[id]
 
         self.sendUpdate('setChildren', [doIds])
 

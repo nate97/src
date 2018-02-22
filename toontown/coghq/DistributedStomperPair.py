@@ -10,7 +10,7 @@ class DistributedStomperPair(BasicEntities.DistributedNodePathEntity):
 
     def __init__(self, cr):
         BasicEntities.DistributedNodePathEntity.__init__(self, cr)
-        self.children = None
+        self.children_ = None
         return
 
     def delete(self):

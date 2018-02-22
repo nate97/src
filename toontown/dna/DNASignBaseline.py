@@ -26,5 +26,5 @@ class DNASignBaseline(DNANode.DNANode):
             signText = NodePath(bf.readNode())
             signText.reparentTo(node)
         node.flattenStrong()
-        for child in self.children:
+        for child in self.children_:
             child.traverse(nodePath, dnaStorage)

@@ -74,6 +74,6 @@ class DNALandmarkBuilding(DNANode.DNANode):
         nodePath.setName(self.getName())
         nodePath.setPosHprScale(self.getPos(), self.getHpr(), self.getScale())
         self.setupSuitBuildingOrigin(npA, nodePath)
-        for child in self.children:
+        for child in self.children_:
             child.traverse(nodePath, dnaStorage)
         nodePath.flattenStrong()
