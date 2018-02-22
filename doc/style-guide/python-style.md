@@ -35,4 +35,5 @@ Intentionally **unused** variables should be named "**_**". This will make commo
 ## Strings ##
 ### Quotations ###
 Use single quotations _(')_ unless there is one inside the string, in which case use double quotations _(")_.
+
 Remember to also put parentheses parentheses around strings to future proof the code for Python3. ('example_string')
