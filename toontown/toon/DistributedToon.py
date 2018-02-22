@@ -182,7 +182,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self.gmNameTagColor = 'whiteGM'
         self.gmNameTagString = ''
         self.promotionStatus = [0, 0, 0, 0]
-        self.buffs = []
 
     def disable(self):
         for soundSequence in self.soundSequenceList:
@@ -2624,27 +2623,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
 
     def setAnimalSound(self, index):
         self.animalSound = index
-
-    def setBuffs(self, buffs):
-        self.buffs = buffs
-        self.applyBuffs()
-
-    def applyBuffs(self):
-        for id, timestamp in enumerate(self.buffs):
-            if id == ToontownGlobals.BMovementSpeed:
-                if not timestamp:
-                    return
-                if self.zoneId is None:
-                    return
-                if ZoneUtil.isDynamicZone(self.zoneId):
-                    return
-                if ZoneUtil.getWhereName(self.zoneId, True) not in ('playground', 'street', 'toonInterior', 'cogHQExterior', 'factoryExterior'):
-                    return
-                self.controlManager.setSpeeds(
-                    ToontownGlobals.ToonForwardSpeed * ToontownGlobals.BMovementSpeedMultiplier,
-                    ToontownGlobals.ToonJumpForce,
-                    ToontownGlobals.ToonReverseSpeed * ToontownGlobals.BMovementSpeedMultiplier,
-                    ToontownGlobals.ToonRotateSpeed * ToontownGlobals.BMovementSpeedMultiplier)
 
 @magicWord(category=CATEGORY_COMMUNITY_MANAGER)
 def globalTeleport():

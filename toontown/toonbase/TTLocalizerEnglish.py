@@ -9788,22 +9788,3 @@ InteractivePropTrackBonusTerms = {0: 'Super Toon-Up!',
  5: 'Super Squirt!',
  6: ''}
 PlayingCardUnknown = 'Card Name is unknown'
-
-# Buffs
-
-buffIdStrings = {
-  0: ('Your movement speed will be slightly increased for the next %d %s.',
-      'Reward: Increased movement speed'),
-  1: ('Your gag accuracy will be slight increased for the next %d %s.',
-      'Reward: Increased gag accuracy')
-}
-
-def getBuffString(buffId, buffTime):
-    if buffTime < 60:
-        return buffIdStrings[buffId][0] % (buffTime, 'minutes')
-    else:
-        return buffIdStrings[buffId][0] % (buffTime / 60, 'hours')
-
-
-def getBuffPosterString(buffId):
-    return buffIdStrings[buffId][1]

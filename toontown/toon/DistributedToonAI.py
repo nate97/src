@@ -190,7 +190,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.teleportOverride = 0
         self._gmDisabled = False
         self.promotionStatus = [0, 0, 0, 0]
-        self.buffs = []
         self.redeemedCodes = []
 
     def generate(self):
@@ -4220,42 +4219,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
     def getAnimalSound(self):
         return self.animalSound
-
-    def addBuff(self, id, duration):
-        buffCount = len(self.buffs)
-        if buffCount <= id:
-            self.buffs.extend([0] * ((id+1) - buffCount))
-        timestamp = int(time.time()) + (duration*60)
-        self.buffs[id] = timestamp
-        self.b_setBuffs(self.buffs)
-
-    def removeBuff(self, id):
-        if len(self.buffs) <= id:
-            self.notify.warning('tried to remove non-existent buff %d on avatar %d.' % (id, self.doId))
-            return
-        self.buffs[id] = 0
-        self.d_setBuffs(self.buffs)
-
-    def hasBuff(self, id):
-        if len(self.buffs) <= id:
-            return False
-        return self.buffs[id] != 0
-
-    def setBuffs(self, buffs):
-        self.buffs = buffs
-        for id, timestamp in enumerate(self.buffs):
-            if timestamp:
-                taskName = self.uniqueName('removeBuff-%s' % id)
-                taskMgr.remove(taskName)
-                delayTime = max(timestamp - int(time.time()), 0)
-                taskMgr.doMethodLater(delayTime, self.removeBuff, taskName, extraArgs=[id])
-
-    def d_setBuffs(self, buffs):
-        self.sendUpdate('setBuffs', [buffs])
-
-    def b_setBuffs(self, buffs):
-        self.setBuffs(buffs)
-        self.d_setBuffs(buffs)
 
 
 @magicWord(category=CATEGORY_PROGRAMMER, types=[str, int, int])

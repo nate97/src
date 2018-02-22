@@ -4418,23 +4418,6 @@ class CogSuitPartReward(Reward):
          'part': self.getCogPartName()}
 
 
-class BuffReward(Reward):
-    def sendRewardAI(self, av):
-        av.addBuff(self.getBuffId(), self.getBuffTime())
-
-    def getBuffId(self):
-        return self.reward[0]
-
-    def getBuffTime(self):
-        return self.reward[1]
-
-    def getString(self):
-        return TTLocalizer.getBuffString(self.getBuffId(), self.getBuffTime())
-
-    def getPosterString(self):
-        return TTLocalizer.getBuffPosterString(self.getBuffId())
-
-
 def getRewardClass(id):
     reward = RewardDict.get(id)
     if reward:
@@ -4613,8 +4596,8 @@ RewardDict = {
     813: (TrackProgressReward, None, 13),
     814: (TrackProgressReward, None, 14),
     815: (TrackProgressReward, None, 15),
-    110: (TIPClothingTicketReward,),
-    1000: (ClothingTicketReward,),
+    110: (TIPClothingTicketReward, ),
+    1000: (ClothingTicketReward, ),
     1001: (TrackProgressReward, ToontownBattleGlobals.HEAL_TRACK, 1),
     1002: (TrackProgressReward, ToontownBattleGlobals.HEAL_TRACK, 2),
     1003: (TrackProgressReward, ToontownBattleGlobals.HEAL_TRACK, 3),
@@ -4779,17 +4762,50 @@ RewardDict = {
     2969: (CheesyEffectReward, ToontownGlobals.CETransparent, 1, 43200),
     2970: (CheesyEffectReward, ToontownGlobals.CENoColor, 1, 43200),
     2971: (CheesyEffectReward, ToontownGlobals.CEInvisible, 1, 43200),
-    # Buff rewards (BuffID, Time):
-    # Movement Speed Increase
-    3001: (BuffReward, ToontownGlobals.BMovementSpeed, 30),
-    3002: (BuffReward, ToontownGlobals.BMovementSpeed, 60),
-    3003: (BuffReward, ToontownGlobals.BMovementSpeed, 180),
-    3004: (BuffReward, ToontownGlobals.BMovementSpeed, 360),
-    # Gag Accuracy Increase
-    3005: (BuffReward, ToontownGlobals.BGagAccuracy, 30),
-    3006: (BuffReward, ToontownGlobals.BGagAccuracy, 60),
-    3007: (BuffReward, ToontownGlobals.BGagAccuracy, 180),
-    3008: (BuffReward, ToontownGlobals.BGagAccuracy, 360) }
+    4000: (CogSuitPartReward, 'm', CogDisguiseGlobals.leftLegUpper),
+    4001: (CogSuitPartReward, 'm', CogDisguiseGlobals.leftLegLower),
+    4002: (CogSuitPartReward, 'm', CogDisguiseGlobals.leftLegFoot),
+    4003: (CogSuitPartReward, 'm', CogDisguiseGlobals.rightLegUpper),
+    4004: (CogSuitPartReward, 'm', CogDisguiseGlobals.rightLegLower),
+    4005: (CogSuitPartReward, 'm', CogDisguiseGlobals.rightLegFoot),
+    4006: (CogSuitPartReward, 'm', CogDisguiseGlobals.upperTorso),
+    4007: (CogSuitPartReward, 'm', CogDisguiseGlobals.torsoPelvis),
+    4008: (CogSuitPartReward, 'm', CogDisguiseGlobals.leftArmUpper),
+    4009: (CogSuitPartReward, 'm', CogDisguiseGlobals.leftArmLower),
+    4010: (CogSuitPartReward, 'm', CogDisguiseGlobals.rightArmUpper),
+    4011: (CogSuitPartReward, 'm', CogDisguiseGlobals.rightArmLower),
+    4100: (CogSuitPartReward, 'l', CogDisguiseGlobals.leftLegUpper),
+    4101: (CogSuitPartReward, 'l', CogDisguiseGlobals.leftLegLower),
+    4102: (CogSuitPartReward, 'l', CogDisguiseGlobals.leftLegFoot),
+    4103: (CogSuitPartReward, 'l', CogDisguiseGlobals.rightLegUpper),
+    4104: (CogSuitPartReward, 'l', CogDisguiseGlobals.rightLegLower),
+    4105: (CogSuitPartReward, 'l', CogDisguiseGlobals.rightLegFoot),
+    4106: (CogSuitPartReward, 'l', CogDisguiseGlobals.upperTorso),
+    4107: (CogSuitPartReward, 'l', CogDisguiseGlobals.torsoPelvis),
+    4108: (CogSuitPartReward, 'l', CogDisguiseGlobals.leftArmUpper),
+    4109: (CogSuitPartReward, 'l', CogDisguiseGlobals.leftArmLower),
+    4110: (CogSuitPartReward, 'l', CogDisguiseGlobals.leftArmHand),
+    4111: (CogSuitPartReward, 'l', CogDisguiseGlobals.rightArmUpper),
+    4112: (CogSuitPartReward, 'l', CogDisguiseGlobals.rightArmLower),
+    4113: (CogSuitPartReward, 'l', CogDisguiseGlobals.rightArmHand),
+    4200: (CogSuitPartReward, 'c', CogDisguiseGlobals.leftLegUpper),
+    4201: (CogSuitPartReward, 'c', CogDisguiseGlobals.leftLegLower),
+    4202: (CogSuitPartReward, 'c', CogDisguiseGlobals.leftLegFoot),
+    4203: (CogSuitPartReward, 'c', CogDisguiseGlobals.rightLegUpper),
+    4204: (CogSuitPartReward, 'c', CogDisguiseGlobals.rightLegLower),
+    4205: (CogSuitPartReward, 'c', CogDisguiseGlobals.rightLegFoot),
+    4206: (CogSuitPartReward, 'c', CogDisguiseGlobals.torsoLeftShoulder),
+    4207: (CogSuitPartReward, 'c', CogDisguiseGlobals.torsoRightShoulder),
+    4208: (CogSuitPartReward, 'c', CogDisguiseGlobals.torsoChest),
+    4209: (CogSuitPartReward, 'c', CogDisguiseGlobals.torsoHealthMeter),
+    4210: (CogSuitPartReward, 'c', CogDisguiseGlobals.torsoPelvis),
+    4211: (CogSuitPartReward, 'c', CogDisguiseGlobals.leftArmUpper),
+    4212: (CogSuitPartReward, 'c', CogDisguiseGlobals.leftArmLower),
+    4213: (CogSuitPartReward, 'c', CogDisguiseGlobals.leftArmHand),
+    4214: (CogSuitPartReward, 'c', CogDisguiseGlobals.rightArmUpper),
+    4215: (CogSuitPartReward, 'c', CogDisguiseGlobals.rightArmLower),
+    4216: (CogSuitPartReward, 'c', CogDisguiseGlobals.rightArmHand)
+}
 
 
 def getNumTiers():
