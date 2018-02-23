@@ -124,14 +124,19 @@ class ToontownAIRepository(ToontownInternalRepository):
                 OTP_DO_ID_TOONTOWN_DELIVERY_MANAGER, 'DistributedDeliveryManager')
         if self.wantPets:
             self.petMgr = PetManagerAI(self)
+
         if self.wantParties:
             self.partyManager = DistributedPartyManagerAI(self)
             self.partyManager.generateWithRequired(2)
-            self.globalPartyMgr = self.generateGlobalObject(
-                OTP_DO_ID_GLOBAL_PARTY_MANAGER, 'GlobalPartyManager')
+            # Setup view of global ub party manager
+            self.globalPartyMgr = self.generateGlobalObject(OTP_DO_ID_GLOBAL_PARTY_MANAGER, 'GlobalPartyManager')
+
+
         # Need work
         self.codeRedemptionManager = TTCodeRedemptionMgrAI(self)
         self.codeRedemptionManager.generateWithRequired(2)
+
+
 
     def createSafeZones(self):
         NPCToons.generateZone2NpcDict()

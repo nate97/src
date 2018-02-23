@@ -123,6 +123,8 @@ want-mat-all-tailors #t
 want-long-pattern-game #t
 want-code-redemption #t
 
+want-parties #t
+
 # Developer options:
 want-dev #f
 want-pstats 0

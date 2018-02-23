@@ -44,11 +44,14 @@ Anywhere = 1
 NA = 2
 Same = 3
 AnyFish = 4
+
 AnyCashbotSuitPart = 5
 AnyLawbotSuitPart = 6
 AnyBossbotSuitPart = 7
+
 ToonTailor = 999
 ToonHQ = 1000
+
 QuestDictTierIndex = 0
 QuestDictStartIndex = 1
 QuestDictDescIndex = 2
@@ -70,16 +73,20 @@ DG_TIER = 7
 MM_TIER = 8
 BR_TIER = 11
 DL_TIER = 14
+
 LAWBOT_HQ_TIER = 18
 BOSSBOT_HQ_TIER = 32
+
 ELDER_TIER = 49
 LOOPING_FINAL_TIER = ELDER_TIER
+
 VISIT_QUEST_ID = 1000
 TROLLEY_QUEST_ID = 110
 FIRST_COG_QUEST_ID = 145
 FRIEND_QUEST_ID = 150
 PHONE_QUEST_ID = 175
 NEWBIE_HP = 25
+
 SELLBOT_HQ_NEWBIE_HP = 50
 CASHBOT_HQ_NEWBIE_HP = 85
 
@@ -3532,6 +3539,12 @@ Tier2Reward2QuestsDict = {}
 Quest2RemainingStepsDict = {}
 
 def getAllRewardIdsForReward(rewardId):
+    if rewardId is AnyCashbotSuitPart:
+        return range(4000, 4011 + 1)
+    if rewardId is AnyLawbotSuitPart:
+        return range(4100, 4113 + 1)
+    if rewardId is AnyBossbotSuitPart:
+        return range(4200, 4216 + 1)
     return (rewardId,)
 
 
