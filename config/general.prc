@@ -71,9 +71,9 @@ want-daisys-garden #t
 want-minnies-melodyland #t
 want-the-burrrgh #t
 want-donalds-dreamland #t
-want-goofy-speedway #f
-want-outdoor-zone #f
-want-golf-zone #f
+want-goofy-speedway #t
+want-outdoor-zone #t
+want-golf-zone #t
 
 # Safe zone settings:
 want-treasure-planners #t
@@ -81,35 +81,35 @@ want-suit-planners #t
 want-butterflies #t
 
 # Classic characters:
-want-classic-chars #f
-want-mickey #f
-want-donald-dock #f
-want-daisy #f
-want-minnie #f
-want-pluto #f
-want-donald-dreamland #f
-want-chip-and-dale #f
-want-goofy #f
+want-classic-chars #t
+want-mickey #t
+want-donald-dock #t
+want-daisy #t
+want-minnie #t
+want-pluto #t
+want-donald-dreamland #t
+want-chip-and-dale #t
+want-goofy #t
 
 # Trolley minigames:
 want-minigames #t
-want-photo-game #f
+want-photo-game #t
 want-travel-game #f
 
 # Picnic table board games:
 want-game-tables #f
 
 # Cog headquarters:
-want-cog-headquarters #f
-want-sellbot-headquarters #f
-want-cashbot-headquarters #f
-want-lawbot-headquarters #f
-want-bossbot-headquarters #fd
+want-cog-headquarters #t
+want-sellbot-headquarters #t
+want-cashbot-headquarters #t
+want-lawbot-headquarters #t
+want-bossbot-headquarters #t
 
 # Cashbot boss:
-want-resistance-toonup #f
-want-resistance-restock #f
-want-resistance-dance #f
+want-resistance-toonup #t
+want-resistance-restock #t
+want-resistance-dance #t
 
 # Cog battles:
 base-xp-multiplier 1.0
@@ -120,8 +120,8 @@ want-cogbuildings #t
 # Optional:
 show-total-population #t
 want-mat-all-tailors #t
-want-long-pattern-game #f
-want-code-redemption #f
+want-long-pattern-game #t
+want-code-redemption #t
 
 # Developer options:
 want-dev #f

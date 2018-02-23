@@ -384,34 +384,37 @@ class QuestManagerAI:
                 # Check if we are dealing with a RecoverItemQuest
                 if isinstance(questClass, Quests.RecoverItemQuest):
 
-                    # Iterate through all the Cogs that were killed in the battle
-                    for suit in suitsKilled:
+                    # Check if we're in the correct zone for the task
+                    if questClass.isLocationMatch(taskZoneId):
 
-                        # Because the RecoveItemQuest class doesn't have a
-                        # function to see if a Cog counts. We need to manually
-                        # check if the Cog is valid for the Quest
-                        if (questClass.getHolder() == Quests.Any) or \
-                            (questClass.getHolderType() == 'type' and \
-                            questClass.getHolder() == suit['type']) or \
-                            (questClass.getHolderType() == 'track' and \
-                            questClass.getHolder() == suit['track']) or \
-                            (questClass.getHolderType() == 'level' and \
-                            questClass.getHolder() <= suit['level']):
+                        # Iterate through all the Cogs that were killed in the battle
+                        for suit in suitsKilled:
 
-                            # It looks like the Cog was valid. Lets see if they
-                            # found what they were looking for.
-                            baseChance = questClass.getPercentChance()
-                            amountRemaining = questClass.getNumItems() - questDesc[QuestProgressIndex]
-                            chance = Quests.calcRecoverChance(amountRemaining, baseChance)
+                            # Because the RecoveItemQuest class doesn't have a
+                            # function to see if a Cog counts. We need to manually
+                            # check if the Cog is valid for the Quest
+                            if (questClass.getHolder() == Quests.Any) or \
+                                (questClass.getHolderType() == 'type' and \
+                                questClass.getHolder() == suit['type']) or \
+                                (questClass.getHolderType() == 'track' and \
+                                questClass.getHolder() == suit['track']) or \
+                                (questClass.getHolderType() == 'level' and \
+                                questClass.getHolder() <= suit['level']):
 
-                            # They found it! Give them their reward!
-                            if chance >= baseChance:
-                                questDesc[QuestProgressIndex] += 1
-                                recoveredItems.append(questClass.getItem())
+                                # It looks like the Cog was valid. Lets see if they
+                                # found what they were looking for.
+                                baseChance = questClass.getPercentChance()
+                                amountRemaining = questClass.getNumItems() - questDesc[QuestProgressIndex]
+                                chance = Quests.calcRecoverChance(amountRemaining, baseChance)
 
-                            # Better luck next time :(
-                            else:
-                                unrecoveredItems.append(questClass.getItem())
+                                # They found it! Give them their reward!
+                                if chance >= baseChance:
+                                    questDesc[QuestProgressIndex] += 1
+                                    recoveredItems.append(questClass.getItem())
+
+                                # Better luck next time :(
+                                else:
+                                    unrecoveredItems.append(questClass.getItem())
 
             questList.append(questDesc)
 
