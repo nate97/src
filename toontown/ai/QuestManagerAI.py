@@ -494,8 +494,10 @@ class QuestManagerAI:
             # Check if they are doing a cog quest
             if isinstance(questClass, Quests.CogQuest):
 
-                # Check if the cog counts...
+                # Iterate through all the Cogs that were killed in the battle
                 for suit in suitsKilled:
+
+                    # Check if the cog counts...
                     if questClass.doesCogCount(av.doId, suit, zoneId, activeToonDoIds):
 
                         # Looks like the cog counts!

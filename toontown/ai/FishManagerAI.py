@@ -70,7 +70,7 @@ class FishManagerAI:
         elif itemType == FishGlobals.BootItem:
             return [itemType, 0, 0, 0]
         elif itemType == FishGlobals.QuestItem:
-            itemId = simbase.air.questManager.toonCaughtFishingItem(av)
+            itemId = simbase.air.questManager.toonCaughtFishingItem(av, zoneId)
 
             if itemId != -1:
                 return [itemType, itemId, 0, 0]
