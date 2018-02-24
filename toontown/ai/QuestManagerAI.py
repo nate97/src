@@ -308,11 +308,12 @@ class QuestManagerAI:
 
         av.b_setQuests(questList)
 
-    def toonCaughtFishingItem(self, av):
+    def toonCaughtFishingItem(self, av, zoneId):
         # Get the avatars current quests.
         avQuests = av.getQuests()
         fishingItem = -1
         questList = []
+        zoneId = ZoneUtil.getBranchZone(zoneId)
 
         # Iterate through their current quests.
         for i in xrange(0, len(avQuests), 5):
@@ -321,11 +322,15 @@ class QuestManagerAI:
             if fishingItem != -1:
                 questList.append(questDesc)
                 continue
+
             if isinstance(questClass, Quests.RecoverItemQuest):
                 if not hasattr(questClass, 'getItem'):
                     questList.append(questDesc)
                     continue
+
+                # Check if we're in the correct zone for the task
                 if questClass.getHolder() == Quests.AnyFish:
+
                     if not questClass.getCompletionStatus(av, questDesc) == Quests.COMPLETE:
                         baseChance = questClass.getPercentChance()
                         amountRemaining = questClass.getNumItems() - questDesc[QuestProgressIndex]
@@ -333,6 +338,7 @@ class QuestManagerAI:
                         if chance >= baseChance:
                             questDesc[QuestProgressIndex] += 1
                             fishingItem = questClass.getItem()
+
             questList.append(questDesc)
 
         av.b_setQuests(questList)
@@ -365,13 +371,13 @@ class QuestManagerAI:
                     av.removeQuest(questDesc[QuestIdIndex])
                     break
 
-    def recoverItems(self, av, suitsKilled, taskZoneId):
+    def recoverItems(self, av, suitsKilled, zoneId):
         # Get the avatars current quests.
         avQuests = av.getQuests()
         questList = []
         recoveredItems = []
         unrecoveredItems = []
-        taskZoneId = ZoneUtil.getBranchZone(taskZoneId)
+        zoneId = ZoneUtil.getBranchZone(zoneId)
 
         # Iterate through the avatars current quests.
         for i in xrange(0, len(avQuests), 5):
@@ -385,7 +391,7 @@ class QuestManagerAI:
                 if isinstance(questClass, Quests.RecoverItemQuest):
 
                     # Check if we're in the correct zone for the task
-                    if questClass.isLocationMatch(taskZoneId):
+                    if questClass.isLocationMatch(zoneId):
 
                         # Iterate through all the Cogs that were killed in the battle
                         for suit in suitsKilled:
@@ -432,13 +438,21 @@ class QuestManagerAI:
         for i in xrange(0, len(avQuests), 5):
             questDesc = avQuests[i : i + 5]
             questClass = Quests.getQuest(questDesc[QuestIdIndex])
+
             if questClass.getCompletionStatus(av, questDesc) == Quests.INCOMPLETE:
+
                 if isinstance(questClass, Quests.BuildingQuest):
+
+                    # Check if we're in the correct zone for the task
                     if questClass.isLocationMatch(zoneId):
+
                         if questClass.doesBuildingTypeCount(type):
+
                             if questClass.doesBuildingCount(av, activeToons):
+
                                 if floors >= questClass.getNumFloors():
                                     questDesc[QuestProgressIndex] += 1
+
             questList.append(questDesc)
 
         av.b_setQuests(questList)
