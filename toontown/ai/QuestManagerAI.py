@@ -329,15 +329,18 @@ class QuestManagerAI:
                     continue
 
                 # Check if we're in the correct zone for the task
-                if questClass.getHolder() == Quests.AnyFish:
+                if questClass.isLocationMatch(zoneId):
 
-                    if not questClass.getCompletionStatus(av, questDesc) == Quests.COMPLETE:
-                        baseChance = questClass.getPercentChance()
-                        amountRemaining = questClass.getNumItems() - questDesc[QuestProgressIndex]
-                        chance = Quests.calcRecoverChance(amountRemaining, baseChance)
-                        if chance >= baseChance:
-                            questDesc[QuestProgressIndex] += 1
-                            fishingItem = questClass.getItem()
+                    if questClass.getHolder() == Quests.AnyFish:
+
+                        if not questClass.getCompletionStatus(av, questDesc) == Quests.COMPLETE:
+                            baseChance = questClass.getPercentChance()
+                            amountRemaining = questClass.getNumItems() - questDesc[QuestProgressIndex]
+                            chance = Quests.calcRecoverChance(amountRemaining, baseChance)
+
+                            if chance >= baseChance:
+                                questDesc[QuestProgressIndex] += 1
+                                fishingItem = questClass.getItem()
 
             questList.append(questDesc)
 
