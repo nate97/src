@@ -5,7 +5,7 @@ from direct.interval.IntervalGlobal import *
 from direct.showbase import PythonUtil
 from direct.showutil import Rope
 from direct.task import Task
-from pandac.PandaModules import *
+from panda3d.core import *
 
 import DistributedFurnitureItem
 import PhoneGlobals

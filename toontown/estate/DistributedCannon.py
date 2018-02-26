@@ -7,8 +7,8 @@ from direct.gui.DirectGui import *
 from direct.interval.IntervalGlobal import *
 from direct.task.Task import Task
 import math
-from pandac.PandaModules import *
-from pandac.PandaModules import *
+from panda3d.core import *
+from panda3d.core import *
 
 import CannonGlobals
 from toontown.effects import DustCloud

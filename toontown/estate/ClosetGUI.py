@@ -1,6 +1,6 @@
 from direct.showbase.PythonUtil import Functor
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
+from panda3d.core import *
 from toontown.makeatoon import ClothesGUI
 import ClosetGlobals
 from toontown.toonbase import TTLocalizer

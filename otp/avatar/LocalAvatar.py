@@ -596,26 +596,25 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
         print '%d,' % cp[4]
         print ')',
 
-    def posCamera(self, lerp, time):
+   def posCamera(self, lerp, duration):
         if not lerp:
             self.positionCameraWithPusher(self.getCompromiseCameraPos(), self.getLookAtPoint())
         else:
             camPos = self.getCompromiseCameraPos()
-            savePos = camera.getPos()
-            saveHpr = camera.getHpr()
+            savePos = base.camera.getPos()
+            saveHpr = base.camera.getHpr()
             self.positionCameraWithPusher(camPos, self.getLookAtPoint())
             x = camPos[0]
             y = camPos[1]
             z = camPos[2]
-            destHpr = camera.getHpr()
+            destHpr = base.camera.getHpr()
             h = destHpr[0]
             p = destHpr[1]
             r = destHpr[2]
-            camera.setPos(savePos)
-            camera.setHpr(saveHpr)
+            base.camera.setPos(savePos)
+            base.camera.setHpr(saveHpr)
             taskMgr.remove('posCamera')
-            # NF needs fixed...
-            #camera.lerpPosHpr(x, y, z, h, p, r, time, task='posCamera')
+            base.camera.posQuatInterval(duration, Vec3(x, y, z), Vec3(h, p, r), name='posCamera').start()
 
     def getClampedAvatarHeight(self):
         return max(self.getHeight(), 3.0)
