@@ -1,5 +1,5 @@
 from toontown.toonbase.ToonBaseGlobal import *
-from panda3d.core import *
+from pandac.PandaModules import *
 from direct.interval.IntervalGlobal import *
 from direct.distributed.ClockDelta import *
 from direct.distributed import DistributedObject
@@ -28,9 +28,6 @@ class DistributedHouseDoor(DistributedDoor.DistributedDoor):
 
     def getTriggerName(self):
         return 'door_trigger_' + str(self.houseId)
-
-    def hideDoorParts(self):
-        pass
 
     def announceGenerate(self):
         DistributedObject.DistributedObject.announceGenerate(self)

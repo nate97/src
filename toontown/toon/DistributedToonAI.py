@@ -5064,4 +5064,41 @@ def disguise(command, suitIndex, value):
         invoker.d_setCogMerits(invoker.cogMerits)
         return 'Merits set.'
     else:
-        return 'Unknow command: %s' % command
+        return 'Unknown command: %s' % command
+
+@magicWord(category=CATEGORY_PROGRAMMER)
+def immortal():
+    """ Makes invoker immune to attacks. """
+    invoker = spellbook.getInvoker()
+    invoker.setImmortalMode(not invoker.immortalMode)
+    return 'Immortal Mode: %s' % ('ON' if invoker.immortalMode else 'OFF')
+    
+@magicWord(category=CATEGORY_ADMINISTRATOR, types=[int])
+def gagPouch(value):
+    invoker = spellbook.getInvoker()
+    invoker.b_setMaxCarry(value)
+    return 'Gag pouch set.'
+
+@magicWord(category=CATEGORY_PROGRAMMER, types=[int])
+def shovelSkill(value):
+    invoker = spellbook.getInvoker()
+    invoker.b_setShovelSkill(value)
+    return 'Shovel Skill set.'
+
+@magicWord(category=CATEGORY_PROGRAMMER, types=[])
+def maxTrees():
+    invoker = spellbook.getInvoker()
+    estate = simbase.air.estateManager.toon2estate.get(invoker)
+    if not estate:
+        return 'Unable to locate estate.'
+    for house in estate.houses:
+        if hasattr(house, 'gardenManager') and house.avatarId == invoker.doId:
+            for plot in house.gardenManager.plots:
+                if hasattr(plot, 'growthLevel'):
+                    plot.growthLevel = plot.getGrowthThresholds()[2]
+                    plot.d_setGrowthLevel(plot.growthLevel)
+                    timePassed = plot.growthLevel * GardenGlobals.GROWTH_INTERVAL
+                    plot.timestamp = int(time.time()) - timePassed
+                    house.gardenManager.updateGardenData()
+                    return 'Successfully maxed tree growth!'
+    return 'Failed to max tree growth.'

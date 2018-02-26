@@ -86,11 +86,15 @@ class GenericAnimatedProp(AnimatedProp.AnimatedProp):
             self.visId = visId
             self.hoodId = ZoneUtil.getCanonicalHoodId(visId)
             self.notify.debug('calcHoodId %d from %s' % (self.hoodId, fullString))
+        # NF
+        # TEMP FIX
         except Exception, generic:
             if 'Editor' not in fullString:
                 self.notify.warning("calcHoodId couldn't parse %s using 0" % fullString)
-            self.hoodId = 0
-            self.visId = 0
+            visId = int(splits[4])
+            self.visId = visId
+            self.hoodId = ZoneUtil.getCanonicalHoodId(visId)
+
 
     def createSoundInterval(self, origAnimNameWithPath, maximumDuration):
         if not hasattr(base, 'localAvatar'):

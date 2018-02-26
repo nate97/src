@@ -1,33 +1,120 @@
-from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedNodeAI import DistributedNodeAI
 
+from toontown.estate import GardenGlobals
+
+
 class DistributedLawnDecorAI(DistributedNodeAI):
-    notify = DirectNotifyGlobal.directNotify.newCategory("DistributedLawnDecorAI")
+    notify = directNotify.newCategory('DistributedLawnDecorAI')
 
-    def setPlot(self, todo0):
-        pass
+    def __init__(self, air, gardenManager, ownerIndex):
+        DistributedNodeAI.__init__(self, air)
 
-    def setHeading(self, todo0):
-        pass
+        self.gardenManager = gardenManager
+        self.ownerIndex = ownerIndex
 
-    def setPosition(self, todo0, todo1, todo2):
-        pass
+        self.plotIndex = None
+        self.plotType = None
 
-    def setOwnerIndex(self, todo0):
-        pass
+        self.boxIndex = None
+        self.boxType = None
+
+        self.pos = None
+        self.heading = None
+
+        self.movie = None
+
+    def getPlot(self):
+        return self.plotIndex
+
+    def getHeading(self):
+        return self.heading
+
+    def getPosition(self):
+        return self.pos
+
+    def getOwnerIndex(self):
+        return self.ownerIndex
 
     def plotEntered(self):
         pass
 
     def removeItem(self):
-        pass
+        self.setMovie(GardenGlobals.MOVIE_REMOVE, self.air.getAvatarIdFromSender())
+        self.gardenManager.revertToPlot(self.plotIndex)
 
-    def setMovie(self, todo0, todo1):
-        pass
+    def setMovie(self, movie, avId):
+        self.movie = movie
+        self.sendUpdate('setMovie', [movie, avId])
 
     def movieDone(self):
-        pass
+        self.setMovie(GardenGlobals.MOVIE_CLEAR, self.air.getAvatarIdFromSender())
 
-    def interactionDenied(self, todo0):
-        pass
+    def interactionDenied(self, avId):
+        self.sendUpdate('interactionDenied', [avId])
+
+    def construct(self, gardenData):
+        # NF
+        # Working on getting flower boxes to generate...
+
+        self.plotIndex = gardenData.getUint8()
+
+
+        if self.plotIndex != GardenGlobals.PlanterBox:
+
+            self.plotType = GardenGlobals.getPlotType(self.ownerIndex, self.plotIndex)
+            self.pos = GardenGlobals.getPlotPos(self.ownerIndex, self.plotIndex)
+            print self.pos
+            self.heading = GardenGlobals.getPlotHeading(self.ownerIndex, self.plotIndex)
+            print self.heading
+            print "Heading^^^"
+
+        else:
+
+            print "YAS?????????????"
+            self.boxType = GardenGlobals.getBoxType(self.ownerIndex, self.plotIndex)
+            self.pos = (0,0,50)
+            self.heading = 250
+
+
+
+    def pack(self, gardenData):
+        gardenData.addUint8(self.plotIndex)
+
+
+
+
+
+
+"""
+        # NF
+        # Working on getting flower boxes to generate...
+
+        self.plotIndex = gardenData.getUint8()
+
+
+        if self.plotIndex != GardenGlobals.PlanterBox:
+
+            self.plotType = GardenGlobals.getPlotType(self.ownerIndex, self.plotIndex)
+            self.pos = GardenGlobals.getPlotPos(self.ownerIndex, self.plotIndex)
+            print self.pos
+            self.heading = GardenGlobals.getPlotHeading(self.ownerIndex, self.plotIndex)
+            print self.heading
+            print "Heading^^^"
+
+        else:
+
+            print "YAS?????????????"
+            self.boxType = GardenGlobals.getBoxType(self.ownerIndex, self.plotIndex)
+            self.pos = (0,0,50)
+            self.heading = 250
+
+"""
+
+
+
+
+
+
+
+
 

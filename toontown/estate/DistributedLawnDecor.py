@@ -1,10 +1,10 @@
-from panda3d.core import *
+from pandac.PandaModules import *
 from direct.interval.IntervalGlobal import *
 from direct.distributed import ClockDelta
 from direct.showbase.PythonUtil import lerp
 import math
 from direct.directnotify import DirectNotifyGlobal
-from panda3d.core import NodePath
+from pandac.PandaModules import NodePath
 from direct.task import Task
 from toontown.toonbase import ToontownGlobals
 from direct.distributed import DistributedObject
@@ -264,9 +264,6 @@ class DistributedLawnDecor(DistributedNode.DistributedNode, NodePath, ShadowCast
         node.removeNode()
         toonTrack = Sequence(Parallel(ActorInterval(toon, 'walk', loop=True, duration=1), Parallel(LerpPosInterval(toon, 1.0, Point3(finalX, finalY, toon.getZ(render)), fluid=True, bakeInStart=False)), LerpHprInterval(toon, 1.0, hpr=hpr)), Func(toon.loop, 'neutral'))
         return toonTrack
-
-    def unprint(self, string):
-        print string
 
     def startInteraction(self):
         place = base.cr.playGame.getPlace()

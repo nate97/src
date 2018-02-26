@@ -355,7 +355,7 @@ class DistributedFurnitureManagerAI(DistributedObjectAI):
         return retcode
 
     def deleteWallpaperFromAttic(self, blob, index):
-        wallpaper = self.getAtticFurniture(self.atticWallpaper, index)
+        wallpaper = self.getAtticFurniture(blob, index)
         if wallpaper in self.atticWallpaper:
             self.atticWallpaper.remove(wallpaper)
         self.b_setAtticWallpaper(self.getAtticWallpaper())

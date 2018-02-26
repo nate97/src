@@ -1,5 +1,5 @@
 from direct.directnotify import DirectNotifyGlobal
-from panda3d.core import *
+from pandac.PandaModules import *
 from direct.interval.IntervalGlobal import *
 from toontown.fishing import FishGlobals
 import GardenGlobals
@@ -9,7 +9,7 @@ import random
 class DirectRegion(NodePath):
     notify = DirectNotifyGlobal.directNotify.newCategory('DirectRegion')
 
-    def __init__(self, parent = aspect2d):
+    def __init__(self, parent=aspect2d):
         NodePath.__init__(self)
         self.assign(parent.attachNewNode('DirectRegion'))
 
@@ -181,8 +181,9 @@ class SpecialsPhoto(NodePath):
             if hasattr(self, 'specialsDisplayRegion'):
                 self.specialsDisplayRegion.unload()
             self.hide()
-        self.actor = self.loadModel(self.type)
-        self.specialsFrame = self.makeSpecialsFrame(self.actor)
+        if self.type != -1:
+            self.actor = self.loadModel(self.type)
+            self.specialsFrame = self.makeSpecialsFrame(self.actor)
         if showBackground:
             if not hasattr(self, 'background'):
                 background = loader.loadModel('phase_3.5/models/gui/stickerbook_gui')

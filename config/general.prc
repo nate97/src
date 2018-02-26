@@ -14,8 +14,8 @@ aux-display pandadx9
 aux-display p3tinydisplay
 
 # Disable antialiasing
-#framebuffer-multisample 1
-#multisamples 4
+framebuffer-multisample 4
+multisamples 4
 
 # Models:
 model-cache-models #f
@@ -123,7 +123,7 @@ want-mat-all-tailors #t
 want-long-pattern-game #t
 want-code-redemption #t
 
-want-parties #t
+want-parties #f
 
 # Developer options:
 want-dev #f
@@ -139,4 +139,9 @@ want-live-updates #t
 
 # Halloween
 #want-halloween #t
-#active-holidays 26, 27, 13
+active-holidays 60, 66, 65, 64, 63, 70, 62, 61
+
+
+
+
+

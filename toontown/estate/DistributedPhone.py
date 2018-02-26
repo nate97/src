@@ -5,7 +5,7 @@ from direct.interval.IntervalGlobal import *
 from direct.showbase import PythonUtil
 from direct.showutil import Rope
 from direct.task import Task
-from panda3d.core import *
+from pandac.PandaModules import *
 
 import DistributedFurnitureItem
 import PhoneGlobals
@@ -115,9 +115,9 @@ class DistributedPhone(DistributedFurnitureItem.DistributedFurnitureItem):
         return mount
 
     def setupCamera(self, mode):
-        camera.wrtReparentTo(render)
+        base.camera.wrtReparentTo(render)
         if mode == PhoneGlobals.PHONE_MOVIE_PICKUP:
-            camera.posQuatInterval(1, (4, -4, base.localAvatar.getHeight()- 0.5), (35, -8, 0), other=base.localAvatar, blendType='easeOut').start()
+            base.camera.posQuatInterval(1, (4, -4, base.localAvatar.getHeight()- 0.5), (35, -8, 0), other=base.localAvatar, blendType='easeOut').start()
 
     def setupCord(self):
         if self.cord:

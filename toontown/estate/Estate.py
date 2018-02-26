@@ -1,4 +1,5 @@
-from panda3d.core import *
+from pandac.PandaModules import *
+from panda3d.core import Fog
 from direct.interval.IntervalGlobal import *
 from toontown.toonbase.ToonBaseGlobal import *
 from toontown.toonbase.ToontownGlobals import *
@@ -11,11 +12,10 @@ from direct.task.Task import Task
 from toontown.toonbase import TTLocalizer
 import random
 from direct.showbase import PythonUtil
-from toontown.hood import Place
 from toontown.hood import SkyUtil
 from toontown.pets import PetTutorial
 from otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs, TLNull
-import HouseGlobals
+from toontown.estate import HouseGlobals
 
 class Estate(Place.Place):
     notify = DirectNotifyGlobal.directNotify.newCategory('Estate')
@@ -45,7 +45,8 @@ class Estate(Place.Place):
           'trialerFA',
           'doorOut',
           'push',
-          'pet']),
+          'pet',
+          'purchase']),
          State.State('stopped', self.enterStopped, self.exitStopped, ['walk', 'teleportOut']),
          State.State('sit', self.enterSit, self.exitSit, ['walk']),
          State.State('push', self.enterPush, self.exitPush, ['walk']),
@@ -73,6 +74,7 @@ class Estate(Place.Place):
          State.State('trialerFA', self.enterTrialerFA, self.exitTrialerFA, ['trialerFAReject', 'DFA']),
          State.State('trialerFAReject', self.enterTrialerFAReject, self.exitTrialerFAReject, ['walk']),
          State.State('DFA', self.enterDFA, self.exitDFA, ['DFAReject', 'teleportOut']),
+         State.State('purchase', self.enterPurchase, self.exitPurchase, ['walk']),
          State.State('DFAReject', self.enterDFAReject, self.exitDFAReject, ['walk'])], 'init', 'final')
         self.fsm.enterInitialState()
         self.doneEvent = doneEvent
@@ -185,6 +187,12 @@ class Estate(Place.Place):
 
     def exitInit(self):
         pass
+
+    def enterPurchase(self):
+        Place.Place.enterPurchase(self)
+
+    def exitPurchase(self):
+        Place.Place.exitPurchase(self)
 
     def enterPetTutorial(self, bDummy = True):
         self.notify.info('remove estate-check-toon-underwater to TaskMgr in enterPetTutorial()')
@@ -306,7 +314,7 @@ class Estate(Place.Place):
             self.notify.warning('no zone id available')
 
     def __checkCameraUnderwater(self, task):
-        if camera.getZ(render) < -1.2:
+        if base.camera.getZ(render) < -1.2:
             self.__submergeCamera()
         else:
             self.__emergeCamera()

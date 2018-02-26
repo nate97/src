@@ -15,8 +15,10 @@ QuestProgressIndex = 4
 class QuestManagerAI:
     notify = directNotify.newCategory('QuestManagerAI')
 
+
     def __init__(self, air):
         self.air = air
+
 
     def requestInteract(self, avId, npc):
         # Get the avatar.
@@ -114,13 +116,16 @@ class QuestManagerAI:
                 else:
                     npc.rejectAvatar(avId)
 
+
     def npcGiveTrackChoice(self, av, tier):
         trackQuest = Quests.chooseTrackChoiceQuest(tier, av)
         return [(trackQuest, 400, Quests.ToonHQ)]
 
+
     def avatarQuestChoice(self, av, npc):
         # Get the best quests for an avatar/npc.
         return Quests.chooseBestQuests(av.getRewardTier(), npc, av)
+
 
     def avatarChoseQuest(self, avId, npc, questId, rewardId, toNpcId):
         # Get the avatar.
@@ -143,6 +148,7 @@ class QuestManagerAI:
         # Assign the quest.
         npc.assignQuest(avId, questId, rewardId, toNpcId)
 
+
     def avatarChoseTrack(self, avId, npc, pendingTrackQuest, trackId):
         # Get the avatar.
         av = self.air.doId2do.get(avId)
@@ -159,6 +165,7 @@ class QuestManagerAI:
         # Set their track their working on.
         av.b_setTrackProgress(trackId, 0)
 
+
     def avatarCancelled(self, npcId):
         # Get the NPC.
         npc = self.air.doId2do.get(npcId)
@@ -167,6 +174,7 @@ class QuestManagerAI:
 
         # Remove the task for timeout.
         taskMgr.remove(npc.uniqueName('clearMovie'))
+
 
     def nextQuest(self, av, npc, questId):
         # Get the next QuestId and toNpcId.
@@ -190,6 +198,7 @@ class QuestManagerAI:
         npc.incompleteQuest(av.doId, nextQuestId, Quests.QUEST, toNpcId)
         av.b_setQuests(questList)
 
+
     def completeQuest(self, av, completeQuestId):
         #Get the avatars current quests.
         avQuests = av.getQuests()
@@ -205,6 +214,7 @@ class QuestManagerAI:
                 self.giveReward(av, questId, rewardId)
                 self.avatarConsiderProgressTier(av)
                 break
+
 
     def giveReward(self, av, questId, rewardId):
         # Give the reward.
@@ -222,6 +232,7 @@ class QuestManagerAI:
 
         av.b_setRewardHistory(rewardTier, rewardHistory)
 
+
     def avatarConsiderProgressTier(self, av):
         # Get the avatars current tier.
         currentTier = av.getRewardTier()
@@ -231,6 +242,7 @@ class QuestManagerAI:
             if currentTier != Quests.ELDER_TIER:
                 currentTier += 1
             av.b_setRewardHistory(currentTier, [])
+
 
     def tutorialQuestChoice(self, avId, npc):
         # Get the avatar.
@@ -249,9 +261,11 @@ class QuestManagerAI:
             if av.getRewardHistory()[0] == 0:
                 self.air.tutorialManager.avId2fsm[avId].demand('Battle')
 
+
     def toonRodeTrolleyFirstTime(self, av):
         # Toon played a minigame.
         self.toonPlayedMinigame(av, [])
+
 
     def toonPlayedMinigame(self, av, toons):
         # Get the avatars current quests.
@@ -267,6 +281,7 @@ class QuestManagerAI:
             questList.append(questDesc)
 
         av.b_setQuests(questList)
+
 
     def toonMadeFriend(self, avId):
         # Get the avatar.
@@ -288,6 +303,7 @@ class QuestManagerAI:
 
         av.b_setQuests(questList)
 
+
     def toonUsedPhone(self, avId):
         # Get the avatar.
         av = self.air.doId2do.get(avId)
@@ -307,6 +323,7 @@ class QuestManagerAI:
             questList.append(questDesc)
 
         av.b_setQuests(questList)
+
 
     def toonCaughtFishingItem(self, av, zoneId):
         # Get the avatars current quests.
@@ -347,6 +364,7 @@ class QuestManagerAI:
         av.b_setQuests(questList)
         return fishingItem
 
+
     def hasTailorClothingTicket(self, av, npc):
         # Get the avatars current quests.
         avQuests = av.getQuests()
@@ -361,6 +379,7 @@ class QuestManagerAI:
                     return 1
         return 0
 
+
     def removeClothingTicket(self, av, npc):
         # Get the avatars current quests.
         avQuests = av.getQuests()
@@ -373,6 +392,7 @@ class QuestManagerAI:
                 if questClass.getCompletionStatus(av, questDesc, npc) == Quests.COMPLETE:
                     av.removeQuest(questDesc[QuestIdIndex])
                     break
+
 
     def recoverItems(self, av, suitsKilled, zoneId):
         # Get the avatars current quests.
@@ -431,6 +451,7 @@ class QuestManagerAI:
 
         return (recoveredItems, unrecoveredItems)
 
+
     def toonKilledBuilding(self, av, type, difficulty, floors, zoneId, activeToons):
         # Get the avatars current quests.
         avQuests = av.getQuests()
@@ -460,6 +481,7 @@ class QuestManagerAI:
 
         av.b_setQuests(questList)
 
+
     def toonDefeatedFactory(self, av, factoryId, activeVictors):
         # Get the avatars current quests.
         avQuests = av.getQuests()
@@ -475,6 +497,7 @@ class QuestManagerAI:
             questList.append(questDesc)
 
         av.b_setQuests(questList)
+
 
     def toonDefeatedMint(self, av, mintId, activeVictors):
         # Get the avatars current quests.
@@ -492,8 +515,10 @@ class QuestManagerAI:
 
         av.b_setQuests(questList)
 
+
     def toonDefeatedStage(self, av, stageId, activeVictors):
         pass
+
 
     def toonKilledCogs(self, av, suitsKilled, zoneId, activeToonList):
         # Get the avatar's current quests.

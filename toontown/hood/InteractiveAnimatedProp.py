@@ -268,9 +268,7 @@ class InteractiveAnimatedProp(GenericAnimatedProp.GenericAnimatedProp, FSM.FSM):
                 reversedChance = self.numIdles - i - 1
                 pairs.append((math.pow(2, reversedChance), i))
 
-            sum = math.pow(2, self.numIdles) - 1
-            result = weightedChoice(pairs, sum=sum)
-            self.notify.debug('chooseAnimToRun numIdles=%s pairs=%s result=%s' % (self.numIdles, pairs, result))
+
         else:
             result = self.lastPlayingAnimPhase + 1
             if result >= len(self.ZoneToIdles[self.hoodId]):

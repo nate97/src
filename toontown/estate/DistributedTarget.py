@@ -1,6 +1,6 @@
 from direct.gui.DirectGui import *
-from panda3d.core import *
-from panda3d.core import *
+from pandac.PandaModules import *
+from pandac.PandaModules import *
 from direct.interval.IntervalGlobal import *
 from toontown.toonbase.ToontownGlobals import *
 from toontown.toonbase import ToontownTimer
@@ -51,8 +51,8 @@ class DistributedTarget(DistributedObject.DistributedObject):
         self.geom.setPos(0, 0, 40)
         self.geom.setScale(3)
         self.geom.stash()
-        self.hitSound = base.loader.loadSfx('phase_4/audio/sfx/MG_Tag_A.ogg')
-        self.rewardSound = base.loader.loadSfx('phase_4/audio/sfx/MG_pos_buzzer.ogg')
+        self.hitSound = base.loadSfx('phase_4/audio/sfx/MG_Tag_A.ogg')
+        self.rewardSound = base.loadSfx('phase_4/audio/sfx/MG_pos_buzzer.ogg')
         self.scoreText = TextNode('scoreText')
         self.scoreText.setTextColor(1, 0, 0, 1)
         self.scoreText.setAlign(self.scoreText.ACenter)

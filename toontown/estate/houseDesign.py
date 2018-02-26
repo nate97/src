@@ -2,7 +2,7 @@ from direct.directtools.DirectSelection import *
 from direct.directtools.DirectUtil import ROUND_TO
 from direct.directtools.DirectGeometry import LineNodePath
 from direct.gui.DirectGui import *
-from panda3d.core import *
+from pandac.PandaModules import *
 from direct.showbase.DirectObject import DirectObject
 from toontown.toonbase import ToontownGlobals
 from direct.directnotify import DirectNotifyGlobal
@@ -190,7 +190,7 @@ class MovableObject(NodePath, DirectObject):
         else:
             self.setIsTable(0)
         m = self.getTransform()
-        self.setPosHpr(0, 0, 0, 0, 0, 0)
+        self.iPosHpr()
         bMin, bMax = self.bounds = self.getTightBounds()
         bMin -= Vec3(0.1, 0.1, 0)
         bMax += Vec3(0.1, 0.1, 0)
@@ -559,7 +559,7 @@ class ObjectManager(NodePath, DirectObject):
             self.selectedObject.collisionNodePath.stash()
             self.selectedObject.dfitem.startAdjustPosHpr()
             self.firstTime = 1
-            self.setPosHpr(0, 0, 0, 0, 0, 0)
+            self.iPosHpr()
             self.startPoseValid = 0
             self.centerMarker['image'] = self.grabDown
             self.centerMarker.configure(text=TTLocalizer.HDMoveLabel, text_pos=(0, 1), text_scale=0.7, text_fg=(1, 1, 1, 1), text_shadow=(0, 0, 0, 1), image_scale=0.3)
@@ -580,7 +580,7 @@ class ObjectManager(NodePath, DirectObject):
     def moveObjectTask(self, state):
         so = self.selectedObject
         target = self.targetNodePath
-        self.startPose.setPosHpr(so, 0, 0, 0, 0, 0, 0)
+        self.startPose.iPosHpr(so)
         self.iRay.setParentNP(base.cam)
         entry = self.iRay.pickBitMask(bitMask=ToontownGlobals.FurnitureDragBitmask, targetNodePath=target, skipFlags=SKIP_BACKFACE | SKIP_CAMERA | SKIP_UNPICKABLE)
         if not entry:
@@ -590,8 +590,8 @@ class ObjectManager(NodePath, DirectObject):
             self.moveObjectInit()
             self.firstTime = 0
         else:
-            self.gridSnapNP.setPos(0, 0, 0)
-            self.collisionOffsetNP.setPosHpr(0, 0, 0, 0, 0, 0)
+            self.gridSnapNP.iPos()
+            self.collisionOffsetNP.iPosHpr()
         if self.gridSpacing:
             pos = self.dragPointNP.getPos(target)
             self.gridSnapNP.setPos(target, ROUND_TO(pos[0], self.gridSpacing), ROUND_TO(pos[1], self.gridSpacing), pos[2])
@@ -770,7 +770,7 @@ class ObjectManager(NodePath, DirectObject):
             return
         so = self.selectedObject
         so.dfitem.startAdjustPosHpr()
-        self.setPosHpr(so, 0, 0, 0, 0, 0, 0)
+        self.iPosHpr(so)
         self.moveObjectInit()
         if so.getOnWall():
             startR = self.gridSnapNP.getR()
@@ -794,7 +794,7 @@ class ObjectManager(NodePath, DirectObject):
             return
         so = self.selectedObject
         so.dfitem.startAdjustPosHpr()
-        self.setPosHpr(so, 0, 0, 0, 0, 0, 0)
+        self.iPosHpr(so)
         self.moveObjectInit()
         if so.getOnWall():
             startR = self.gridSnapNP.getR()
@@ -815,8 +815,8 @@ class ObjectManager(NodePath, DirectObject):
 
     def moveObjectInit(self):
         self.dragPointNP.setPosHpr(self.selectedObject, self.selectedObject.dragPoint, Vec3(0))
-        self.gridSnapNP.setPosHpr(0, 0, 0, 0, 0, 0)
-        self.collisionOffsetNP.setPosHpr(0, 0, 0, 0, 0, 0)
+        self.gridSnapNP.iPosHpr()
+        self.collisionOffsetNP.iPosHpr()
         self.selectedObject.wrtReparentTo(self.collisionOffsetNP)
 
     def resetFurniture(self):
@@ -1268,7 +1268,7 @@ class ObjectManager(NodePath, DirectObject):
             for object in self.objectDict.values():
                 object.stashBuiltInCollisionNodes()
 
-            self.gridSnapNP.setPosHpr(0, 0, 0, 0, 0, 0)
+            self.gridSnapNP.iPosHpr()
             target = self.targetNodePath
             self.iRay.setParentNP(base.localAvatar)
             entry = self.iRay.pickBitMask3D(bitMask=ToontownGlobals.WallBitmask, targetNodePath=target, origin=Point3(0, 0, 6), dir=Vec3(0, 1, 0), skipFlags=SKIP_BACKFACE | SKIP_CAMERA | SKIP_UNPICKABLE)
@@ -1449,7 +1449,7 @@ class ObjectManager(NodePath, DirectObject):
             buttons = loader.loadModel('phase_3/models/gui/dialog_box_buttons_gui')
             okButtonImage = (buttons.find('**/ChtBx_OKBtn_UP'), buttons.find('**/ChtBx_OKBtn_DN'), buttons.find('**/ChtBx_OKBtn_Rllvr'))
             cancelButtonImage = (buttons.find('**/CloseBtn_UP'), buttons.find('**/CloseBtn_DN'), buttons.find('**/CloseBtn_Rllvr'))
-            self.verifyFrame = DirectFrame(pos=(-0.4, 0.1, 0.3), scale=0.75, relief=None, image=DGG.getDefaultDialogGeom(), image_color=ToontownGlobals.GlobalDialogColor, image_scale=(1.2, 1, 1.3), text='', text_wordwrap=19, text_scale=0.06, text_pos=(0, 0.5), textMayChange=1)
+            self.verifyFrame = DirectFrame(pos=(-0.4, 0.1, 0.3), scale=0.75, relief=None, image=DGG.getDefaultDialogGeom(), image_color=ToontownGlobals.GlobalDialogColor, image_scale=(1.2, 1, 1.3), text='', text_wordwrap=19, text_scale=0.06, text_pos=(0, 0.5), textMayChange=1, sortOrder=NO_FADE_SORT_INDEX)
             self.okButton = DirectButton(parent=self.verifyFrame, image=okButtonImage, relief=None, text=OTPLocalizer.DialogOK, text_scale=0.05, text_pos=(0.0, -0.1), textMayChange=0, pos=(-0.22, 0.0, -0.5))
             self.cancelButton = DirectButton(parent=self.verifyFrame, image=cancelButtonImage, relief=None, text=OTPLocalizer.DialogCancel, text_scale=0.05, text_pos=(0.0, -0.1), textMayChange=0, pos=(0.22, 0.0, -0.5))
             self.deleteItemText = DirectLabel(parent=self.verifyFrame, relief=None, text='', text_wordwrap=16, pos=(0.0, 0.0, -0.4), scale=0.09)

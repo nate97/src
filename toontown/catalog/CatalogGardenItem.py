@@ -5,7 +5,7 @@ from otp.otpbase import OTPLocalizer
 from direct.interval.IntervalGlobal import *
 from toontown.estate import GardenGlobals
 from direct.actor import Actor
-from panda3d.core import NodePath
+from pandac.PandaModules import NodePath
 
 class CatalogGardenItem(CatalogItem.CatalogItem):
     sequenceNumber = 0
@@ -78,8 +78,9 @@ class CatalogGardenItem(CatalogItem.CatalogItem):
 
     def cleanupPicture(self):
         CatalogItem.CatalogItem.cleanupPicture(self)
-        self.model.detachNode()
-        self.model = None
+        if hasattr(self, 'model'):
+            self.model.detachNode()
+            self.model = None
         return
 
     def output(self, store = -1):

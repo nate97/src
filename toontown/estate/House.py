@@ -1,4 +1,4 @@
-from panda3d.core import *
+from pandac.PandaModules import *
 from toontown.toonbase.ToonBaseGlobal import *
 from direct.directnotify import DirectNotifyGlobal
 from toontown.hood import Place

@@ -511,8 +511,8 @@ MonthlySchedule = ((7,
    CatalogGardenItem(103, 1),
    CatalogGardenItem(104, 1),
    CatalogToonStatueItem(105, endPoseIndex=108),
-   #CatalogRentalItem(1, 2880, 1000), # TODO
-   #CatalogGardenStarterItem(), # TODO
+   CatalogRentalItem(1, 2880, 1000), # Rental Items
+   CatalogGardenStarterItem(),
    CatalogNametagItem(100),
    CatalogNametagItem(0),
    CatalogClothingItem(1608, 0, 0),

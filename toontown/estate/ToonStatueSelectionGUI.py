@@ -4,7 +4,7 @@ from direct.gui.DirectGui import *
 from direct.gui.DirectScrolledList import *
 from direct.interval.IntervalGlobal import *
 from direct.task import Task
-from panda3d.core import *
+from pandac.PandaModules import *
 
 from toontown.estate import DistributedToonStatuary
 from toontown.estate import GardenGlobals

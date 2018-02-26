@@ -614,7 +614,8 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
             camera.setPos(savePos)
             camera.setHpr(saveHpr)
             taskMgr.remove('posCamera')
-            camera.lerpPosHpr(x, y, z, h, p, r, time, task='posCamera')
+            # NF needs fixed...
+            #camera.lerpPosHpr(x, y, z, h, p, r, time, task='posCamera')
 
     def getClampedAvatarHeight(self):
         return max(self.getHeight(), 3.0)

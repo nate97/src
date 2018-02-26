@@ -31,11 +31,10 @@ class CatalogGardenStarterItem(CatalogItem.CatalogItem):
 
     def recordPurchase(self, avatar, optional):
         if avatar:
-            estate = simbase.air.estateManager._lookupEstate(avatar.doId)
+            estate = simbase.air.estateManager._lookupEstate(avatar)
             if estate:
-                estate.placeStarterGarden(avatar.doId)
-            else:
-                print 'starter garden-- something not there'
+                estate.placeStarterGarden(avatar)
+
         return ToontownGlobals.P_ItemAvailable
 
     def getPicture(self, avatar):

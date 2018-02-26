@@ -9,7 +9,7 @@ from toontown.toonbase import TTLocalizer
 import GardenGlobals
 import HouseGlobals
 from direct.task import Task
-from panda3d.core import *
+from pandac.PandaModules import *
 from otp.otpbase import OTPGlobals
 from toontown.estate import DistributedLawnDecor
 DIRT_AS_WATER_INDICATOR = True

@@ -1215,6 +1215,7 @@ dclass DistributedHouse : DistributedObject {
   setAtticWindows(blob = "") required db;
   setInteriorWindows(blob = "") required db;
   setDeletedItems(blob = "") required db;
+  setGardenData(blob = "") required db;
   setInteriorInitialized(uint8 initialized = 0) required db;
   setCannonEnabled(uint8) required;
   setHouseReady() broadcast ram;
@@ -2680,8 +2681,6 @@ dclass DistributedGardenBox : DistributedLawnDecor {
 
 dclass DistributedStatuary : DistributedLawnDecor {
   setTypeIndex(uint8) required broadcast ram;
-  setWaterLevel(int8) required broadcast ram;
-  setGrowthLevel(int8) required broadcast ram;
 };
 
 dclass DistributedToonStatuary : DistributedStatuary {

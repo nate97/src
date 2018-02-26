@@ -8,8 +8,8 @@ from toontown.estate import PlantingGUI
 from toontown.estate import PlantTreeGUI
 from toontown.estate import ToonStatueSelectionGUI
 from toontown.toontowngui import TTDialog
-from panda3d.core import Vec4
-from panda3d.core import NodePath
+from pandac.PandaModules import Vec4
+from pandac.PandaModules import NodePath
 import types
 
 class DistributedGardenPlot(DistributedLawnDecor.DistributedLawnDecor):
@@ -107,10 +107,10 @@ class DistributedGardenPlot(DistributedLawnDecor.DistributedLawnDecor):
         return plantText
 
     def canBePlanted(self):
-        retval = True
         if not base.localAvatar.doId == self.getOwnerId():
-            retval = False
-        return retval
+            return False
+
+        return True
 
     def plantSomething(self):
         whatCanBePlanted = GardenGlobals.whatCanBePlanted(self.ownerIndex, self.plot)

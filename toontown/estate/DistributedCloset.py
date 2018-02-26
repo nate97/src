@@ -1,8 +1,8 @@
 from direct.gui.DirectGui import *
-from panda3d.core import *
+from pandac.PandaModules import *
 from toontown.toonbase.ToontownGlobals import *
 from toontown.toonbase.ToonBaseGlobal import *
-from panda3d.core import *
+from pandac.PandaModules import *
 from direct.interval.IntervalGlobal import *
 from direct.distributed.ClockDelta import *
 from toontown.toonbase import ToontownGlobals
@@ -153,9 +153,9 @@ class DistributedCloset(DistributedFurnitureItem.DistributedFurnitureItem):
             self.ignore(self.closetSphereEnterEvent)
             self._openDoors()
             if self.customerId == base.localAvatar.doId:
-                camera.wrtReparentTo(self)
-                camera.posQuatInterval(1, (-7.58, -6.02, 6.9), (286.3, 336.8, 0), other=self, blendType='easeOut').start()
-                camera.setPosHpr(self, -7.58, -6.02, 6.9, 286.3, 336.8, 0)
+                base.camera.wrtReparentTo(self)
+                base.camera.posQuatInterval(1, (-7.58, -6.02, 6.9), (286.3, 336.8, 0), other=self, blendType='easeOut').start()
+                base.camera.setPosHpr(self, -7.58, -6.02, 6.9, 286.3, 336.8, 0)
             if self.av:
                 if self.avMoveTrack:
                     self.avMoveTrack.finish()
