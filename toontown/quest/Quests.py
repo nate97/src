@@ -542,8 +542,7 @@ class CogQuest(LocationBasedQuest):
 
     def doesCogCount(self, avId, cogDict, zoneId, avList):
         questCogType = self.getCogType()
-        return (questCogType == Any or questCogType == cogDict['type']) and \
-               (avId in avList) and self.isLocationMatch(zoneId)
+        return (questCogType is Any or questCogType is cogDict['type']) and avId in cogDict['activeToons'] and self.isLocationMatch(zoneId)
 
 
 class CogNewbieQuest(CogQuest, NewbieQuest):

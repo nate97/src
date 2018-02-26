@@ -447,14 +447,14 @@ class RewardPanel(DirectFrame):
     def getTrackIntervalList(self, toon, track, origSkill, earnedSkill, hasUber, guestWaste = 0):
         if hasUber < 0:
             print (toon.doId, 'Reward Panel received an invalid hasUber from an uberList')
-        tickDelay = 1.0 / 60
+        tickDelay = 1.0 / 30
         intervalList = []
         if origSkill + earnedSkill >= ToontownBattleGlobals.UnpaidMaxSkills[track] and toon.getGameAccess() != OTPGlobals.AccessFull:
             lostExp = origSkill + earnedSkill - ToontownBattleGlobals.UnpaidMaxSkills[track]
             intervalList.append(Func(self.showTrackIncLabel, track, lostExp, 1))
         else:
             intervalList.append(Func(self.showTrackIncLabel, track, earnedSkill))
-        barTime = 0.5
+        barTime = 1.0
         numTicks = int(math.ceil(barTime / tickDelay))
         for i in xrange(numTicks):
             t = (i + 1) / float(numTicks)
@@ -494,7 +494,7 @@ class RewardPanel(DirectFrame):
                 t = (i + 1) / float(numTicks)
                 newValue = int(currentSkill - t * skillDiff + 0.5)
                 intervalList.append(Func(self.incrementExp, track, newValue, toon))
-                intervalList.append(Wait(tickDelay * 0.5))
+                intervalList.append(Wait(tickDelay * 0.7))
 
             intervalList.append(Wait(0.1))
         return intervalList
@@ -507,7 +507,7 @@ class RewardPanel(DirectFrame):
         if totalMerits and origMerits != totalMerits:
             neededMerits = totalMerits - origMerits
             intervalList.append(Func(self.showMeritIncLabel, dept, min(neededMerits, earnedMerits)))
-        barTime = 0.5
+        barTime = 1.0
         numTicks = int(math.ceil(barTime / tickDelay))
         for i in xrange(numTicks):
             t = (i + 1) / float(numTicks)
@@ -567,7 +567,7 @@ class RewardPanel(DirectFrame):
 
     def getQuestIntervalList(self, toon, deathList, toonList, origQuestsList, itemList, helpfulToonsList = []):
         avId = toon.getDoId()
-        tickDelay = 0.2
+        tickDelay = 0.5
         intervalList = []
         toonShortList = []
         for t in toonList:
@@ -656,7 +656,7 @@ class RewardPanel(DirectFrame):
                     if earned > 0:
                         earned = min(earned, quest.getNumQuestItems() - questDesc[4])
                 if earned > 0 or base.localAvatar.tutorialAck == 0 and num == 1:
-                    barTime = 0.5
+                    barTime = 1.0
                     numTicks = int(math.ceil(barTime / tickDelay))
                     for i in xrange(numTicks):
                         t = (i + 1) / float(numTicks)
