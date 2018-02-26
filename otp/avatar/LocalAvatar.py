@@ -596,7 +596,7 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
         print '%d,' % cp[4]
         print ')',
 
-   def posCamera(self, lerp, duration):
+    def posCamera(self, lerp, duration):
         if not lerp:
             self.positionCameraWithPusher(self.getCompromiseCameraPos(), self.getLookAtPoint())
         else:
