@@ -54,17 +54,9 @@ class ToonBase(OTPBase.OTPBase):
             ratio = round(width / height, 2)
             self.resDict.setdefault(ratio, []).append(res)
 
-        # Get the native width, height and ratio:
-        if sys.platform == 'win32':  # Use displayInfo.
-            self.nativeWidth = displayInfo.getMaximumWindowWidth()
-            self.nativeHeight = displayInfo.getMaximumWindowHeight()
-        elif sys.platform == 'darwin':
-            self.nativeWidth = 800
-            self.nativeHeight = 600
-        else:  # Use PyGTK.
-            import gtk
-            self.nativeWidth = gtk.gdk.screen_width()
-            self.nativeHeight = gtk.gdk.screen_height()
+        self.nativeWidth = 800
+        self.nativeHeight = 600
+
         self.nativeRatio = round(
             float(self.nativeWidth) / float(self.nativeHeight), 2)
 
@@ -552,3 +544,4 @@ class ToonBase(OTPBase.OTPBase):
         wp = WindowProperties()
         wp.setMinimized(True)
         base.win.requestProperties(wp)
+
