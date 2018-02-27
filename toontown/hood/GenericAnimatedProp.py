@@ -10,6 +10,7 @@ class GenericAnimatedProp(AnimatedProp.AnimatedProp):
     notify = DirectNotifyGlobal.directNotify.newCategory('GenericAnimatedProp')
     AnimsUsingWav = []
 
+
     def __init__(self, node):
         AnimatedProp.AnimatedProp.__init__(self, node)
         self.origAnimNameToSound = {}
@@ -39,11 +40,13 @@ class GenericAnimatedProp(AnimatedProp.AnimatedProp):
         self.setupActor(node)
         self.code = code
 
+
     def delete(self):
         AnimatedProp.AnimatedProp.delete(self)
         self.node.cleanup()
         del self.node
         del self.trashcan
+
 
     def enter(self):
         self.node.postFlatten()
@@ -62,12 +65,15 @@ class GenericAnimatedProp(AnimatedProp.AnimatedProp):
         if doAnimLoop:
             self.node.loop('anim')
 
+
     def exit(self):
         AnimatedProp.AnimatedProp.exit(self)
         self.node.stop()
 
+
     def getActor(self):
         return self.node
+
 
     def setupActor(self, node):
         anim = node.getTag('DNAAnim')
@@ -77,12 +83,13 @@ class GenericAnimatedProp(AnimatedProp.AnimatedProp):
         self.trashcan.pose('anim', 0)
         self.node = self.trashcan
 
+
     def calcHoodId(self, node):
         self.hoodId = ToontownGlobals.ToontownCentral
         fullString = str(node)
         splits = fullString.split('/')
 
-
+        # Check if normal object or animated, if everything fails set the hoodId and visId to 0
         try:
             if type(splits[2]) == int:
                 visId = int(splits[2])
@@ -97,7 +104,8 @@ class GenericAnimatedProp(AnimatedProp.AnimatedProp):
         except Exception, generic:
             if 'Editor' not in fullString:
                 self.notify.warning("calcHoodId couldn't parse %s using 0" % fullString)
-
+            self.hoodId = 0
+            self.visId = 0
 
 
     def createSoundInterval(self, origAnimNameWithPath, maximumDuration):
