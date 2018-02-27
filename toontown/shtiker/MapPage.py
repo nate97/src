@@ -75,7 +75,6 @@ class MapPage(ShtikerPage.ShtikerPage):
             text=TTLocalizer.MapPageBackToPlayground,
             text_scale=TTLocalizer.MPsafeZoneButton,
             text_pos=(0, -0.02),
-            textMayChange=0,
             command=self.backToSafeZone)
         self.goHomeButton = DirectButton(
             parent=self.map,
@@ -86,7 +85,6 @@ class MapPage(ShtikerPage.ShtikerPage):
             text=TTLocalizer.MapPageGoHome,
             text_scale=TTLocalizer.MPgoHomeButton,
             text_pos=(0, -0.02),
-            textMayChange=0,
             command=self.goHome)
         self.goHomeButton.hide()
         guiButton.removeNode()

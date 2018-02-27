@@ -631,7 +631,7 @@ class CogTrackQuest(CogQuest):
 
     def doesCogCount(self, avId, cogDict, zoneId, avList):
         questCogTrack = self.getCogTrack()
-        return (questCogTrack == cogDict['track']) and (avId in avList) and self.isLocationMatch(zoneId)
+        return questCogTrack == cogDict['track'] and avId in cogDict['activeToons'] and self.isLocationMatch(zoneId)
 
 
 class CogLevelQuest(CogQuest):
@@ -691,7 +691,7 @@ class CogLevelQuest(CogQuest):
 
     def doesCogCount(self, avId, cogDict, zoneId, avList):
         questCogLevel = self.getCogLevel()
-        return (questCogLevel <= cogDict['level']) and (avId in avList) and self.isLocationMatch(zoneId)
+        return questCogLevel <= cogDict['level'] and avId in cogDict['activeToons'] and self.isLocationMatch(zoneId)
 
 
 class SkelecogQBase:
@@ -703,7 +703,7 @@ class SkelecogQBase:
             return TTLocalizer.SkeletonP
 
     def doesCogCount(self, avId, cogDict, zoneId, avList):
-        return cogDict['isSkelecog'] and (avId in avList) and self.isLocationMatch(zoneId)
+        return cogDict['isSkelecog'] and avId in cogDict['activeToons'] and self.isLocationMatch(zoneId)
 
 
 class SkelecogQuest(CogQuest, SkelecogQBase):

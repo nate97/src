@@ -81,19 +81,23 @@ class GenericAnimatedProp(AnimatedProp.AnimatedProp):
         self.hoodId = ToontownGlobals.ToontownCentral
         fullString = str(node)
         splits = fullString.split('/')
+
+
         try:
-            visId = int(splits[2])
-            self.visId = visId
-            self.hoodId = ZoneUtil.getCanonicalHoodId(visId)
-            self.notify.debug('calcHoodId %d from %s' % (self.hoodId, fullString))
-        # NF
-        # TEMP FIX
+            if type(splits[2]) == int:
+                visId = int(splits[2])
+                self.visId = visId
+                self.hoodId = ZoneUtil.getCanonicalHoodId(visId)
+                self.notify.debug('calcHoodId %d from %s' % (self.hoodId, fullString))
+            else:
+                # Probably an animated prop...
+                visId = int(splits[4])
+                self.visId = visId
+                self.hoodId = ZoneUtil.getCanonicalHoodId(visId)
         except Exception, generic:
             if 'Editor' not in fullString:
                 self.notify.warning("calcHoodId couldn't parse %s using 0" % fullString)
-            visId = int(splits[4])
-            self.visId = visId
-            self.hoodId = ZoneUtil.getCanonicalHoodId(visId)
+
 
 
     def createSoundInterval(self, origAnimNameWithPath, maximumDuration):
