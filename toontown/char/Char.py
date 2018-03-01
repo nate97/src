@@ -114,7 +114,7 @@ class Char(Avatar.Avatar):
             Avatar.Avatar.delete(self)
 
     def updateCharDNA(self, newDNA):
-        if newDNA.name != self.style.name:
+        if newDNA.name != self.style.name_:
             self.swapCharModel(newDNA)
 
     def setDNAString(self, dnaString):
@@ -131,7 +131,7 @@ class Char(Avatar.Avatar):
             self.initializeDropShadow()
             self.initializeNametag3d()
             self.nametag3d.setBin('fixed', 0)
-            if self.name == 'chip' or self.name == 'dale' or self.name == 'police_chip' or self.name == 'jailbird_dale':
+            if self.name_ == 'chip' or self.name_ == 'dale' or self.name_ == 'police_chip' or self.name_ == 'jailbird_dale':
                 self.find('**/drop-shadow').setScale(0.33)
 
     def setLODs(self):
@@ -142,49 +142,49 @@ class Char(Avatar.Avatar):
         levelTwoOut = base.config.GetInt('lod2-out', 50)
         levelThreeIn = base.config.GetInt('lod3-in', 280)
         levelThreeOut = base.config.GetInt('lod3-out', 100)
-        self.addLOD(LODModelDict[self.style.name][0], levelOneIn, levelOneOut)
-        self.addLOD(LODModelDict[self.style.name][1], levelTwoIn, levelTwoOut)
-        self.addLOD(LODModelDict[self.style.name][2], levelThreeIn, levelThreeOut)
+        self.addLOD(LODModelDict[self.style.name_][0], levelOneIn, levelOneOut)
+        self.addLOD(LODModelDict[self.style.name_][1], levelTwoIn, levelTwoOut)
+        self.addLOD(LODModelDict[self.style.name_][2], levelThreeIn, levelThreeOut)
 
     def generateChar(self):
         dna = self.style
-        self.name = dna.getCharName()
+        self.name_ = dna.getCharName()
         self.geoEyes = 0
-        if len(LODModelDict[dna.name]) > 1:
+        if len(LODModelDict[dna.name_]) > 1:
             self.setLODs()
-        filePrefix = ModelDict[dna.name]
-        if self.name == 'mickey':
+        filePrefix = ModelDict[dna.name_]
+        if self.name_ == 'mickey':
             height = 3.0
-        elif self.name == 'vampire_mickey':
+        elif self.name_ == 'vampire_mickey':
             height = 3.0
-        elif self.name == 'minnie':
+        elif self.name_ == 'minnie':
             height = 3.0
-        elif self.name == 'witch_minnie':
+        elif self.name_ == 'witch_minnie':
             height = 3.0
-        elif self.name == 'goofy':
+        elif self.name_ == 'goofy':
             height = 4.8
-        elif self.name == 'super_goofy':
+        elif self.name_ == 'super_goofy':
             height = 4.8
-        elif self.name == 'donald' or self.name == 'donald-wheel' or self.name == 'franken_donald':
+        elif self.name_ == 'donald' or self.name_ == 'donald-wheel' or self.name_ == 'franken_donald':
             height = 4.5
-        elif self.name == 'daisy' or self.name == 'sockHop_daisy':
+        elif self.name_ == 'daisy' or self.name_ == 'sockHop_daisy':
             height = 4.5
-        elif self.name == 'pluto':
+        elif self.name_ == 'pluto':
             height = 3.0
-        elif self.name == 'western_pluto':
+        elif self.name_ == 'western_pluto':
             height = 4.5
-        elif self.name == 'clarabelle':
+        elif self.name_ == 'clarabelle':
             height = 3.0
-        elif self.name == 'chip':
+        elif self.name_ == 'chip':
             height = 2.0
-        elif self.name == 'dale':
+        elif self.name_ == 'dale':
             height = 2.0
-        elif self.name == 'police_chip':
+        elif self.name_ == 'police_chip':
             height = 2.0
-        elif self.name == 'jailbird_dale':
+        elif self.name_ == 'jailbird_dale':
             height = 2.0
         self.lodStrings = []
-        for lod in LODModelDict[self.style.name]:
+        for lod in LODModelDict[self.style.name_]:
             self.lodStrings.append(str(lod))
 
         if self.lodStrings:
@@ -193,7 +193,7 @@ class Char(Avatar.Avatar):
                     lodName = lodStr
                 else:
                     lodName = 'lodRoot'
-                if self.name == 'goofy':
+                if self.name_ == 'goofy':
                     self.loadModel(filePrefix + '-' + lodStr, lodName=lodName)
                 else:
                     self.loadModel(filePrefix + lodStr, lodName=lodName)
@@ -201,7 +201,7 @@ class Char(Avatar.Avatar):
         else:
             self.loadModel(filePrefix)
         animDict = {}
-        animList = AnimDict[self.style.name]
+        animList = AnimDict[self.style.name_]
         for anim in animList:
             animFilePrefix = filePrefix[:6] + str(anim[2]) + filePrefix[7:]
             animDict[anim[0]] = animFilePrefix + anim[1]
@@ -214,9 +214,9 @@ class Char(Avatar.Avatar):
             self.loadAnims(animDict, lodName=lodName)
 
         self.setHeight(height)
-        self.loadDialogue(dna.name)
+        self.loadDialogue(dna.name_)
         self.ears = []
-        if self.name == 'mickey' or self.name == 'vampire_mickey' or self.name == 'minnie':
+        if self.name_ == 'mickey' or self.name_ == 'vampire_mickey' or self.name_ == 'minnie':
             for bundle in self.getPartBundleDict().values():
                 bundle = bundle['modelRoot'].getBundle()
                 earNull = bundle.findChild('sphere3')
@@ -251,7 +251,7 @@ class Char(Avatar.Avatar):
         self.rpupil = None
         self.eyesOpen = None
         self.eyesClosed = None
-        if self.name == 'mickey' or self.name == 'minnie':
+        if self.name_ == 'mickey' or self.name_ == 'minnie':
             self.eyesOpen = loader.loadTexture('phase_3/maps/eyes1.jpg', 'phase_3/maps/eyes1_a.rgb')
             self.eyesClosed = loader.loadTexture('phase_3/maps/mickey_eyes_closed.jpg', 'phase_3/maps/mickey_eyes_closed_a.rgb')
             self.eyes = self.find('**/1200/**/eyes')
@@ -261,14 +261,14 @@ class Char(Avatar.Avatar):
             for lodName in self.getLODNames():
                 self.drawInFront('joint_pupil?', 'eyes*', -3, lodName=lodName)
 
-        elif (self.name == 'witch_minnie' or
-              self.name == 'vampire_mickey' or
-              self.name == 'super_goofy' or
-              self.name == 'western_pluto' or
-              self.name == 'police_chip' or
-              self.name == 'jailbird_dale' or
-              self.name == 'franken_donald' or
-              self.name == 'sockHop_daisy'):
+        elif (self.name_ == 'witch_minnie' or
+              self.name_ == 'vampire_mickey' or
+              self.name_ == 'super_goofy' or
+              self.name_ == 'western_pluto' or
+              self.name_ == 'police_chip' or
+              self.name_ == 'jailbird_dale' or
+              self.name_ == 'franken_donald' or
+              self.name_ == 'sockHop_daisy'):
             self.geoEyes = 1
             self.eyeOpenList = []
             self.eyeCloseList = []
@@ -284,7 +284,7 @@ class Char(Avatar.Avatar):
             for part in self.eyeCloseList:
                 part.hide()
 
-        elif self.name == 'pluto':
+        elif self.name_ == 'pluto':
             self.eyesOpen = loader.loadTexture('phase_6/maps/plutoEyesOpen.jpg', 'phase_6/maps/plutoEyesOpen_a.rgb')
             self.eyesClosed = loader.loadTexture('phase_6/maps/plutoEyesClosed.jpg', 'phase_6/maps/plutoEyesClosed_a.rgb')
             self.eyes = self.find('**/1000/**/eyes')
@@ -293,7 +293,7 @@ class Char(Avatar.Avatar):
             for lodName in self.getLODNames():
                 self.drawInFront('joint_pupil?', 'eyes*', -3, lodName=lodName)
 
-        elif self.name == 'daisy':
+        elif self.name_ == 'daisy':
             self.geoEyes = 1
             self.eyeOpenList = []
             self.eyeCloseList = []
@@ -311,12 +311,12 @@ class Char(Avatar.Avatar):
             for part in self.eyeCloseList:
                 part.hide()
 
-        elif self.name == 'donald-wheel':
+        elif self.name_ == 'donald-wheel':
             self.eyes = self.find('**/eyes')
             self.lpupil = self.find('**/joint_pupilL')
             self.rpupil = self.find('**/joint_pupilR')
             self.drawInFront('joint_pupil?', 'eyes*', -3)
-        elif self.name == 'chip' or self.name == 'dale':
+        elif self.name_ == 'chip' or self.name_ == 'dale':
             self.eyesOpen = loader.loadTexture('phase_6/maps/dale_eye1.jpg', 'phase_6/maps/dale_eye1_a.rgb')
             self.eyesClosed = loader.loadTexture('phase_6/maps/chip_dale_eye1_blink.jpg', 'phase_6/maps/chip_dale_eye1_blink_a.rgb')
             self.eyes = self.find('**/eyes')
@@ -332,12 +332,12 @@ class Char(Avatar.Avatar):
         if self.eyesClosed:
             self.eyesClosed.setMinfilter(Texture.FTLinear)
             self.eyesClosed.setMagfilter(Texture.FTLinear)
-        if self.name == 'mickey':
+        if self.name_ == 'mickey':
             pupilParent = self.rpupil.getParent()
             pupilOffsetNode = pupilParent.attachNewNode('pupilOffsetNode')
             pupilOffsetNode.setPos(0, 0.025, 0)
             self.rpupil.reparentTo(pupilOffsetNode)
-        self.__blinkName = 'blink-' + self.name
+        self.__blinkName = 'blink-' + self.name_
         return
 
     def swapCharModel(self, charStyle):
