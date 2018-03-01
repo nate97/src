@@ -166,9 +166,9 @@ class Char(Avatar.Avatar):
         elif self.name_ == 'super_goofy':
             height = 4.8
         elif self.name_ == 'donald' or self.name_ == 'donald-wheel' or self.name_ == 'franken_donald':
-            height = 4.5
+            height = 3.5
         elif self.name_ == 'daisy' or self.name_ == 'sockHop_daisy':
-            height = 4.5
+            height = 3.5
         elif self.name_ == 'pluto':
             height = 3.0
         elif self.name_ == 'western_pluto':
@@ -176,13 +176,13 @@ class Char(Avatar.Avatar):
         elif self.name_ == 'clarabelle':
             height = 3.0
         elif self.name_ == 'chip':
-            height = 2.0
+            height = 1.5
         elif self.name_ == 'dale':
-            height = 2.0
+            height = 1.5
         elif self.name_ == 'police_chip':
-            height = 2.0
+            height = 1.5
         elif self.name_ == 'jailbird_dale':
-            height = 2.0
+            height = 1.5
         self.lodStrings = []
         for lod in LODModelDict[self.style.name_]:
             self.lodStrings.append(str(lod))
