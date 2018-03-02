@@ -14,8 +14,8 @@ aux-display pandadx9
 aux-display p3tinydisplay
 
 # Disable antialiasing
-framebuffer-multisample 4
-multisamples 4
+#framebuffer-multisample 1
+#multisamples 2
 
 # Models:
 model-cache-models #f

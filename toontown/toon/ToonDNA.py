@@ -2527,8 +2527,6 @@ class ToonDNA(AvatarDNA.AvatarDNA):
             return False
         if armColor >= len(allColorsList):
             return False
-        if gloveColor != 0:
-            return False
         if legColor >= len(allColorsList):
             return False
         if headColor >= len(allColorsList):
