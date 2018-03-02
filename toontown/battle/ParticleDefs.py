@@ -1721,9 +1721,6 @@ def guiltTrip(self):
 
 @particle
 def soundBreak(self):
-    # NJF
-    
-    # NJF
     self.reset()
     self.setPos(0.000, 0.000, 0.000)
     self.setHpr(0.000, 0.000, 0.000)
@@ -1763,11 +1760,10 @@ def soundBreak(self):
     p0.renderer.setXScaleFlag(1)
     p0.renderer.setYScaleFlag(1)
     p0.renderer.setAnimAngleFlag(1)
-    # The inital and final scales are broken...
-    p0.renderer.setInitialXScale(0.0000)
-    p0.renderer.setFinalXScale(5.0000)
+    p0.renderer.setInitialXScale(1.5000)
+    p0.renderer.setFinalXScale(1.5000)
     p0.renderer.setInitialYScale(0.0000)
-    p0.renderer.setFinalYScale(5.0000)
+    p0.renderer.setFinalYScale(9.0000)
     p0.renderer.setNonanimatedTheta(319.3987)
     p0.renderer.setAlphaBlendMethod(BaseParticleRenderer.PPBLENDLINEAR)
     p0.renderer.setAlphaDisable(0)

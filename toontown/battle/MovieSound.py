@@ -27,7 +27,7 @@ def doSounds(sounds):
     if len(sounds) == 0:
         return (None, None)
     npcArrivals, npcDepartures, npcs = MovieNPCSOS.doNPCTeleports(sounds)
-    mtrack = Parallel()
+    mtrack = Parallel() 
     hitCount = 0
     prevLevel = 0
     prevSounds = [[],
@@ -83,6 +83,7 @@ def __getSuitTrack(sound, lastSoundThatHit, delay, hitCount, targets, totalDamag
                 breakEffect.setDepthWrite(0)
                 breakEffect.setDepthTest(0)
                 breakEffect.setTwoSided(1)
+                breakEffect.setBin('fixed', 10)
                 soundEffect = globalBattleSoundCache.getSound(hitSoundFiles[0])
             suitTrack.append(Wait(delay + tSuitReact))
             if isUber:
@@ -185,7 +186,7 @@ def __createToonInterval(sound, delay, toon, operaInstrument = None):
         sprayEffect.setTwoSided(1)
         I1 = 2.8
         retval.append(ActorInterval(toon, 'sound', playRate=1.0, startTime=0.0, endTime=I1))
-        retval.append(Func(setPosFromOther, sprayEffect, operaInstrument, Point3(0, 1.6, -0.18)))
+        retval.append(Func(setPosFromOther, sprayEffect, operaInstrument, (0, 1.6, -0.18)))
         retval.append(__getPartTrack(sprayEffect, 0.0, 6.0, [sprayEffect, toon, 0], softStop=-3.5))
         retval.append(ActorInterval(toon, 'sound', playRate=1.0, startTime=I1))
     else:
