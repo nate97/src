@@ -10,8 +10,8 @@ shard-mid-pop 150
 # Core features:
 want-housing #t
 want-pets #f
-want-parties #f
-want-cogdominiums #f
+want-parties #t
+want-cogdominiums #t
 boarding-group-merges #t
 
 # Sellbot boss:
