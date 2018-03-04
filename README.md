@@ -4,8 +4,7 @@ Toontown is a free, non-profit game inspired by _Disney's Toontown Online_.
 
 
 ### The Goal ###
-The goal of this project is create an opensource **vanilla** _Toontown Online_.
-
+The idea behind this project is to restore Toontown Online to its **original state** that the game was in when it closed in 2013. I will not be accepting modifications that change the gameplay, if you would like to do so, please fork the repository and add your tweaks there.
 
 ### Contact ###
 This repository will soon have a Discord server. Thank you.
