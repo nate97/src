@@ -11,7 +11,7 @@ shard-mid-pop 150
 want-housing #t
 want-pets #f
 want-parties #t
-want-cogdominiums #t
+want-cogdominiums #f
 boarding-group-merges #t
 
 # Sellbot boss:

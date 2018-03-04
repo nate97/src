@@ -120,7 +120,7 @@ want-cogbuildings #t
 # Optional:
 show-total-population #t
 want-mat-all-tailors #t
-want-long-pattern-game #t
+want-long-pattern-game #f
 want-code-redemption #t
 
 want-parties #t
@@ -139,7 +139,9 @@ want-live-updates #t
 
 # Halloween
 #want-halloween #t
-active-holidays 60, 66, 65, 64, 63, 70, 62, 61
+active-holidays 60, 61, 62, 63, 64, 65, 66
+
+
 
 
 

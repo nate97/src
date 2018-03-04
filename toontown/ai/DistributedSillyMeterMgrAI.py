@@ -1,6 +1,5 @@
 from direct.directnotify import DirectNotifyGlobal
-from direct.distributed.DistributedObjectAI import DistributedObjectAI
+from toontown.ai.DistributedPhaseEventMgrAI import DistributedPhaseEventMgrAI
 
-class DistributedSillyMeterMgrAI(DistributedObjectAI):
+class DistributedSillyMeterMgrAI(DistributedPhaseEventMgrAI):
     notify = DirectNotifyGlobal.directNotify.newCategory("DistributedSillyMeterMgrAI")
-
