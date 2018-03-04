@@ -369,9 +369,10 @@ class ToontownRPCHandler(ToontownRPCHandlerBase):
             now = datetime.date.today()
             release = str(now + datetime.timedelta(hours=duration))
         else:
-            release = '0000-00-00'  # Permanent ban.
-        executeHttpRequest('accounts/ban/', Id=userId, Release=release,
-                           Reason=reason)
+        pass
+        #    release = '0000-00-00'  # Permanent ban.
+        #executeHttpRequest('accounts/ban/', Id=userId, Release=release,
+        #                   Reason=reason)
         self.rpc_kickUser(userId, 152, reason)
         return True
 
