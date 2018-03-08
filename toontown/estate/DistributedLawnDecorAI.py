@@ -59,21 +59,26 @@ class DistributedLawnDecorAI(DistributedNodeAI):
         self.plotIndex = gardenData.getUint8()
 
 
-        if self.plotIndex != GardenGlobals.PlanterBox:
+
+        if self.plotIndex == 91 or self.plotIndex == 92 or self.plotIndex == 93:
+            print "We DO have a flowerbox!!!"
+
+            # TEMP CODE
+            self.boxType = 92
+            #self.boxType = GardenGlobals.getBoxType(self.ownerIndex, self.plotIndex)
+            self.pos = (0,0,50)
+            self.heading = 250
+
+        else:
+            print "Not a flowerbox!"
+            print self.plotIndex2
+            print "Not a flowerbox!"
 
             self.plotType = GardenGlobals.getPlotType(self.ownerIndex, self.plotIndex)
             self.pos = GardenGlobals.getPlotPos(self.ownerIndex, self.plotIndex)
-            print self.pos
             self.heading = GardenGlobals.getPlotHeading(self.ownerIndex, self.plotIndex)
-            print self.heading
-            print "Heading^^^"
 
-        else:
 
-            print "YAS?????????????"
-            self.boxType = GardenGlobals.getBoxType(self.ownerIndex, self.plotIndex)
-            self.pos = (0,0,50)
-            self.heading = 250
 
 
 

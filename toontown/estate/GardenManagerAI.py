@@ -20,7 +20,9 @@ occupier2Class = {
     GardenGlobals.ToonStatuaryPlot: DistributedToonStatuaryAI,
     GardenGlobals.ChangingStatuaryPlot: DistributedChangingStatuaryAI,
     GardenGlobals.AnimatedStatuaryPlot: DistributedAnimatedStatuaryAI,
-    GardenGlobals.PlanterBox: DistributedGardenBoxAI
+    91: DistributedGardenBoxAI,
+    92: DistributedGardenBoxAI,
+    93: DistributedGardenBoxAI
 }
 
 
@@ -51,20 +53,25 @@ class GardenManagerAI:
         plots = GardenGlobals.getGardenPlots(self.house.housePos)
         boxes = GardenGlobals.getBoxPlots(self.house.housePos)
         
-        tester = plots + boxes
+        combined = plots + boxes
 
-        length_p_b = len(plots) + len(boxes)
+        total_length = len(plots) + len(boxes)
 
-        gardenData.addUint8(length_p_b)
+        gardenData.addUint8(total_length)
 
-        for i, plotData in enumerate(tester):
+        for i, plotData in enumerate(combined):
 
-            if i != 6:
-                gardenData.addUint8(GardenGlobals.EmptyPlot)
+            #print plotData[3]
+            #print "DATAAAAAAAAAAAAAA"
+
+            if plotData[3] == 91 or plotData[3] == 92 or plotData[3] == 93:
+                gardenData.addUint8(plotData[3])
+                #print "FlowerPot GardenManager"
+                gardenData.addUint8(i)
             else:
-                gardenData.addUint8(GardenGlobals.PlanterBox)
-
-            gardenData.addUint8(i)
+                gardenData.addUint8(GardenGlobals.EmptyPlot)
+                #print "EmptyPlot GardenManager"
+                gardenData.addUint8(i)
 
         self.house.b_setGardenData(gardenData.getMessage())
         self.loadGarden()
@@ -75,17 +82,23 @@ class GardenManagerAI:
         gardenData = PyDatagramIterator(dg)
 
         plotCount = gardenData.getUint8()
+
         for _ in xrange(plotCount):
             occupier = gardenData.getUint8()
-            print occupier
+
             if occupier not in occupier2Class:
                 continue
 
-            plot = occupier2Class[occupier](self.air, self, self.house.housePos)
-            plot.construct(gardenData)
-            plot.generateWithRequired(self.house.zoneId)
-
-            self.plots.append(plot)
+            if occupier == 91 or occupier == 92 or occupier == 93:
+                box = occupier2Class[occupier](self.air, self, self.house.housePos)
+                box.construct(gardenData)
+                box.generateWithRequired(self.house.zoneId)
+                self.boxes.append(box)
+            else:
+                plot = occupier2Class[occupier](self.air, self, self.house.housePos)
+                plot.construct(gardenData)
+                plot.generateWithRequired(self.house.zoneId)
+                self.plots.append(plot)
 
 
     def updateGardenData(self):
@@ -238,78 +251,6 @@ class GardenManagerAI:
             trackBonus[level] = max(treesGrown[level])
 
         av.b_setTrackBonusLevel(trackBonus)
-
-
-
-
-
-
-
-
-
-
-
-"""
-
-
-    def createBlankGarden(self):
-        gardenData = PyDatagram()
-
-
-        plots = GardenGlobals.getGardenPlots(self.house.housePos)
-        boxes = GardenGlobals.getBoxPlots(self.house.housePos)
-
-        print plots
-        print boxes
-        print "the plots"
-
-        box_plot_length = len(plots) + len(boxes)
-
-        gardenData.addUint8(box_plot_length)
-
-        for i, plotData in enumerate(plots):
-            gardenData.addUint8(GardenGlobals.EmptyPlot)
-            gardenData.addUint8(i)
-
-
-        for i, boxData in enumerate(boxes):
-            gardenData.addUint8(GardenGlobals.PlanterBox)
-            gardenData.addUint8(i)
-
-        self.house.b_setGardenData(gardenData.getMessage())
-        self.loadGarden()
-
-    def createGardenFromData(self, gardenData):
-        dg = PyDatagram(gardenData)
-        gardenData = PyDatagramIterator(dg)
-
-        plotCount = gardenData.getUint8()
-        for _ in xrange(plotCount):
-            occupier = gardenData.getUint8()
-            print occupier
-            if occupier not in occupier2Class:
-                continue
-
-
-            if occupier = GardenGlobals.EmptyPlot:
-                plot = occupier2Class[occupier](self.air, self, self.house.housePos)
-                plot.construct(gardenData)
-                plot.generateWithRequired(self.house.zoneId)
-
-                self.plots.append(plot)
-            else:
-                box = occupier2Class[occupier](self.air, self, self.house.housePos)
-                box.construct(gardenData)
-                box.generateWithRequired(self.house.zoneId)
-
-                self.boxes.append(box)
-
-
-"""
-
-
-
-
 
 
 

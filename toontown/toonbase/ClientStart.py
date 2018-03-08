@@ -17,9 +17,34 @@ from direct.extensions_native import NodePath_extensions
 from panda3d.core import loadPrcFile
 
 
-if __debug__:
-    loadPrcFile('config/general.prc')
-    loadPrcFile('config/release/dev.prc')
+if not __debug__:
+    from panda3d.core import *
+    import platform
+    import glob
+
+    gCURRENT_PLATFORM = platform.system()
+
+    if gCURRENT_PLATFORM == 'Windows':
+        gB_PATH = '\\'
+        gRE_PATH = '.\\resources\\'
+    else:
+        gB_PATH = '/'
+        gRE_PATH = '../resources/'
+
+    get_model_path().append_directory(gB_PATH)
+    vfs = VirtualFileSystem.getGlobalPtr()
+
+    for file in glob.glob(gRE_PATH + '*.mf'):
+        mf = Multifile()
+        mf.openReadWrite(Filename(file))
+        names = mf.getSubfileNames()
+        vfs.mount(mf, Filename(gB_PATH), 0)
+        print('mounted: ' + file[13:])
+
+
+#if __debug__:
+loadPrcFile('config/general.prc')
+loadPrcFile('config/release/dev.prc')
 
 
 from direct.directnotify.DirectNotifyGlobal import directNotify
