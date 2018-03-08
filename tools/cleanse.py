@@ -7,7 +7,7 @@
 import os
 
 
-extensions = ('.pyc', '.pyo')
+extensions = ('.pyc', '.pyo',)
 trashFiles = ('parsetab.py',)
 
 print 'Changing to root directory...'

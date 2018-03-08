@@ -19,17 +19,10 @@ from panda3d.core import loadPrcFile
 
 if not __debug__:
     from panda3d.core import *
-    import platform
     import glob
 
-    gCURRENT_PLATFORM = platform.system()
-
-    if gCURRENT_PLATFORM == 'Windows':
-        gB_PATH = '\\'
-        gRE_PATH = '.\\resources\\'
-    else:
-        gB_PATH = '/'
-        gRE_PATH = '../resources/'
+    gB_PATH = '/'
+    gRE_PATH = '../resources/'
 
     get_model_path().append_directory(gB_PATH)
     vfs = VirtualFileSystem.getGlobalPtr()
