@@ -1,7 +1,8 @@
 from direct.directnotify import DirectNotifyGlobal
 import string
 import LevelConstants
-from direct.showbase.PythonUtil import uniqueElements
+from direct.showbase.PythonUtil import uniqueElements 
+#from direct.showbase.PythonUtil import lineInfo
 import types
 
 class Level:
@@ -61,6 +62,7 @@ class Level:
             del self.levelSpec
 
     def createEntityCreator(self):
+        #Level.notify.error('concrete Level class must override %s' % lineInfo()[2])
         Level.notify.error('concrete Level class must override')
 
     def createAllEntities(self, priorityTypes = []):
