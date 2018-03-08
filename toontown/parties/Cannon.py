@@ -8,7 +8,6 @@ from toontown.toon import ToonHead
 from toontown.minigame.CannonGameGlobals import *
 from toontown.toonbase import ToontownGlobals
 from toontown.parties.PartyUtils import toRadians, calcVelocity
-from direct.showbase.PythonUtil import StackTrace
 from toontown.nametag.NametagFloat3d import NametagFloat3d
 from toontown.nametag.Nametag import Nametag
 CANNON_ROTATION_MIN = -70
@@ -121,7 +120,7 @@ class Cannon:
         toonName = 'None'
         if toon:
             toonName = toon.getName()
-        self.notify.debug('__setToonInside self.toonInside=%s\nstack=%s' % (toonName, StackTrace().compact()))
+        self.notify.debug('__setToonInside self.toonInside=%s' % (toonName))
         self.toonInside.stopSmooth()
         self.toonOriginalScale = toon.getScale()
         toon.useLOD(1000)
@@ -188,7 +187,7 @@ class Cannon:
         toonName = 'None'
         if self.toonInside:
             toonName = self.toonInside.getName()
-        self.notify.debug('__cleanupToonInside self.toonInside=%s\nstack=%s' % (toonName, StackTrace().compact()))
+        self.notify.debug('__cleanupToonInside self.toonInside=%s' % (toonName))
         if self.toonHead != None:
             self.hideToonHead()
             if hasattr(self.toonInside, 'nametag'):

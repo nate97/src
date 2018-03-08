@@ -1254,17 +1254,18 @@ class OTPClientRepository(ClientRepositoryBase):
                 msg += '\n  %s' % hook
                 for obj in whoAccepts:
                     msg += '\n   OBJECT:%s, %s %s' % (obj, obj.__class__, whoAccepts[obj])
-                    if hasattr(obj, 'getCreationStackTraceCompactStr'):
-                        msg += '\n   CREATIONSTACKTRACE:%s' % obj.getCreationStackTraceCompactStr()
-                    else:
-                        try:
-                            value = whoAccepts[obj]
-                            callback = value[0]
-                            guiObj = callback.im_self
-                            if hasattr(guiObj, 'getCreationStackTraceCompactStr'):
-                                msg += '\n   CREATIONSTACKTRACE:%s' % guiObj.getCreationStackTraceCompactStr()
-                        except:
-                            pass
+                    # NF
+                    #if hasattr(obj, 'getCreationStackTraceCompactStr'):
+                    #    msg += '\n   CREATIONSTACKTRACE:%s' % obj.getCreationStackTraceCompactStr()
+                    #else:
+                    #    try:
+                    #        value = whoAccepts[obj]
+                    #        callback = value[0]
+                    #        guiObj = callback.im_self
+                    #        if hasattr(guiObj, 'getCreationStackTraceCompactStr'):
+                    #            msg += '\n   CREATIONSTACKTRACE:%s' % guiObj.getCreationStackTraceCompactStr()
+                    #    except:
+                    #        pass
 
             msg += '\n}\n'
             self.notify.warning(msg)
@@ -1928,7 +1929,8 @@ class OTPClientRepository(ClientRepositoryBase):
         else:
             ClientRepositoryBase.replayDeferredGenerate(self, msgType, extra)
 
-    @exceptionLogged(append=False)
+    # NF
+    #@exceptionLogged(append=False)
     def handleDatagram(self, di):
         if self.notify.getDebug():
             print 'ClientRepository received datagram:'

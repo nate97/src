@@ -22,7 +22,6 @@ import random
 import time
 import string
 import copy
-from direct.showbase.PythonUtil import StackTrace
 
 class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLookerAI.PetLookerAI, PetBase.PetBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedPetAI')
@@ -570,17 +569,18 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
         else:
             myDoId = 'No doId'
             myTaskName = 'No task name'
-            myStackTrace = StackTrace().trace
-            myOldStackTrace = 'No Trace'
+            # NF
+            #myStackTrace = StackTrace().trace
+            #myOldStackTrace = 'No Trace'
             if hasattr(self, 'doId'):
                 myDoId = self.doId
             if task:
                 myTaskName = task.name
-            if hasattr(self, 'destroyDoStackTrace'):
-                myOldStackTrace = self.destroyDoStackTrace.trace
-            simbase.air.writeServerEvent('Pet RequestDelete duplicate', myDoId, 'from task %s' % myTaskName)
-            simbase.air.writeServerEvent('Pet RequestDelete duplicate StackTrace', myDoId, '%s' % myStackTrace)
-            simbase.air.writeServerEvent('Pet RequestDelete duplicate OldStackTrace', myDoId, '%s' % myOldStackTrace)
+            #if hasattr(self, 'destroyDoStackTrace'):
+            #    myOldStackTrace = self.destroyDoStackTrace.trace
+            #simbase.air.writeServerEvent('Pet RequestDelete duplicate', myDoId, 'from task %s' % myTaskName)
+            #simbase.air.writeServerEvent('Pet RequestDelete duplicate StackTrace', myDoId, '%s' % myStackTrace)
+            #simbase.air.writeServerEvent('Pet RequestDelete duplicate OldStackTrace', myDoId, '%s' % myOldStackTrace)
             DistributedPetAI.notify.warning('double requestDelete from task %s' % myTaskName)
         self.setParent(ToontownGlobals.SPHidden)
         if hasattr(self, 'activated'):

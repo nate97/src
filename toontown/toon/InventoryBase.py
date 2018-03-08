@@ -10,7 +10,9 @@ class InventoryBase(DirectObject.DirectObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('InventoryBase')
 
     def __init__(self, toon, invStr = None):
-        self._createStack = str(StackTrace().compact())
+        # NF
+        #self._createStack = str(StackTrace().compact())
+        self._createStack = 'This is broken.'
         self.toon = toon
         if invStr == None:
             self.inventory = []

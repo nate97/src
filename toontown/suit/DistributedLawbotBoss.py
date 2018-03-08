@@ -5,7 +5,7 @@ from direct.fsm import FSM
 from direct.gui.DirectGui import *
 from direct.interval.IntervalGlobal import *
 from direct.showbase.PythonUtil import Functor
-from direct.showbase.PythonUtil import StackTrace
+#from direct.showbase.PythonUtil import StackTrace
 from direct.showbase.ShowBase import *
 from direct.task import Task
 import math
@@ -1785,8 +1785,9 @@ class DistributedLawbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
             self.notify.warning('returning from setTaunt, no attr nametag')
             gotError = True
         if gotError:
-            st = StackTrace()
-            print st
+            self.notify.warning('We have en error in setTaunt method, DistributedLawbotBoss')
+            #st = StackTrace()
+            #print st
             return
         chatString = TTLocalizer.LawbotBossTaunts[1]
         if tauntIndex == 0:
