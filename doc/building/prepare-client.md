@@ -1,6 +1,6 @@
 Client Build Preparation
 ========================
-The first step in building a distributable Toontown Infinite client is building ```GameData.bin```. ```GameData.bin``` is an encrypted blob of frozen Python code. It contains all of the code necessary to run the game. There are three steps to building this file:
+The first step in building a distributable Toontown client is building ```GameData.bin```. ```GameData.bin``` is an encrypted blob of frozen Python code. It contains all of the code necessary to run the game. There are three steps to building this file:
 
 * **Prepare for building**
 * [Build the frozen Python module](build-client.md)
@@ -22,7 +22,7 @@ Preparing the client for building is quite simple when using the ```prepare_clie
                              [modules [modules ...]]
     
     positional arguments:
-      modules               The Toontown Infinite modules to be included in the
+      modules               The Toontown modules to be included in the
                             build.
     
     optional arguments:
@@ -31,13 +31,13 @@ Preparing the client for building is quite simple when using the ```prepare_clie
                             The distribution token.
       --build-dir BUILD_DIR
                             The directory in which to store the build files.
-      --src-dir SRC_DIR     The directory of the Toontown Infinite source code.
+      --src-dir SRC_DIR     The directory of the Toontown source code.
       --server-ver SERVER_VER
                             The server version of this build. REVISION tokens will
                             be replaced with the current Git revision string.
       --build-mfs           When present, multifiles will be built.
       --resources-dir RESOURCES_DIR
-                            The directory of the Toontown Infinite resources.
+                            The directory of the Toontown resources.
       --include INCLUDE, -i INCLUDE
                             Explicitly include this file in the build.
       --exclude EXCLUDE, -x EXCLUDE
@@ -46,7 +46,7 @@ Preparing the client for building is quite simple when using the ```prepare_clie
 ## Example ##
 
     ppython -m prepare_client --distribution devdist --build-dir build --src-dir ..
-                              --server-ver infinite-REVISION --build-mfs
+                              --server-ver toontown-REVISION --build-mfs
                               --resources-dir ../resources
                               --include NonRepeatableRandomSourceUD.py
                               --include NonRepeatableRandomSourceAI.py

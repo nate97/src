@@ -26,7 +26,7 @@ class TTILauncher(LauncherBase):
     def __init__(self):
         self.http = HTTPClient()
 
-        self.logPrefix = 'infinite-'
+        self.logPrefix = 'toontown-'
 
         ltime = 1 and time.localtime()
         logSuffix = '%02d%02d%02d_%02d%02d%02d' % (ltime[0] - 2000,  ltime[1], ltime[2],
