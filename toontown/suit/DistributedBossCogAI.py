@@ -92,7 +92,6 @@ class DistributedBossCogAI(DistributedAvatarAI.DistributedAvatarAI):
         if not av is None:
             if av.getHp() <= 0:
                 if avId not in self.punishedToons:
-                    self.air.cogSuitMgr.removeParts(av, self.deptIndex)
                     self.punishedToons.append(avId)
 
         if avId in self.looseToons:
