@@ -149,7 +149,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self.houseId = 0
         self.money = 0
         self.bankMoney = 0
-        self.maxMoney = 10000
+        self.maxMoney = 0
         self.maxBankMoney = 0
         self.emblems = [0, 0]
         self.maxNPCFriends = 16
@@ -1345,8 +1345,11 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
     def getSpeedChatStyleIndex(self):
         return self.speedChatStyleIndex
 
+    def setMaxMoney(self, maxMoney):
+        self.maxMoney = maxMoney
+
     def getMaxMoney(self):
-        return 10000
+        return self.maxMoney
 
     def setMoney(self, money):
         if money != self.money:

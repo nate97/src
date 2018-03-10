@@ -8,6 +8,7 @@ from toontown.catalog.CatalogFlooringItem import CatalogFlooringItem
 from toontown.catalog.CatalogWainscotingItem import CatalogWainscotingItem
 from toontown.toonbase import ToontownGlobals
 from DistributedFurnitureItemAI import DistributedFurnitureItemAI
+from DistributedBankAI import DistributedBankAI
 from DistributedPhoneAI import DistributedPhoneAI
 from DistributedClosetAI import DistributedClosetAI
 from DistributedTrunkAI import DistributedTrunkAI
@@ -130,7 +131,7 @@ class DistributedFurnitureManagerAI(DistributedObjectAI):
                     item.furnitureType -= 10
                 do = DistributedClosetAI(self.air, self, item)
             elif item.getFlags() & FLBank:
-                continue # We dont want banks in the estates.
+                do = DistributedBankAI(self.air, self, item)
             elif item.getFlags() & FLPhone:
                 do = DistributedPhoneAI(self.air, self, item)
             else:
@@ -304,7 +305,7 @@ class DistributedFurnitureManagerAI(DistributedObjectAI):
                 item.furnitureType -= 10
             do = DistributedClosetAI(self.air, self, item)
         elif item.getFlags() & FLBank:
-            pass # We don't want banks in the estates
+            do = DistributedBankAI(self.air, self, item)
         elif item.getFlags() & FLPhone:
             do = DistributedPhoneAI(self.air, self, item)
         else:

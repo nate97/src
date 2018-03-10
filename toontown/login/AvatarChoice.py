@@ -9,12 +9,12 @@ from toontown.toonbase import TTLocalizer
 from direct.directnotify import DirectNotifyGlobal
 from toontown.toontowngui import TeaserPanel
 #from toontown.toonbase import UserFunnel
-NAME_ROTATIONS = (0, 0, 0, 0, 0, 0)
-NAME_POSITIONS = ((0, 0, 0.16),
- (0, 0, 0.3),
+NAME_ROTATIONS = (7, -11, 1, -5, 3.5, -5)
+NAME_POSITIONS = ((0, 0, 0.26),
+ (-0.03, 0, 0.25),
  (0, 0, 0.27),
- (0, 0, 0.25),
- (0, 0, 0.26),
+ (-0.03, 0, 0.25),
+ (0.03, 0, 0.26),
  (0, 0, 0.26))
 DELETE_POSITIONS = ((0.187, 0, -0.26),
  (0.31, 0, -0.167),
@@ -105,7 +105,7 @@ class AvatarChoice(DirectButton):
             self['text'] = ('', TTLocalizer.AvatarChoicePlayThisToon, TTLocalizer.AvatarChoicePlayThisToon)
             self['text_scale'] = TTLocalizer.ACplayThisToon
             self['text_fg'] = (1, 0.9, 0.1, 1)
-            self.nameText = DirectLabel(parent=self, relief=None, scale=0.08, pos=NAME_POSITIONS[position], text=self.name, hpr=(0, 0, NAME_ROTATIONS[position]), text_fg=(1, 1, 1, 1), text_wordwrap=8, text_font=ToontownGlobals.getToonFont(), state=DGG.DISABLED)
+            self.nameText = DirectLabel(parent=self, relief=None, scale=0.08, pos=NAME_POSITIONS[position], text=self.name, hpr=(0, 0, NAME_ROTATIONS[position]), text_fg=(1, 1, 1, 1), text_shadow=(0, 0, 0, 1), text_wordwrap=8, text_font=ToontownGlobals.getToonFont(), state=DGG.DISABLED)
             self.nameText.flattenStrong()
             if self.approvedName != '':
                 self.nameText['text'] = self.approvedName

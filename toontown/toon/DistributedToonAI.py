@@ -126,8 +126,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.fishingRod = 0
         self.fishingTrophies = []
         self.trackArray = []
-        self.emoteAccess = [0] * 26
-        self.maxMoney = 10000
+        self.emoteAccess = [0] * 25
         self.maxBankMoney = ToontownGlobals.MaxBankMoney
         self.gardenSpecials = []
         self.houseId = 0
@@ -2335,8 +2334,21 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     def getSpeedChatStyleIndex(self):
         return self.speedChatStyleIndex
 
+    def b_setMaxMoney(self, maxMoney):
+        self.d_setMaxMoney(maxMoney)
+        self.setMaxMoney(maxMoney)
+        if self.getMoney() > maxMoney:
+            self.b_setBankMoney(self.bankMoney + (self.getMoney() - maxMoney))
+            self.b_setMoney(maxMoney)
+
+    def d_setMaxMoney(self, maxMoney):
+        self.sendUpdate('setMaxMoney', [maxMoney])
+
+    def setMaxMoney(self, maxMoney):
+        self.maxMoney = maxMoney
+
     def getMaxMoney(self):
-        return 10000
+        return self.maxMoney
 
     def addMoney(self, deltaMoney):
         money = deltaMoney + self.money
@@ -2345,7 +2357,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         overflowMoney = money - self.maxMoney
         if overflowMoney > 0:
             bankMoney = self.bankMoney + overflowMoney
-            self.air.bankManager.setMoney(self.doId, bankMoney)
+            self.b_setBankMoney(bankMoney)
 
     def takeMoney(self, deltaMoney, bUseBank = True):
         totalMoney = self.money
@@ -2355,7 +2367,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             self.notify.warning('Not enough money! AvId: %s Has:%s Charged:%s' % (self.doId, totalMoney, deltaMoney))
             return False
         if bUseBank and deltaMoney > self.money:
-            self.air.bankManager.setMoney(self.doId, self.bankMoney - (deltaMoney - self.money))
+            self.b_setBankMoney(self.bankMoney - (deltaMoney - self.money))
             self.b_setMoney(0)
         else:
             self.b_setMoney(self.money - deltaMoney)
@@ -2387,8 +2399,21 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     def getTotalMoney(self):
         return self.money + self.bankMoney
 
+    def b_setMaxBankMoney(self, maxMoney):
+        self.d_setMaxBankMoney(maxMoney)
+        self.setMaxBankMoney(maxMoney)
+
+    def d_setMaxBankMoney(self, maxMoney):
+        self.sendUpdate('setMaxBankMoney', [maxMoney])
+
+    def setMaxBankMoney(self, maxMoney):
+        self.maxBankMoney = maxMoney
+
+    def getMaxBankMoney(self):
+        return self.maxBankMoney
+
     def b_setBankMoney(self, money):
-        bankMoney = min(money, ToontownGlobals.MaxBankMoney)
+        bankMoney = min(money, self.maxBankMoney)
         self.setBankMoney(bankMoney)
         self.d_setBankMoney(bankMoney)
 
@@ -4368,8 +4393,10 @@ def maxToon(missingTrack=None):
     invoker.b_setRewardHistory(Quests.ELDER_TIER, [])
 
     # Max their money:
+    invoker.b_setMaxMoney(250)
     invoker.b_setMoney(invoker.getMaxMoney())
-    invoker.b_setBankMoney(10000)
+    invoker.b_setBankMoney(MaxBankMoney)
+
 
     # Finally, unlock all of their pet phrases:
     if simbase.wantPets:
@@ -4456,10 +4483,11 @@ def money(money):
     Modifies the target's current money value.
     """
     target = spellbook.getTarget()
-    maxMoney = 10000
+    maxMoney = MaxBankMoney
     if not 0 <= money <= maxMoney:
         return 'Money value must be in xrange (0-%d).' % maxMoney
     target.b_setMoney(money)
+
     return "Set %s's money value to %d!" % (target.getName(), money)
 
 @magicWord(category=CATEGORY_PROGRAMMER, types=[str, int])

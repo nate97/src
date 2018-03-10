@@ -6,16 +6,15 @@ from BankGlobals import *
 class DistributedBankAI(DistributedFurnitureItemAI):
     notify = DirectNotifyGlobal.directNotify.newCategory("DistributedBankAI")
 
-    def __init__(self, air, furnitureMgr, catalogItem, ownerId):
-        DistributedFurnitureItemAI.__init__(self, air, furnitureMgr, catalogItem)
-        self.ownerId = ownerId
+    def __init__(self, air, furnitureMgr, itemType):
+        DistributedFurnitureItemAI.__init__(self, air, furnitureMgr, itemType)
         self.busy = 0
 
     def avatarEnter(self):
         avId = self.air.getAvatarIdFromSender()
 
         if not self.busy:
-            if avId == self.ownerId:
+            if avId == self.furnitureMgr.ownerId:
                 self.sendBankMovie(avId)
             else:
                 self.sendNotOwnerMovie(avId)
