@@ -55,9 +55,9 @@ class ToonBase(OTPBase.OTPBase):
             self.resDict.setdefault(ratio, []).append(res)
 
         # Get the native width, height and ratio:
-        if sys.platform == 'win32':  #displayInfo is returning zero as a result. temporary patch
-            self.nativeWidth = 800
-            self.nativeHeight = 600
+        if sys.platform == 'win32':  # Using base.pipe to get height and width on Windows
+            self.nativeWidth = base.pipe.getDisplayWidth()
+            self.nativeHeight = base.pipe.getDisplayHeight()
         elif sys.platform == 'darwin':
             self.nativeWidth = 800
             self.nativeHeight = 600
