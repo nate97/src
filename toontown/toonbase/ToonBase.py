@@ -55,16 +55,8 @@ class ToonBase(OTPBase.OTPBase):
             self.resDict.setdefault(ratio, []).append(res)
 
         # Get the native width, height and ratio:
-        if sys.platform == 'win32':  # Using base.pipe to get height and width on Windows
-            self.nativeWidth = base.pipe.getDisplayWidth()
-            self.nativeHeight = base.pipe.getDisplayHeight()
-        elif sys.platform == 'darwin':
-            self.nativeWidth = 800
-            self.nativeHeight = 600
-        else:  # Use PyGTK.
-            import gtk
-            self.nativeWidth = gtk.gdk.screen_width()
-            self.nativeHeight = gtk.gdk.screen_height()
+        self.nativeWidth = base.pipe.getDisplayWidth()
+        self.nativeHeight = base.pipe.getDisplayHeight()
 
         self.nativeRatio = round(float(self.nativeWidth) / float(self.nativeHeight), 2)
 
