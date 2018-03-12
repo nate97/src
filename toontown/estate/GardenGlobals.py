@@ -698,9 +698,9 @@ plots5 = ((0, 0, 0.0, FLOWER_TYPE), (1, 0, 0.0, FLOWER_TYPE), (2, 0, 0.0, FLOWER
 
 estatePlots = (plots0, plots1, plots2, plots3, plots4, plots5)
 
-BOX_ONE = 91
-BOX_TWO = 92
-BOX_THREE = 93
+BOX_ONE = 1
+BOX_TWO = 2
+BOX_THREE = 3
 
 flowerBoxes0 = ((-62.5, -52.5, 182.0, BOX_ONE), (-52, -52, 182, BOX_ONE), (-64.5, -42, 92.0, BOX_THREE), (-49, -43, 266.0, BOX_THREE), (-57, -33, 0.0, BOX_TWO))
 flowerBoxes1 = ((85.0, -67.0, 26.0, BOX_ONE), (75, -72, 26.0, BOX_ONE), (91.0, -74.0, -63.0, BOX_THREE), (77, -81, 117.0, BOX_THREE), (88, -86, 206.0, BOX_TWO))
@@ -976,9 +976,7 @@ StatuaryPlot = 2
 ToonStatuaryPlot = 3
 ChangingStatuaryPlot = 4
 AnimatedStatuaryPlot = 5
-PlanterBox00 = 91
-PlanterBox01 = 92
-PlanterBox02 = 93
+PlanterBox = 6
 
 # Time in seconds for the next growth cycle.
 GROWTH_INTERVAL = 21600

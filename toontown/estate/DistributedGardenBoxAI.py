@@ -1,30 +1,24 @@
+from direct.directnotify import DirectNotifyGlobal
 from toontown.estate.DistributedLawnDecorAI import DistributedLawnDecorAI
 from toontown.estate import GardenGlobals
 
 
 class DistributedGardenBoxAI(DistributedLawnDecorAI):
-    notify = directNotify.newCategory('DistributedGardenBoxAI')
+    notify = DirectNotifyGlobal.directNotify.newCategory("DistributedGardenBoxAI")
 
     def __init__(self, air, gardenManager, ownerIndex):
         DistributedLawnDecorAI.__init__(self, air, gardenManager, ownerIndex)
 
         self.typeIndex = None
-        self.occupier = GardenGlobals.PlanterBox00
+        self.occupier = GardenGlobals.PlanterBox
 
-    def d_setTypeIndex(self, index):
-        self.sendUpdate('setTypeIndex', [index])
+    def setTypeIndex(self, index):
+        self.index = index
 
     def getTypeIndex(self):
         return self.typeIndex
 
-    def construct(self, gardenData):
-        DistributedLawnDecorAI.construct(self, gardenData)
+    def constructBox(self, boxIndex, boxType, x, y, header):
 
-        self.typeIndex = gardenData.getUint8()
-
-    def pack(self, gardenData):
-        gardenData.addUint8(self.occupier)
-
-        DistributedLawnDecorAI.pack(self, gardenData)
-
-        gardenData.addUint8(self.typeIndex)
+        self.setTypeIndex(boxType)
+        DistributedLawnDecorAI.constructBox(self, boxIndex, boxType, x, y, header)

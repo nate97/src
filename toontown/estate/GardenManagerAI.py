@@ -20,9 +20,7 @@ occupier2Class = {
     GardenGlobals.ToonStatuaryPlot: DistributedToonStatuaryAI,
     GardenGlobals.ChangingStatuaryPlot: DistributedChangingStatuaryAI,
     GardenGlobals.AnimatedStatuaryPlot: DistributedAnimatedStatuaryAI,
-    91: DistributedGardenBoxAI,
-    92: DistributedGardenBoxAI,
-    93: DistributedGardenBoxAI
+    GardenGlobals.PlanterBox: DistributedGardenBoxAI,
 }
 
 
@@ -42,63 +40,118 @@ class GardenManagerAI:
             self.createBlankGarden()
             return
 
-        self.createGardenFromData(self.house.getGardenData())
+
+
+        gardenData = self.house.getGardenData()
+
+        self.createFlowerBoxes()
+
+        self.createGardenFromData(gardenData)
+
+
+
+
         self.giveOrganicBonus()
+
+
+
+
+
 
 
     def createBlankGarden(self):
         gardenData = PyDatagram()
 
-        # NF
         plots = GardenGlobals.getGardenPlots(self.house.housePos)
-        boxes = GardenGlobals.getBoxPlots(self.house.housePos)
-        
-        combined = plots + boxes
+        gardenData.addUint8(len(plots))
 
-        total_length = len(plots) + len(boxes)
-
-        gardenData.addUint8(total_length)
-
-        for i, plotData in enumerate(combined):
-
-            #print plotData[3]
-            #print "DATAAAAAAAAAAAAAA"
-
-            if plotData[3] == 91 or plotData[3] == 92 or plotData[3] == 93:
-                gardenData.addUint8(plotData[3])
-                #print "FlowerPot GardenManager"
-                gardenData.addUint8(i)
-            else:
-                gardenData.addUint8(GardenGlobals.EmptyPlot)
-                #print "EmptyPlot GardenManager"
-                gardenData.addUint8(i)
+        for i, plotData in enumerate(plots):
+            gardenData.addUint8(GardenGlobals.EmptyPlot)
+            gardenData.addUint8(i)
 
         self.house.b_setGardenData(gardenData.getMessage())
         self.loadGarden()
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    def createFlowerBoxes(self):
+
+        boxDefs = GardenGlobals.estateBoxes[1]
+        for x, y, header, boxType in boxDefs:
+
+            box = occupier2Class[6](self.air, self, self.house.housePos)
+
+            #box.constructBox(6, boxType, x, y, header)
+            box.setTypeIndex(boxType)
+            print boxType, x, y, header
+            print "??????????????????????????????"
+            print self.house
+
+            try:
+                box.generateWithRequired(self.house.zoneId)
+            except:
+                pass
+
+            self.boxes.append(box)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     def createGardenFromData(self, gardenData):
         dg = PyDatagram(gardenData)
         gardenData = PyDatagramIterator(dg)
-
         plotCount = gardenData.getUint8()
-
         for _ in xrange(plotCount):
             occupier = gardenData.getUint8()
-
             if occupier not in occupier2Class:
                 continue
+            plot = occupier2Class[occupier](self.air, self, self.house.housePos)
+            plot.construct(gardenData)
+            plot.generateWithRequired(self.house.zoneId)
 
-            if occupier == 91 or occupier == 92 or occupier == 93:
-                box = occupier2Class[occupier](self.air, self, self.house.housePos)
-                box.construct(gardenData)
-                box.generateWithRequired(self.house.zoneId)
-                self.boxes.append(box)
-            else:
-                plot = occupier2Class[occupier](self.air, self, self.house.housePos)
-                plot.construct(gardenData)
-                plot.generateWithRequired(self.house.zoneId)
-                self.plots.append(plot)
+            self.plots.append(plot)
 
 
     def updateGardenData(self):
@@ -113,13 +166,6 @@ class GardenManagerAI:
     def delete(self):
         for plot in self.plots:
             plot.requestDelete()
-
-        # NF
-        try:
-            for box in self.boxes:
-                box.requestDelete()
-        except:
-            "No boxes...?"
 
     def getTimestamp(self):
         return int(time())
