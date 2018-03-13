@@ -139,7 +139,7 @@ want-live-updates #t
 
 # Halloween
 #want-halloween #t
-active-holidays 60, 61, 62, 63, 64, 65, 66
+active-holidays 60, 64, 65, 66
 
 
 
