@@ -290,6 +290,9 @@ class DNAStorage:
     def resetBlockDoors(self):
         self.blockDoors = {}
 
+    def getSignTransformFromNodePath(self, nodePath):
+        return nodePath.getNetTransform().getMat()
+
     def cleanup(self):
         self.resetBattleCells()
         self.resetBlockNumbers()

@@ -9,6 +9,7 @@ import StageRoomBase, StageRoom
 import FactoryEntityCreator
 import StageRoomSpecs
 from otp.level import LevelSpec, LevelConstants
+from toontown.chat.ChatGlobals import CFThought, CFTimeout
 from toontown.toonbase import TTLocalizer
 from toontown.nametag.NametagGlobals import *
 if __dev__:

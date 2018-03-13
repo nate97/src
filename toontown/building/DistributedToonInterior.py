@@ -109,15 +109,14 @@ class DistributedToonInterior(DistributedObject.DistributedObject):
         doorFrame = doorNP.find('door_*_flat')
         doorFrame.wrtReparentTo(self.interior)
         doorFrame.setColor(color)
-        sign = hidden.find('**/tb%s:*_landmark_*_DNARoot/**/sign;+s' % (self.block,))
+        sign = hidden.find('**/tb%s:*_landmark_*_DNARoot/**/sign_origin;+s' % (self.block))
         if not sign.isEmpty():
             signOrigin = self.interior.find('**/sign_origin;+s')
             newSignNP = sign.copyTo(signOrigin)
             newSignNP.setDepthWrite(1, 1)
-            #TODO: getSignTransform
-            #mat = self.dnaStore.getSignTransformFromBlockNumber(int(self.block))
+            mat = self.dnaStore.getSignTransformFromNodePath(self.interior)
             inv = Mat4(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-            #inv.invertFrom(mat)
+            inv.invertFrom(mat)
             newSignNP.setMat(inv)
             newSignNP.flattenLight()
             ll = Point3()

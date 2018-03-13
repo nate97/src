@@ -10,6 +10,7 @@ import FactoryEntityCreator
 import FactorySpecs
 from otp.level import LevelSpec
 from otp.level import LevelConstants
+from toontown.chat.ChatGlobals import CFThought, CFTimeout
 from toontown.toonbase import TTLocalizer
 from toontown.coghq import FactoryCameraViews
 if __dev__:
