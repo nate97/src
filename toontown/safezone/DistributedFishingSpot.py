@@ -609,6 +609,7 @@ class DistributedFishingSpot(DistributedObject.DistributedObject):
         self.timer.posInTopRightCorner()
         self.timer.hide()
         self.castGui = loader.loadModel('phase_4/models/gui/fishingGui')
+        self.castGui.setBin('background', 10)
         self.castGui.setScale(0.67)
         self.castGui.setPos(0, 1, 0)
         for nodeName in ('bucket', 'jar', 'display_bucket', 'display_jar'):

@@ -8,87 +8,11 @@ from toontown.nametag import NametagGlobals
 from toontown.toontowngui.Clickable2d import Clickable2d
 
 
-class WhisperQuitButton(Clickable2d):
-    CONTENTS_SCALE = 12
-
-    def __init__(self, whisperPopup):
-        Clickable2d.__init__(self, 'WhisperQuitButton')
-
-        self.whisperPopup = whisperPopup
-
-        self.contents.setScale(self.CONTENTS_SCALE)
-        self.contents.hide()
-
-        self.nodePath = None
-
-        self.update()
-
-    def destroy(self):
-        self.ignoreAll()
-
-        if self.nodePath is not None:
-            self.nodePath.removeNode()
-            self.nodePath = None
-
-        Clickable2d.destroy(self)
-
-    def getUniqueName(self):
-        return 'WhisperQuitButton-' + str(id(self))
-
-    def update(self):
-        if self.nodePath is not None:
-            self.nodePath.removeNode()
-            self.nodePath = None
-
-        self.contents.node().removeAllChildren()
-
-        quitButtonNode = NametagGlobals.quitButton[self.clickState]
-        self.nodePath = quitButtonNode.copyTo(self.contents)
-
-    def applyClickState(self, clickState):
-        if self.nodePath is not None:
-            self.nodePath.removeNode()
-            self.nodePath = None
-
-        quitButtonNode = NametagGlobals.quitButton[clickState]
-        self.nodePath = quitButtonNode.copyTo(self.contents)
-
-    def setClickState(self, clickState):
-        self.applyClickState(clickState)
-
-        if self.isHovering() or self.whisperPopup.isHovering():
-            self.contents.show()
-        elif self.clickState == PGButton.SDepressed:
-            self.contents.show()
-        else:
-            self.contents.hide()
-
-        Clickable2d.setClickState(self, clickState)
-
-    def enterDepressed(self):
-        base.playSfx(NametagGlobals.clickSound)
-
-    def enterRollover(self):
-        if self.lastClickState != PGButton.SDepressed:
-            base.playSfx(NametagGlobals.rolloverSound)
-
-    def updateClickRegion(self):
-        if self.nodePath is not None:
-            right = NametagGlobals.quitButtonWidth / 2.0
-            left = -right
-            top = NametagGlobals.quitButtonHeight / 2.0
-            bottom = -top
-
-            self.setClickRegionFrame(left, right, bottom, top)
-
-
 class WhisperPopup(Clickable2d, MarginVisible):
     CONTENTS_SCALE = 0.25
 
     TEXT_MAX_ROWS = 6
     TEXT_WORD_WRAP = 8
-
-    QUIT_BUTTON_SHIFT = (0.42, 0, 0.42)
 
     WHISPER_TIMEOUT_MIN = 10
     WHISPER_TIMEOUT_MAX = 20
@@ -126,13 +50,9 @@ class WhisperPopup(Clickable2d, MarginVisible):
         self.textNode.setText(self.text)
 
         self.chatBalloon = None
-        self.quitButton = None
 
         self.timeoutTaskName = self.getUniqueName() + '-timeout'
         self.timeoutTask = None
-
-        self.quitEvent = self.getUniqueName() + '-quit'
-        self.accept(self.quitEvent, self.destroy)
 
         self.setPriority(MarginGlobals.MP_high)
         self.setVisible(True)
@@ -152,10 +72,6 @@ class WhisperPopup(Clickable2d, MarginVisible):
             self.chatBalloon.removeNode()
             self.chatBalloon = None
 
-        if self.quitButton is not None:
-            self.quitButton.destroy()
-            self.quitButton = None
-
         self.textNode = None
 
         Clickable2d.destroy(self)
@@ -167,10 +83,6 @@ class WhisperPopup(Clickable2d, MarginVisible):
         if self.chatBalloon is not None:
             self.chatBalloon.removeNode()
             self.chatBalloon = None
-
-        if self.quitButton is not None:
-            self.quitButton.destroy()
-            self.quitButton = None
 
         self.contents.node().removeAllChildren()
 
@@ -209,20 +121,6 @@ class WhisperPopup(Clickable2d, MarginVisible):
         # Translate the chat balloon along the inverse:
         self.chatBalloon.setPos(self.chatBalloon, -center)
 
-        # Draw the quit button:
-        self.quitButton = WhisperQuitButton(self)
-        quitButtonNodePath = self.contents.attachNewNode(self.quitButton)
-
-        # Move the quit button to the top right of the TextNode:
-        quitButtonNodePath.setPos(self.contents.getRelativePoint(
-            self.chatBalloon.textNodePath, (right, 0, top)))
-
-        # Apply the quit button shift:
-        quitButtonNodePath.setPos(quitButtonNodePath, self.QUIT_BUTTON_SHIFT)
-
-        # Allow the quit button to close this whisper:
-        self.quitButton.setClickEvent(self.quitEvent)
-
     def manage(self, marginManager):
         MarginVisible.manage(self, marginManager)
 
@@ -253,13 +151,6 @@ class WhisperPopup(Clickable2d, MarginVisible):
         else:
             self.applyClickState(PGButton.SInactive)
 
-        if self.isHovering() or self.quitButton.isHovering():
-            self.quitButton.contents.show()
-        elif self.quitButton.getClickState() == PGButton.SDepressed:
-            self.quitButton.contents.show()
-        else:
-            self.quitButton.contents.hide()
-
         Clickable2d.setClickState(self, clickState)
 
     def enterDepressed(self):
@@ -282,9 +173,6 @@ class WhisperPopup(Clickable2d, MarginVisible):
         else:
             if self.region is not None:
                 self.region.setActive(False)
-
-        if self.quitButton is not None:
-            self.quitButton.updateClickRegion()
 
     def marginVisibilityChanged(self):
         if self.cell is not None:
@@ -309,10 +197,6 @@ class WhisperPopup(Clickable2d, MarginVisible):
         if self.chatBalloon is not None:
             self.chatBalloon.removeNode()
             self.chatBalloon = None
-
-        if self.quitButton is not None:
-            self.quitButton.destroy()
-            self.quitButton = None
 
         self.contents.node().removeAllChildren()
 

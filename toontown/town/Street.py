@@ -248,17 +248,20 @@ class Street(BattlePlace.BattlePlace):
         zoneId = requestStatus['zoneId']
         if avId != -1:
             if avId not in base.cr.doId2do:
-                teleportDebug(requestStatus, "couldn't find friend %s" % avId)
-                handle = base.cr.identifyFriend(avId)
-                requestStatus = {'how': 'teleportIn',
-                 'hoodId': hoodId,
-                 'zoneId': hoodId,
-                 'shardId': None,
-                 'loader': 'safeZoneLoader',
-                 'where': 'playground',
-                 'avId': avId}
-                self.fsm.request('final')
-                self.__teleportOutDone(requestStatus)
+                friend = base.cr.identifyAvatar(avId)
+                if friend is None:
+                    teleportDebug(requestStatus, "couldn't find friend %s" % avId)
+                    handle = base.cr.identifyFriend(avId)
+                    requestStatus = {'how': 'teleportIn',
+                     'hoodId': hoodId,
+                     'zoneId': hoodId,
+                     'shardId': None,
+                     'loader': 'safeZoneLoader',
+                     'where': 'playground',
+                     'avId': avId}
+                    self.fsm.request('final')
+                    self.__teleportOutDone(requestStatus)
+
         return
 
     def exitTeleportIn(self):
