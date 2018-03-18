@@ -20,7 +20,7 @@ dc-file astron/dclass/toon.dc
 dc-file astron/dclass/otp.dc
 
 # Core features:
-want-pets #f
+want-pets #t
 want-parties #t
 want-cogdominiums #f
 want-code-redemption #t
