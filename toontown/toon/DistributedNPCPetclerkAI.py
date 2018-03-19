@@ -27,12 +27,7 @@ class DistributedNPCPetclerkAI(DistributedNPCToonBaseAI):
         if self.isBusy():
             self.freeAvatar(avId)
             return
-
         self.petSeeds = simbase.air.petMgr.getAvailablePets(ZoneUtil.getCanonicalHoodId(self.zoneId))
-
-        print self.petSeeds
-        print "NPC"
-
         self.sendUpdateToAvatarId(avId, 'setPetSeeds', [self.petSeeds])
         self.transactionType = ''
         av = self.air.doId2do[avId]
