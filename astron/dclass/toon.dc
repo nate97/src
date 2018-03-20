@@ -3317,6 +3317,9 @@ dclass TTIFriendsManager : DistributedObjectGlobal {
   getAvatarDetails(uint32) clsend;
   friendDetails(uint32, blob, uint16[], uint16, int16, int16, uint32, uint32, blob, blob, int8[]);
 
+  getPetDetails(uint32) clsend;
+  petDetails(uint32, uint32, string, uint32, uint32, uint16/1000[], PetTrait[], int8[], uint32);
+
   routeTeleportQuery(uint32 toId) clsend;
   teleportQuery(uint32 fromId);
 

@@ -122,6 +122,7 @@ class DistributedNPCPetclerkAI(DistributedNPCToonBaseAI):
         if av:
             simbase.air.petMgr.deleteToonsPet(avId)
             self.transactionType = 'return'
+        self.transactionDone()
 
     def transactionDone(self):
         avId = self.air.getAvatarIdFromSender()
