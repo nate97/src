@@ -263,16 +263,13 @@ class TTIFriendsManagerUD(DistributedObjectGlobalUD):
         def handlePet(dclass, fields):
             if dclass != self.air.dclassesByName['DistributedPetAI']:
                 return
-            dna = [fields.get(x, [0])[0] for x in ("setHead", "setEars", "setNose", "setTail", "setBodyTexture", "setColor",
-                                                 "setColorScale", "setEyeColor", "setGender")]
-            moods = [fields.get(x, [0])[0] for x in ("setBoredom", "setRestlessness", "setPlayfulness", "setLoneliness",
-                                                   "setSadness", "setAffection", "setHunger", "setConfusion", "setExcitement",
-                                                   "setFatigue", "setAnger", "setSurprise")]
-            traits = [fields.get(x, [0])[0] for x in ("setForgetfulness", "setBoredomThreshold", "setRestlessnessThreshold",
-                                                    "setPlayfulnessThreshold", "setLonelinessThreshold", "setSadnessThreshold",
-                                                    "setFatigueThreshold", "setHungerThreshold", "setConfusionThreshold",
-                                                    "setExcitementThreshold", "setAngerThreshold", "setSurpriseThreshold",
-                                                    "setAffectionThreshold")]
+            dna = [fields.get(x, [0])[0] for x in ("setHead", "setEars", "setNose", "setTail", "setBodyTexture", "setColor", "setColorScale", "setEyeColor", "setGender")]
+
+            moods = [fields.get(x, [0])[0] for x in ("setBoredom", "setRestlessness", "setPlayfulness", "setLoneliness", "setSadness", "setAffection", "setHunger", "setConfusion", "setExcitement", "setFatigue", "setAnger", "setSurprise")]
+
+            traits = [fields.get(x, [0])[0] for x in ("setForgetfulness", "setBoredomThreshold", "setRestlessnessThreshold", "setPlayfulnessThreshold", "setLonelinessThreshold", "setSadnessThreshold", "setFatigueThreshold", "setHungerThreshold", "setConfusionThreshold", "setExcitementThreshold", "setAngerThreshold", "setSurpriseThreshold", "setAffectionThreshold")]
+            print str(dna) + '\n' + str(moods) + '\n' + str(traits)
+
             self.sendUpdateToAvatarId(senderId, 'petDetails', [avId, fields.get("setOwnerId", [0])[0], fields.get("setPetName", ["???"])[0],
                                                                fields.get("setTraitSeed", [0])[0], fields.get("setSafeZone", [0])[0],
                                                                traits, moods, dna, fields.get("setLastSeenTimestamp", [0])[0]])

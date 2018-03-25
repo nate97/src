@@ -44,6 +44,9 @@ class TTIFriendsManager(DistributedObjectGlobal):
     def d_getPetDetails(self, avId):
         self.sendUpdate('getPetDetails', [avId])
 
+
+
+
     def petDetails(self, avId, ownerId, petName, traitSeed, sz, traits, moods, dna, lastSeen):
         fields = list(zip(("setHead", "setEars", "setNose", "setTail", "setBodyTexture", "setColor", "setColorScale", "setEyeColor", "setGender"), dna))
         fields.extend(zip(("setBoredom", "setRestlessness", "setPlayfulness", "setLoneliness",
@@ -60,6 +63,70 @@ class TTIFriendsManager(DistributedObjectGlobal):
         fields.append(("setSafeZone", sz))
         fields.append(("setLastSeenTimestamp", lastSeen))
         base.cr.n_handleGetAvatarDetailsResp(avId, fields=fields)
+
+
+
+
+
+    """
+    def petDetails(self, avId, ownerId, petName, traitSeed, sz, traits, moods, dna, lastSeen):
+    
+
+
+        fields = []
+        
+        # DNA
+        fields.append(["setHead", dna[0]])
+        fields.append(["setEars", dna[1]])
+        fields.append(["setNose", dna[2]])
+        fields.append(["setTail", dna[3]])
+        fields.append(["setBodyTexture", dna[4]])
+        fields.append(["setColor", dna[5]])
+        fields.append(["setColorScale", dna[6]])
+        fields.append(["setEyeColor", dna[7]])
+        fields.append(["setGender", dna[8]])
+
+        # MOODS
+        fields.append(["setBoredom", moods[0]])
+        fields.append(["setRestlessness", moods[1]])
+        fields.append(["setPlayfulness", moods[2]])
+        fields.append(["setLoneliness", moods[3]])
+        fields.append(["setSadness", moods[4]])
+        fields.append(["setAffection", moods[5]])
+        fields.append(["setHunger", moods[6]])
+        fields.append(["setConfusion", moods[7]])
+        fields.append(["setExcitement", moods[8]])
+        fields.append(["setFatigue", moods[9]])
+        fields.append(["setAnger", moods[10]])
+        fields.append(["setSurprise", moods[11]])
+
+        # TRAITS
+        fields.append(["setForgetfulness", traits[0]])
+        fields.append(["setBoredomThreshold", traits[1]])
+        fields.append(["setRestlessnessThreshold", traits[2]])
+        fields.append(["setPlayfulnessThreshold", traits[3]])
+        fields.append(["setLonelinessThreshold", traits[4]])
+        fields.append(["setSadnessThreshold", traits[5]])
+        fields.append(["setFatigueThreshold", traits[6]])
+        fields.append(["setHungerThreshold", traits[7]])
+        fields.append(["setConfusionThreshold", traits[8]])
+        fields.append(["setExcitementThreshold", traits[9]])
+        fields.append(["setAngerThreshold", traits[10]])
+        fields.append(["setSurpriseThreshold", traits[11]])
+        fields.append(["setAffectionThreshold", traits[12]])
+
+        # OTHER
+        fields.append(["setOwnerId", ownerId])
+        fields.append(["setPetName", petName])
+        fields.append(["setTraitSeed", traitSeed])
+        fields.append(["setSafeZone", sz])
+        fields.append(["setLastSeenTimestamp", lastSeen])
+
+        base.cr.n_handleGetAvatarDetailsResp(avId, fields=fields)"""
+
+
+
+
 
     def d_teleportQuery(self, toId):
         self.sendUpdate('routeTeleportQuery', [toId])

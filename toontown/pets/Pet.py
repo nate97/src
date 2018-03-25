@@ -110,6 +110,7 @@ class Pet(Avatar.Avatar):
         return self.style
 
     def setDNA(self, dna):
+        print dna
         if self.style:
             pass
         else:

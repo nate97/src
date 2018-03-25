@@ -399,16 +399,21 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         # To set the hp and maxHp of an avatar, my fields list would be
         # fields = [['setHp', 15], ['setMaxHp', 15]]
 
+        # TO DO
+
         for currentField in fields:
             getattr(pad.avatar, currentField[0])(currentField[1])
 
         gotData = 1
 
-
         if isinstance(pad.func, types.StringType):
             messenger.send(pad.func, list((gotData, pad.avatar) + pad.args))
+
         else:
-            apply(pad.func, (gotData, pad.avatar) + pad.args)
+            if dclassName == 'DistributedToon':
+                apply(pad.func, (gotData, pad.avatar) + pad.args)
+            else:
+                apply(pad.func, (gotData, pad.avatar) + pad.args)
 
         pad.delayDelete.destroy()
 
