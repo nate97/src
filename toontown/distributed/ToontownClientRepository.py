@@ -796,17 +796,18 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
 
     def removePetFromFriendsMap(self):
         doId = base.localAvatar.getPetId()
-        if doId and doId in self.friendsMap:
+        if doId and self.friendsMap.has_key(doId):
             del self.friendsMap[doId]
 
     def addPetToFriendsMap(self, callback = None):
         doId = base.localAvatar.getPetId()
-        if doId not in self.friendsMap:
+        if not doId or self.friendsMap.has_key(doId):
             if callback:
                 callback()
             return
 
         def petDetailsCallback(petAvatar):
+            petAvatar.announceGenerate()
             handle = PetHandle.PetHandle(petAvatar)
             self.friendsMap[doId] = handle
             petAvatar.disable()

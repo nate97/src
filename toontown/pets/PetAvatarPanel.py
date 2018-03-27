@@ -15,6 +15,7 @@ from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import TTLocalizer
 from toontown.pets import Pet, PetConstants, PetDetailPanel
 
+
 class PetAvatarPanel(AvatarPanel.AvatarPanel):
     notify = directNotify.newCategory('PetAvatarPanel')
 
@@ -33,8 +34,8 @@ class PetAvatarPanel(AvatarPanel.AvatarPanel):
         base.panel = self
         gui = loader.loadModel('phase_3.5/models/gui/PetControlPannel')
         guiScale = 0.116
-        guiPos = (1.12, 0, 0.3)
-        self.frame = DirectFrame(parent=aspect2dp, image=gui, scale=guiScale, pos=guiPos, relief=None)
+        guiPos = (-0.21, 0, -0.70)
+        self.frame = DirectFrame(parent=base.a2dTopRight, image=gui, scale=guiScale, pos=guiPos, relief=None)
         disabledImageColor = Vec4(0.6, 0.6, 0.6, 1)
         text0Color = Vec4(1, 1, 1, 1)
         text1Color = Vec4(0.5, 1, 0.5, 1)
@@ -173,9 +174,11 @@ class PetAvatarPanel(AvatarPanel.AvatarPanel):
         base.localAvatar.obscureFriendsListButton(-1)
         self.ignore('petStateUpdated')
         self.ignore('petNameChanged')
-        if self.avatar.bFake:
-            self.avatar.disable()
-            self.avatar.delete()
+        # TO DO
+        # This is broken for unknown reasons... I suspect the gernation of doodles for the pet details might be wrong...
+        #if self.avatar.bFake:
+            #self.avatar.disable()
+            #self.avatar.delete()
         AvatarPanel.AvatarPanel.cleanup(self)
         base.panel = None
         return
@@ -273,6 +276,7 @@ class PetAvatarPanel(AvatarPanel.AvatarPanel):
         self.notify.debug('__fillPetInfo(): doId=%s' % avatar.doId)
         self.petView = self.frame.attachNewNode('petView')
         self.petView.setPos(0, 0, 5.4)
+        #avatar.announceGenerate()
         self.petModel = Pet.Pet(forGui=1)
         self.petModel.setDNA(avatar.getDNA())
         self.petModel.fitAndCenterHead(3.575, forGui=1)
@@ -291,9 +295,13 @@ class PetAvatarPanel(AvatarPanel.AvatarPanel):
             return
         if self.frame == None:
             return
-        if not self.petIsLocal:
-            self.avatar.updateOfflineMood()
+        # TO DO
+        # This doesn't work and has no indication as to what is wrong, may be how we are generating doodles with distributedPet
+        #if not self.petIsLocal:
+        #    print "Pet not local"
+        #    self.avatar.updateOfflineMood(avatar)
         mood = self.avatar.getDominantMood()
+        print mood
         self.stateLabel['text'] = TTLocalizer.PetMoodAdjectives[mood]
         self.nameLabel['text'] = avatar.getName()
         if self.petDetailPanel != None:

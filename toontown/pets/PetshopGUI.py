@@ -253,7 +253,7 @@ class PetshopGUI(DirectObject):
                 modelPos = (0, 0, -0.3)
                 modelScale = (0.055, 0.055, 0.055)
                 base.r = self
-                DirectFrame.__init__(self, relief=None, state='normal', geom=model, geom_scale=modelScale, frameSize=(-1, 1, -1, 1), pos=modelPos, text=TTLocalizer.PetshopReturnConfirm % avatar.getName(), text_wordwrap=12, text_scale=TTLocalizer.PGUIreturnConfirm, text_pos=(0, 0.45), text_fg=text2Color)
+                DirectFrame.__init__(self, relief=None, state='normal', geom=model, geom_scale=modelScale, frameSize=(-1, 1, -1, 1), pos=modelPos, text=TTLocalizer.PetshopReturnConfirm % avatar.petName, text_wordwrap=12, text_scale=TTLocalizer.PGUIreturnConfirm, text_pos=(0, 0.45), text_fg=text2Color)
                 self.initialiseoptions(PetshopGUI.ReturnPetDlg)
                 okImageList = (model.find('**/CheckButtonUp'), model.find('**/CheckButtonDown'), model.find('**/CheckRollover'))
                 cancelImageList = (model.find('**/CancelButtonUp'), model.find('**/CancelButtonDown'), model.find('**/CancelRollover'))
@@ -278,8 +278,10 @@ class PetshopGUI(DirectObject):
 
         def destroy(self):
             if self.initialized:
-                self.petPanel.avatar.disable()
-                self.petPanel.avatar.delete()
+                # TO DO
+                # Not sure why this is broken... I suspect generation of doodles in the pet details might be wrong
+                #self.petPanel.avatar.disable()
+                #self.petPanel.avatar.delete()
                 self.petPanel.avatar = None
                 self.PetPanel = None
                 self.petModel.delete()

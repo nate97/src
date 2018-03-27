@@ -106,11 +106,11 @@ class Pet(Avatar.Avatar):
         Avatar.Avatar.delete(self)
         return
 
+    # This was originally returning self.style... which contained nothing, and as far as I could told, wasn't being inherited.
     def getDNA(self):
         return self.style
 
     def setDNA(self, dna):
-        print dna
         if self.style:
             pass
         else:

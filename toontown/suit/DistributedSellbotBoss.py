@@ -171,7 +171,7 @@ class DistributedSellbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         self.cagedToonNpcId = npcId
 
     def gotToon(self, toon):
-        stateName = self.state
+        stateName = self.state_
         if stateName == 'Elevator':
             self.placeToonInElevator(toon)
 
