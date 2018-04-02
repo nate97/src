@@ -26,12 +26,14 @@ class DatabaseObject:
     if simbase.wantPets:
 
         def readPet(self):
+            print "READ PET"
             from toontown.pets import DistributedPetAI
             pet = DistributedPetAI.DistributedPetAI(self.air)
             self.readObject(pet, None)
             return pet
 
         def readPetProxy(self):
+            print "PET PROXY"
             from toontown.pets import DistributedPetProxyAI
             petProxy = DistributedPetProxyAI.DistributedPetProxyAI(self.air)
             self.readObject(petProxy, None)
@@ -70,6 +72,7 @@ class DatabaseObject:
         return
 
     def getFields(self, fields):
+        print "????????????"
         context = self.air.dbObjContext
         self.air.dbObjContext += 1
         self.air.dbObjMap[context] = self

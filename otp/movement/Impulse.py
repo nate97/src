@@ -16,7 +16,8 @@ class Impulse(DirectObject.DirectObject):
 
     def _setMover(self, mover):
         self.mover = mover
-        self.nodePath = self.mover.getNodePath()
+
+        self.nodePath = self.mover.objNodePath
         self.VecType = self.mover.VecType
 
     def _clearMover(self, mover):
@@ -24,6 +25,3 @@ class Impulse(DirectObject.DirectObject):
             self.mover = None
             self.nodePath = None
         return
-
-    def isCpp(self):
-        return 0

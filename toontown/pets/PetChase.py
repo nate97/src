@@ -1,7 +1,10 @@
 from panda3d.core import *
 from direct.showbase.PythonUtil import reduceAngle
 from otp.movement import Impulse
+from otp.movement.PyVec3 import PyVec3
 import math
+
+import inspect
 
 class PetChase(Impulse.Impulse):
 
@@ -18,10 +21,17 @@ class PetChase(Impulse.Impulse):
         self.lookAtNode.hide()
         self.vel = None
         self.rotVel = None
+        self.VecType = Vec3
         return
 
     def setTarget(self, target):
         self.target = target
+
+    def getTarget(self):
+        return self.target
+
+    def setMinDist(self, dist):
+        self.minDist = dist
 
     def destroy(self):
         self.lookAtNode.removeNode()
@@ -36,6 +46,10 @@ class PetChase(Impulse.Impulse):
         self.vel = self.VecType(0)
         self.rotVel = self.VecType(0)
 
+    def clearMover(self, mover):
+        print "???"
+
+
     def _process(self, dt):
         Impulse.Impulse._process(self, dt)
         me = self.nodePath
@@ -46,6 +60,7 @@ class PetChase(Impulse.Impulse):
         distance = math.sqrt(x * x + y * y)
         self.lookAtNode.lookAt(target)
         relH = reduceAngle(self.lookAtNode.getH(me))
+
         epsilon = 0.005
         rotSpeed = self.mover.getRotSpeed()
         if relH < -epsilon:

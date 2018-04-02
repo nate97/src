@@ -14,9 +14,6 @@ class PetWander(PetChase, DirectObject.DirectObject):
         self.gotCollision = False
         return
 
-    def isCpp(self):
-        return 0
-
     def __ignoreCollisions(self):
         if self.collEvent is not None:
             self.ignore(self.collEvent)
@@ -24,19 +21,19 @@ class PetWander(PetChase, DirectObject.DirectObject):
         return
 
     def _setMover(self, mover):
-        CPetChase.setMover(self, mover)
+        PetChase._setMover(self, mover)
         self.mover = mover
         self.__ignoreCollisions()
         self.collEvent = mover.getCollisionEventName()
         self.accept(self.collEvent, self._handleCollision)
 
     def _clearMover(self, mover):
-        CPetChase.clearMover(self, mover)
+        PetChase.clearMover(self, mover)
         self.__ignoreCollisions()
 
     def _handleCollision(self, collEntry):
         self.gotCollision = True
-        self.movingTarget.setPos(self.getNodePath().getPos())
+        self.movingTarget.setPos(self.lookAtNode.getPos())
         self.targetMoveCountdown *= 0.5
 
     def destroy(self):
@@ -52,10 +49,10 @@ class PetWander(PetChase, DirectObject.DirectObject):
             if self.gotCollision:
                 self.gotCollision = False
                 heading = heading + 180
-            target = self.getTarget()
-            target.setPos(self.getNodePath().getPos())
+            target = PetChase.getTarget(self)
+            target.setPos(self.lookAtNode.getPos())
             target.setH(target, heading)
             target.setY(target, distance)
             duration = distance / self.mover.getFwdSpeed()
             self.targetMoveCountdown = duration * randFloat(1.2, 3.0)
-        CPetChase.process(self, dt)
+        PetChase._process(self, dt)

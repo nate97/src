@@ -1806,19 +1806,16 @@ class DistributedBattleBaseAI(DistributedObjectAI.DistributedObjectAI, BattleBas
     def exitNotAdjusting(self):
         return None
 
+    # Possible
+    # TO DO
+    # Get pet proxy
     def getPetProxyObject(self, petId, callback):
         doneEvent = 'readPet-%s' % self._getNextSerialNum()
-        dbo = DatabaseObject.DatabaseObject(self.air, petId, doneEvent=doneEvent)
-        pet = dbo.readPetProxy()
 
-        def handlePetProxyRead(dbo, retCode, callback = callback, pet = pet):
-            success = retCode == 0
-            if not success:
-                self.notify.warning('pet DB read failed')
-                pet = None
-            callback(success, pet)
-            return
+        def handlePetProxyRead(pet):
+            callback(1, pet)
 
+        self.air.sendActivate(petId, self.air.districtId, 0)
         self.acceptOnce(doneEvent, handlePetProxyRead)
 
     def _getNextSerialNum(self):
