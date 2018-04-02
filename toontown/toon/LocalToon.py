@@ -179,6 +179,9 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         base.localAvatarStyle = dna
         DistributedToon.DistributedToon.setDNA(self, dna)
 
+        if hasattr(self, 'laffMeter'):
+            self.updateLaffMeter()
+
     def setName(self, name):
         base.localAvatarName = name
         DistributedToon.DistributedToon.setName(self, name)
@@ -384,14 +387,7 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         if WantNewsPage:
             self.addNewsPage()
         self.book.setPage(self.mapPage, enterPage=False)
-        self.laffMeter = LaffMeter.LaffMeter(self.style, self.hp, self.maxHp)
-        self.laffMeter.setAvatar(self)
-        self.laffMeter.setScale(0.075)
-        self.laffMeter.reparentTo(base.a2dBottomLeft)
-        if self.style.getAnimal() == 'monkey':
-            self.laffMeter.setPos(0.153, 0.0, 0.13)
-        else:
-            self.laffMeter.setPos(0.133, 0.0, 0.13)
+        self.initLaffMeter()
         self.laffMeter.stop()
         self.questMap = QuestMap.QuestMap(self)
         self.questMap.stop()
@@ -415,6 +411,27 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         QuestParser.init()
         return
 
+    def initLaffMeter(self):
+        self.laffMeter = LaffMeter.LaffMeter(self.style, self.hp, self.maxHp)
+        self.laffMeter.setAvatar(self)
+        self.laffMeter.setScale(0.075)
+        self.laffMeter.reparentTo(base.a2dBottomLeft)
+        if self.style.getAnimal() == 'monkey':
+            self.laffMeter.setPos(0.153, 0.0, 0.13)
+        else:
+            self.laffMeter.setPos(0.133, 0.0, 0.13)
+
+    def updateLaffMeter(self):
+        # Delete old laffmeter
+        self.laffMeter.destroy()
+        del self.laffMeter
+        
+        # Create new laffmeter
+        self.initLaffMeter()
+        
+        # Start the laffmeter
+        self.laffMeter.start()   
+        
     def __handlePurchase(self):
         self.purchaseButton.hide()
         if (base.cr.isWebPlayToken() or __dev__):

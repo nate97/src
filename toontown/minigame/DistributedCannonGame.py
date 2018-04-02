@@ -282,7 +282,9 @@ class DistributedCannonGame(DistributedMinigame):
             else:
                 y = yMax
         else:
-            y = self.randomNumGen.randint(yMin, yMax)
+            # For some reason the randomNumGen function wont accept floats because it compares it to an int???
+            # TO DO
+            y = self.randomNumGen.randint(int(yMin), int(yMax))
         xRange = TOWER_X_RANGE
         if self.DEBUG_TOWER_RANGE:
             if self.DEBUG_TOWER_FAR_LEFT:
@@ -290,7 +292,7 @@ class DistributedCannonGame(DistributedMinigame):
             else:
                 x = xRange
         else:
-            x = self.randomNumGen.randint(0, xRange)
+            x = self.randomNumGen.randint(int(0), int(xRange))
         x = x - int(xRange / 2.0)
         if base.wantMinigameDifficulty:
             diff = self.getDifficulty()
