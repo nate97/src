@@ -42,6 +42,7 @@ class PetLookerAI:
         return 0
 
     def enterPetLook(self):
+        print "PET LOOK"
         PetLookerAI.notify.debug('enterPetLook: %s' % self.doId)
         if self.__active:
             PetLookerAI.notify.warning('enterPetLook: %s already active!' % self.doId)

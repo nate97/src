@@ -23,15 +23,12 @@ class PetWander(PetChase, DirectObject.DirectObject):
     def _setMover(self, mover):
         PetChase._setMover(self, mover)
         self.mover = mover
-        self.__ignoreCollisions()
+        #self.__ignoreCollisions()
         self.collEvent = mover.getCollisionEventName()
         self.accept(self.collEvent, self._handleCollision)
 
-    def _clearMover(self, mover):
-        PetChase.clearMover(self, mover)
-        self.__ignoreCollisions()
-
     def _handleCollision(self, collEntry):
+        print "Wander collision"
         self.gotCollision = True
         self.movingTarget.setPos(self.lookAtNode.getPos())
         self.targetMoveCountdown *= 0.5
@@ -55,4 +52,10 @@ class PetWander(PetChase, DirectObject.DirectObject):
             target.setY(target, distance)
             duration = distance / self.mover.getFwdSpeed()
             self.targetMoveCountdown = duration * randFloat(1.2, 3.0)
-        PetChase._process(self, dt)
+
+            self.mover.setInterestTarget(target)
+
+        PetChase.processWander(self, dt)
+
+
+

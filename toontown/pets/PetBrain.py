@@ -423,13 +423,26 @@ class PetBrain(DirectObject.DirectObject):
         def _handleDoTrick(trickId, avId, self = self):
             avatar = simbase.air.doId2do.get(avId)
             if avatar:
-                if self.lookedAtBy(avatar.doId):
+                # TO DO
+                #if self.lookedAtBy(avatar.doId):
                     if not self.goalMgr.hasTrickGoal():
                         if not self.pet._willDoTrick(trickId):
                             self.pet.trickFailLogger.addEvent(trickId)
                             trickId = PetTricks.Tricks.BALK
                         trickGoal = PetGoal.DoTrick(avatar, trickId)
+ 
+                        
+                        print "WAT???"
+                        print str(trickGoal)
                         self.goalMgr.addGoal(trickGoal)
+
+
+
+
+
+
+
+
 
         phrase = observe.getPetPhrase()
         avId = observe.getAvId()

@@ -10,77 +10,65 @@ class PetChase(Impulse.Impulse):
 
     def __init__(self, target = None, minDist = None, moveAngle = None):
         Impulse.Impulse.__init__(self)
-        self.target = target
-        if minDist is None:
-            minDist = 5.0
-        self.minDist = minDist
-        if moveAngle is None:
-            moveAngle = 20.0
-        self.moveAngle = moveAngle
         self.lookAtNode = NodePath('lookatNode')
-        self.lookAtNode.hide()
-        self.vel = None
-        self.rotVel = None
-        self.VecType = Vec3
+        self.target = target
         return
 
+
+
     def setTarget(self, target):
+        try:
+            self.mover.setInterestTarget(target)
+        except:
+            pass
         self.target = target
+
+
+
+    def setStaticTarget(self, target):
+        self.mover.setStaticTarget(stationaryNode)
+
+
 
     def getTarget(self):
         return self.target
 
-    def setMinDist(self, dist):
-        self.minDist = dist
+
 
     def destroy(self):
         self.lookAtNode.removeNode()
         del self.lookAtNode
         del self.target
-        del self.vel
-        del self.rotVel
+
+
 
     def _setMover(self, mover):
         Impulse.Impulse._setMover(self, mover)
         self.lookAtNode.reparentTo(self.nodePath)
-        self.vel = self.VecType(0)
-        self.rotVel = self.VecType(0)
 
-    def clearMover(self, mover):
-        print "???"
+
+
+    def _clearMover(self, mover):
+        print "Cleared CHASE???"
+        self.mover.stopMovingObj()
+        stationaryNode = NodePath('stationary_node')
+        stationaryNode.setPos(self.target.getPos())
+        self.mover.setInterestTarget(stationaryNode)
+
+
+
+    def processWander(self, dt):
+        Impulse.Impulse._process(self, dt)
+
 
 
     def _process(self, dt):
         Impulse.Impulse._process(self, dt)
-        me = self.nodePath
-        target = self.target
-        targetPos = target.getPos(me)
-        x = targetPos[0]
-        y = targetPos[1]
-        distance = math.sqrt(x * x + y * y)
-        self.lookAtNode.lookAt(target)
-        relH = reduceAngle(self.lookAtNode.getH(me))
 
-        epsilon = 0.005
-        rotSpeed = self.mover.getRotSpeed()
-        if relH < -epsilon:
-            vH = -rotSpeed
-        elif relH > epsilon:
-            vH = rotSpeed
-        else:
-            vH = 0
-        if abs(vH * dt) > abs(relH):
-            vH = relH / dt
-        if distance > self.minDist and abs(relH) < self.moveAngle:
-            vForward = self.mover.getFwdSpeed()
-        else:
-            vForward = 0
-        distanceLeft = distance - self.minDist
-        if distance > self.minDist and vForward * dt > distanceLeft:
-            vForward = distanceLeft / dt
-        if vForward:
-            self.vel.setY(vForward)
-            self.mover.addShove(self.vel)
-        if vH:
-            self.rotVel.setX(vH)
-            self.mover.addRotShove(self.rotVel)
+        target = self.target
+
+        self.mover.setInterestTarget(target)
+
+
+
+

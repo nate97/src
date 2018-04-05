@@ -480,7 +480,6 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
         self._hasCleanedUp = False
         self.setHasRequestedDelete(False)
         self.b_setParent(ToontownGlobals.SPHidden)
-        self.lockedDown = 0
         self.leashMode = 0
         self.leashAvId = None
         self.leashGoal = None
@@ -782,24 +781,6 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
         self.brain.observe(PetObserve.PetActionObserve(PetObserve.Actions.SCRATCH, avatar.doId))
         self.scratchLogger.addEvent()
 
-    def lockPet(self):
-        DistributedPetAI.notify.debug('%s: lockPet' % self.doId)
-        if not self.lockedDown:
-            self.stopPosHprBroadcast()
-        self.lockedDown += 1
-
-    def isLockedDown(self):
-        return self.lockedDown != 0
-
-    def unlockPet(self):
-        DistributedPetAI.notify.debug('%s: unlockPet' % self.doId)
-        if self.lockedDown <= 0:
-            DistributedPetAI.notify.warning('%s: unlockPet called on unlocked pet' % self.doId)
-        else:
-            self.lockedDown -= 1
-            if not self.lockedDown and not self.isDeleted():
-                self.startPosHprBroadcast()
-
     def handleStay(self, avatar):
         self.brain.observe(PetObserve.PetPhraseObserve(PetObserve.Phrases.STAY, avatar.doId))
 
@@ -981,21 +962,18 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
 
     def __petMovieComplete(self, task = None):
         self.disableLockMover()
-        self.unlockPet()
         self.sendClearMovie()
         self.movieMode = None
         return Task.done
 
     def startLockPetMove(self, avId):
         self.enableLockMover()
-        self.lockChaseImpulse.setTarget(self.air.doId2do.get(avId))
-        self.lockMover.addImpulse('LockTarget', self.lockChaseImpulse)
-        self.lockMover.setFwdSpeed(self.mover.getFwdSpeed())
-        self.lockMover.setRotSpeed(self.mover.getRotSpeed())
-        dist_Callable = self.movieDistSwitch.get(self.movieMode)
-        dist = dist_Callable(self.air.doId2do.get(avId).getStyle().getLegSize())
-        self.lockChaseImpulse.setMinDist(dist)
+        # TO DO
+        #self.lockChaseImpulse.setTarget(self.air.doId2do.get(avId))
+        #self.lockMover.addImpulse('LockTarget', self.lockChaseImpulse)
+
         self.distList = [0, 0, 0]
+
         self.__lockPetMoveTask(avId)
 
     def getAverageDist(self):
@@ -1031,7 +1009,6 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
     def endLockPetMove(self, avId):
         del self.distList
         taskMgr.remove(self.getLockMoveTaskName())
-        self.lockPet()
         self.lockMover.removeImpulse('LockTarget')
         self.__petMovieStart(avId)
 

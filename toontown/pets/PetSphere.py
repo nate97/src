@@ -41,6 +41,7 @@ class PetSphere(Impulse.Impulse):
         del self.cSphereNodePath
 
     def _getCollisionEvent(self):
+        print "pet sphere"
         return 'petSphereColl-%s' % self.serialNum
 
     def _handleCollision(self, collEntry):
