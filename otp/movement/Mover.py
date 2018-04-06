@@ -41,6 +41,7 @@ class Mover():
         self.enabled = 0
         self.taskOn = 0
 
+        
         self.setAI()
 
 
@@ -105,15 +106,13 @@ class Mover():
 
     def setAI(self):
         #Creating AI World
+
         self.AIworld = AIWorld(Mover.render)
  
         self.AIchar = AICharacter("objNodePath", self.objNodePath, 50, 10, 25)
         self.AIworld.addAiChar(self.AIchar)
         self.AIbehaviors = self.AIchar.getAiBehaviors()
         
-
-
-
 
 
     def AIUpdate(self, task):
@@ -145,6 +144,9 @@ class Mover():
         self.AIbehaviors.seek(moverTarget)
 
 
+    def setWander(self):
+        self.stopMovingObj()
+        self.AIbehaviors.wander(10, 0, 50, 1.0)
 
 
     def stopMovingObj(self):

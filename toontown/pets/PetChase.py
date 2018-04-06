@@ -10,8 +10,8 @@ class PetChase(Impulse.Impulse):
 
     def __init__(self, target = None, minDist = None, moveAngle = None):
         Impulse.Impulse.__init__(self)
+        self.targetNode = target
         self.lookAtNode = NodePath('lookatNode')
-        self.target = target
         return
 
 
@@ -21,7 +21,7 @@ class PetChase(Impulse.Impulse):
             self.mover.setInterestTarget(target)
         except:
             pass
-        self.target = target
+        self.targetNode = target
 
 
 
@@ -31,29 +31,25 @@ class PetChase(Impulse.Impulse):
 
 
     def getTarget(self):
-        return self.target
+        return self.targetNode
 
 
 
     def destroy(self):
         self.lookAtNode.removeNode()
         del self.lookAtNode
-        del self.target
+        del self.targetNode
 
 
 
     def _setMover(self, mover):
         Impulse.Impulse._setMover(self, mover)
-        self.lookAtNode.reparentTo(self.nodePath)
-
+        self.lookAtNode.reparentTo(self.targetNode)
 
 
     def _clearMover(self, mover):
         print "Cleared CHASE???"
         self.mover.stopMovingObj()
-        stationaryNode = NodePath('stationary_node')
-        stationaryNode.setPos(self.target.getPos())
-        self.mover.setInterestTarget(stationaryNode)
 
 
 
@@ -65,10 +61,9 @@ class PetChase(Impulse.Impulse):
     def _process(self, dt):
         Impulse.Impulse._process(self, dt)
 
-        target = self.target
-
+        target = self.lookAtNode
+    
         self.mover.setInterestTarget(target)
-
 
 
 

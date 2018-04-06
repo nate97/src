@@ -6,7 +6,6 @@ from panda3d.core import *
 from direct.fsm import FSM
 from direct.distributed import DistributedSmoothNode
 from direct.interval.IntervalGlobal import *
-from direct.showbase.PythonUtil import bound
 from otp.otpbase import OTPGlobals
 from otp.avatar import ShadowCaster
 from toontown.racing import Kart
@@ -734,14 +733,14 @@ class DistributedVehicle(DistributedSmoothNode.DistributedSmoothNode, Kart.Kart,
         self.curSpeed = self.smoother.getSmoothForwardVelocity()
         rotSpeed = -1 * self.smoother.getSmoothRotationalVelocity()
         self.leanAmount = self.curSpeed * rotSpeed / 500.0
-        self.leanAmount = bound(self.leanAmount, -10, 10)
+        self.leanAmount = min(max(self.leanAmount, -10), 10)
         self.__animate()
         return Task.cont
 
     def __animate(self):
         speed = self.curSpeed
         self.spinWheels(speed / 10)
-        enginePitch = bound(speed / 120.0, 0.5, 15)
+        enginePitch = min(max(speed / 120.0, 0.5), 15)
         self.kartLoopSfx.setPlayRate(enginePitch)
         if not self.localVehicle:
             dist = (self.getPos() - localAvatar.getPos()).length()
