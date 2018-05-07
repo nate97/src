@@ -1,12 +1,11 @@
-from panda3d.core import *
+from pandac.PandaModules import *
 from direct.showbase.PythonUtil import weightedChoice, randFloat, Functor
 from direct.showbase.PythonUtil import list2dict
 from direct.showbase import DirectObject
-from direct.distributed import DistributedObjectAI
+from direct.distributed import DistributedObject, DistributedObjectAI
 from direct.directnotify import DirectNotifyGlobal
 from direct.task import Task
 from direct.fsm import FSM
-from toontown.toon import DistributedToonAI
 from toontown.pets import PetConstants, PetObserve, PetGoal, PetGoalMgr
 from toontown.pets import PetTricks, PetLookerAI
 import random, types
@@ -421,28 +420,14 @@ class PetBrain(DirectObject.DirectObject):
             return
 
         def _handleDoTrick(trickId, avId, self = self):
+            looked = self.lookedAtBy(avId) or config.GetBool('pet-brain-ignore-looked-tricks', True)
             avatar = simbase.air.doId2do.get(avId)
             if avatar:
-                # TO DO
-                #if self.lookedAtBy(avatar.doId):
-                    if not self.goalMgr.hasTrickGoal():
-                        if not self.pet._willDoTrick(trickId):
-                            self.pet.trickFailLogger.addEvent(trickId)
-                            trickId = PetTricks.Tricks.BALK
-                        trickGoal = PetGoal.DoTrick(avatar, trickId)
- 
-                        
-                        print "WAT???"
-                        print str(trickGoal)
-                        self.goalMgr.addGoal(trickGoal)
-
-
-
-
-
-
-
-
+                if looked:
+                    if not self.pet._willDoTrick(trickId):
+                        self.pet.trickFailLogger.addEvent(trickId)
+                        trickId = PetTricks.Tricks.BALK
+                    self._doTrick(trickId, avatar)
 
         phrase = observe.getPetPhrase()
         avId = observe.getAvId()
