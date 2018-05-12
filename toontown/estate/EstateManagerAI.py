@@ -240,7 +240,11 @@ class LoadEstateFSM(FSM):
                 fsm = LoadPetFSM(self.mgr, self.estate, toon, self.__petDone)
                 self.petFSMs.append(fsm)
                 fsm.start()
-            
+ 
+        # If we have no pets go ahead and finish the estate loading.
+        if not self.petFSMs:
+            self.demand('Finished')
+
     def __petDone(self, pet):
         if self.state_ != 'LoadPets':
             pet.requestDelete()
