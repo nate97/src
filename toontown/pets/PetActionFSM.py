@@ -85,8 +85,10 @@ class PetActionFSM(FSM.FSM):
 
     def enterTrick(self, avatar, trickId):
         PetActionFSM.notify.debug('enterTrick')
-        if not self.pet.isLockedDown():
-            self.pet.lockPet()
+        # NF
+        # Broken
+        #if not self.pet.isLockedDown():
+        #    self.pet.lockPet()
         self.pet.sendUpdate('doTrick', [trickId, globalClockDelta.getRealNetworkTime()])
 
         def finish(avatar = avatar, trickId = trickId, self = self):
@@ -102,8 +104,8 @@ class PetActionFSM(FSM.FSM):
                                 av.toonUp(healAmt)
 
                 self.pet._handleDidTrick(trickId)
-                if not self.pet.isLockedDown():
-                    self.pet.unlockPet()
+                #if not self.pet.isLockedDown():
+                #    self.pet.unlockPet()
                 messenger.send(self.getTrickDoneEvent())
 
         self.trickDoneEvent = 'trickDone-%s-%s' % (self.pet.doId, self.trickSerialNum)
@@ -121,8 +123,8 @@ class PetActionFSM(FSM.FSM):
         if self.trickFinishIval.isPlaying():
             self.trickFinishIval.finish()
         del self.trickFinishIval
-        if self.pet.isLockedDown():
-            self.pet.unlockPet()
+        #if self.pet.isLockedDown():
+        #    self.pet.unlockPet()
         del self.trickDoneEvent
 
     def enterMovie(self):
