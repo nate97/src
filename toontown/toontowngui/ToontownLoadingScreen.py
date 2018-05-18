@@ -21,15 +21,14 @@ class ToontownLoadingScreen():
          1.06,
          -0.03,
          0.03), pos=(0, 1, -0.85), text='')
-        logoScale = (1, 1, 0.35)  # Scale for our logo.
+        logoScale = (0.85)  # Scale for our logo.
         self.logo = OnscreenImage(
             image='phase_3/maps/toontown-logo.png',
             scale=logoScale)
         self.logo.reparentTo(hidden)
         self.logo.setTransparency(TransparencyAttrib.MAlpha)
         scale = self.logo.getScale()
-        # self.logo.setPos(scale[0], 0, -scale[2])
-        self.logo.setPos(0, 0, 0.65)
+        self.logo.setPos(0, 0, 0.6)
         return
 
     def destroy(self):

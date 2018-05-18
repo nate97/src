@@ -136,11 +136,10 @@ backgroundNodePath.setScale(render2d, VBase3(1))
 backgroundNodePath.find('**/fg').hide()
 logo = OnscreenImage(
     image='phase_3/maps/toontown-logo.png',
-    scale=(1 / (4.0/3.0), 1, 1 / (4.0/3.0)),
+    scale=(1.5),
     pos=backgroundNodePath.find('**/fg').getPos())
 logo.setTransparency(TransparencyAttrib.MAlpha)
 logo.setBin('fixed', 20)
-logo.reparentTo(backgroundNodePath)
 backgroundNodePath.find('**/bg').setBin('fixed', 10)
 base.graphicsEngine.renderFrame()
 DirectGuiGlobals.setDefaultRolloverSound(base.loader.loadSfx('phase_3/audio/sfx/GUI_rollover.ogg'))
@@ -186,10 +185,13 @@ if not launcher.isDummy():
     base.startShow(cr, launcher.getGameServer())
 else:
     base.startShow(cr)
+logo.reparentTo(hidden)
+logo.removeNode()
 backgroundNodePath.reparentTo(hidden)
 backgroundNodePath.removeNode()
 del backgroundNodePath
 del backgroundNode
+del logo
 del tempLoader
 version.cleanup()
 del version
