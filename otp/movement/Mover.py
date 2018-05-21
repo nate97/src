@@ -41,6 +41,7 @@ class Mover():
         self.enabled = 0
         self.taskOn = 0
 
+        self.locked = False
         
         self.setAI()
 
@@ -93,6 +94,7 @@ class Mover():
 
 
 
+
     def integrate(self):
         try:
             # Do this once
@@ -100,6 +102,38 @@ class Mover():
                 taskMgr.add(self.AIUpdate,"AIUpdate")
                 self.taskOn = 1
  
+        except:
+            pass
+
+    def AIUpdate(self, task):
+        try:
+            self.petCloseToToon()
+            self.AIworld.update()
+        except:
+            pass
+        return Task.cont
+
+
+    def petCloseToToon(self):
+        try:
+            # This piece of code is to check the distance between the toon and pet,
+            # in order to make sure the doodle does not collide with the toon.
+            xToon = int(self.moverTarget.getX())
+            xPet = int(self.objNodePath.getX())
+            yToon = int(self.moverTarget.getY())
+            yPet = int(self.objNodePath.getY())
+
+            xDifference = abs(xToon - xPet) # Get the absolute value because we don't care about exact position in the environment
+            yDifference = abs(yToon - yPet)
+
+            stopDistance = 2 # Distance the pet should stop before reaching toon
+
+            print (xDifference)
+
+            if xDifference <= stopDistance and yDifference <= stopDistance: # If the distance between toon and pet is 2; stop moving
+                self.stopMovingObj() # Stop the pet from moving
+                print 'Stopped pet'
+
         except:
             pass
 
@@ -112,45 +146,41 @@ class Mover():
         self.AIchar = AICharacter("objNodePath", self.objNodePath, 50, 10, 25)
         self.AIworld.addAiChar(self.AIchar)
         self.AIbehaviors = self.AIchar.getAiBehaviors()
-        
-
-
-    def AIUpdate(self, task):
-        try:
-            self.AIworld.update()
-            self.objNodePath.lookAt(self.moverTarget)
-        except:
-            pass
-        return Task.cont
-
-
 
 
 
     def setInterestTarget(self, moverTarget):
+        self.locked = False
+        self.objNodePath.lookAt(moverTarget)
         self.moverTarget = moverTarget
         self.AIbehaviors.pursue(moverTarget)
-
-
 
     def getInterestTarget(self):
         return self.moverTarget
 
 
-
     def setStaticTarget(self, moverTarget):
+        self.locked = False
         self.stopMovingObj()
         self.moverTarget = moverTarget
         self.AIbehaviors.seek(moverTarget)
 
-
     def setWander(self):
+        self.locked = False
         self.stopMovingObj()
         self.AIbehaviors.wander(10, 0, 50, 1.0)
 
 
     def stopMovingObj(self):
+        self.locked = True
         self.AIbehaviors.pauseAi('all')
+
+
+    def setFlee(self, chaser):
+        self.locked = False
+        self.AIbehaviors.flee(chaser, 20, 20)
+
+
 
 
     def setFwdSpeed(self, speed):
@@ -166,16 +196,11 @@ class Mover():
     def getRotSpeed(self):
         return self.rotSpeed
 
-
-
-
-
-
-
     def addRotShove(self, rotVel):
         self.rotVel = rotVel
 
     def addShove(self, vel):
         self.vel = vel
+
 
 

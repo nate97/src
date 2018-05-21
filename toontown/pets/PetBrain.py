@@ -217,7 +217,6 @@ class PetBrain(DirectObject.DirectObject):
             self.chaseNode.setPos(self.pet, 0, 0, 0)
         else:
             self.chaseNode.setPos(self.focus, 0, 0, 0)
-        self._inspectSpot(self.chaseNode)
 
     def _chase(self, target):
         if callable(target):
@@ -245,14 +244,6 @@ class PetBrain(DirectObject.DirectObject):
             return 0
         self.setFocus(chaser)
         self.pet.actionFSM.request('Flee', chaser)
-        return 1
-
-    def _inspectSpot(self, spot = None):
-        if spot is None:
-            spot = NodePath('randomSpot')
-            spot.setPos(randFloat(-20, 20), randFloat(-20, 20), 0)
-        self.setFocus(spot)
-        self.pet.actionFSM.request('InspectSpot', spot)
         return 1
 
     def _stay(self, avatar):

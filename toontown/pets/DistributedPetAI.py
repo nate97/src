@@ -10,7 +10,7 @@ from direct.interval.IntervalGlobal import *
 from toontown.toonbase import ToontownGlobals
 from direct.task import Task
 from otp.movement import Mover
-from toontown.pets import PetChase, PetFlee, PetWander, PetLeash
+from toontown.pets import PetLeash
 from toontown.pets import PetCollider, PetSphere, PetLookerAI
 from toontown.pets import PetConstants, PetDNA, PetTraits
 from toontown.pets import PetObserve, PetBrain, PetMood
@@ -647,18 +647,9 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
 
     def createImpulses(self):
         self.createSphereImpulse()
-        self.chaseImpulse = PetChase.PetChase()
-        self.fleeImpulse = PetFlee.PetFlee()
-        self.wanderImpulse = PetWander.PetWander()
-        self.lockChaseImpulse = PetChase.PetChase()
 
     def destroyImpulses(self):
-        self.wanderImpulse.destroy()
-        del self.chaseImpulse
-        del self.fleeImpulse
-        del self.wanderImpulse
         self.destroySphereImpulse()
-        del self.lockChaseImpulse
 
     def createSphereImpulse(self):
         petRadius = 1.0
@@ -967,10 +958,12 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
         return Task.done
 
     def startLockPetMove(self, avId):
-        self.enableLockMover()
+        pass
         # TO DO
         #self.lockChaseImpulse.setTarget(self.air.doId2do.get(avId))
         #self.lockMover.addImpulse('LockTarget', self.lockChaseImpulse)
+
+        
 
         self.distList = [0, 0, 0]
 

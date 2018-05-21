@@ -7,6 +7,8 @@ from direct.showbase.PythonUtil import lerp
 from toontown.pets import PetTricks
 from toontown.toon import DistributedToonAI
 
+import random
+
 class PetActionFSM(FSM.FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory('PetActionFSM')
 
@@ -18,77 +20,78 @@ class PetActionFSM(FSM.FSM):
     def destroy(self):
         self.cleanup()
 
+
     def enterNeutral(self):
         PetActionFSM.notify.debug('enterNeutral')
 
     def exitNeutral(self):
         pass
 
+
     def enterChase(self, target):
         PetActionFSM.notify.debug('enterChase: %s' % target)
-        self.pet.chaseImpulse.setTarget(target)
-        self.pet.mover.addImpulse('chase', self.pet.chaseImpulse)
-        self.pet.unstickFSM.request('on')
+        print ('enter chase fsm')
+        self.pet.mover.setInterestTarget(target)
 
     def exitChase(self):
-        self.pet.unstickFSM.request('off')
-        self.pet.mover.removeImpulse('chase')
+        print ('exit chase fsm')
+        self.pet.mover.stopMovingObj()
+
+
 
     def enterFlee(self, chaser):
+        print 'fsm flee'
         PetActionFSM.notify.debug('enterFlee: %s' % chaser)
-        self.pet.fleeImpulse.setChaser(chaser)
-        self.pet.mover.addImpulse('flee', self.pet.fleeImpulse)
-        self.pet.unstickFSM.request('on')
+        self.pet.mover.setFlee(chaser)
 
     def exitFlee(self):
-        self.pet.unstickFSM.request('off')
-        self.pet.mover.removeImpulse('flee')
+        self.pet.mover.stopMovingObj()
+
+
 
     def enterWander(self):
+        print 'fsm wander'
         PetActionFSM.notify.debug('enterWander')
-        self.pet.mover.addImpulse('wander', self.pet.wanderImpulse)
+        self.pet.mover.setWander()
 
     def exitWander(self):
-        self.pet.mover.removeImpulse('wander')
+        self.pet.mover.stopMovingObj()
+
+
+
 
     def enterUnstick(self):
         PetActionFSM.notify.debug('enterUnstick')
-        self.pet.mover.addImpulse('unstick', self.pet.wanderImpulse)
+        self.pet.mover.setWander()
 
     def exitUnstick(self):
-        self.pet.mover.removeImpulse('unstick')
+        self.pet.mover.stopMovingObj()
 
-    def enterInspectSpot(self, spot):
-        PetActionFSM.notify.debug('enterInspectSpot')
-        self.pet.chaseImpulse.setTarget(spot)
-        self.pet.mover.addImpulse('inspect', self.pet.chaseImpulse)
-        self.pet.unstickFSM.request('on')
 
-    def exitInspectSpot(self):
-        self.pet.unstickFSM.request('off')
-        self.pet.mover.removeImpulse('inspect')
 
     def enterStay(self, avatar):
+        print 'fsm stay'
         PetActionFSM.notify.debug('enterStay')
 
     def exitStay(self):
         pass
 
+
+
     def enterHeal(self, avatar):
         PetActionFSM.notify.debug('enterHeal')
         avatar.toonUp(3)
-        self.pet.chaseImpulse.setTarget(avatar)
-        self.pet.mover.addImpulse('chase', self.pet.chaseImpulse)
+        self.pet.mover.setStaticTarget(avatar)
 
     def exitHeal(self):
-        self.pet.mover.removeImpulse('chase')
+        self.pet.mover.stopMovingObj()
 
     def enterTrick(self, avatar, trickId):
         PetActionFSM.notify.debug('enterTrick')
         # NF
         # Broken
-        #if not self.pet.isLockedDown():
-        #    self.pet.lockPet()
+        if not self.pet.mover.locked:
+            self.pet.mover.stopMovingObj()
         self.pet.sendUpdate('doTrick', [trickId, globalClockDelta.getRealNetworkTime()])
 
         def finish(avatar = avatar, trickId = trickId, self = self):
@@ -104,8 +107,8 @@ class PetActionFSM(FSM.FSM):
                                 av.toonUp(healAmt)
 
                 self.pet._handleDidTrick(trickId)
-                #if not self.pet.isLockedDown():
-                #    self.pet.unlockPet()
+                if not self.pet.mover.locked:
+                    self.pet.mover.setWander()
                 messenger.send(self.getTrickDoneEvent())
 
         self.trickDoneEvent = 'trickDone-%s-%s' % (self.pet.doId, self.trickSerialNum)

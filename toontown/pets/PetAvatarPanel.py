@@ -174,11 +174,12 @@ class PetAvatarPanel(AvatarPanel.AvatarPanel):
         base.localAvatar.obscureFriendsListButton(-1)
         self.ignore('petStateUpdated')
         self.ignore('petNameChanged')
+
         # TO DO
-        # This is broken for unknown reasons... I suspect the gernation of doodles for the pet details might be wrong...
-        #if self.avatar.bFake:
-            #self.avatar.disable()
-            #self.avatar.delete()
+        if self.avatar.bFake:
+            self.avatar.disable()
+            self.avatar.delete()
+
         AvatarPanel.AvatarPanel.cleanup(self)
         base.panel = None
         return
@@ -276,7 +277,11 @@ class PetAvatarPanel(AvatarPanel.AvatarPanel):
         self.notify.debug('__fillPetInfo(): doId=%s' % avatar.doId)
         self.petView = self.frame.attachNewNode('petView')
         self.petView.setPos(0, 0, 5.4)
-        #avatar.announceGenerate()
+        try:
+            if not self.petIsLocal:
+                avatar.announceGenerate()
+        except:
+            pass
         self.petModel = Pet.Pet(forGui=1)
         self.petModel.setDNA(avatar.getDNA())
         self.petModel.fitAndCenterHead(3.575, forGui=1)
@@ -295,15 +300,17 @@ class PetAvatarPanel(AvatarPanel.AvatarPanel):
             return
         if self.frame == None:
             return
-        # TO DO
-        # This doesn't work and has no indication as to what is wrong, may be how we are generating doodles with distributedPet
-        #if not self.petIsLocal:
-        #    print "Pet not local"
-        #    self.avatar.updateOfflineMood(avatar)
+
+        if not self.petIsLocal:
+            self.avatar.updateOfflineMood()
+
         mood = self.avatar.getDominantMood()
-        print mood
+
         self.stateLabel['text'] = TTLocalizer.PetMoodAdjectives[mood]
-        self.nameLabel['text'] = avatar.getName()
+
+        if avatar.getName() != '':
+            self.nameLabel['text'] = avatar.getName()
+
         if self.petDetailPanel != None:
             self.petDetailPanel.update(avatar)
         return
