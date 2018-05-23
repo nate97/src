@@ -16,33 +16,30 @@ class Mover():
     SerialNum = 0
     Profile = 0
     render = NodePath('render')
+    nullTargetNodePath = NodePath('nullTargetNodepath')
 
     def __init__(self, objNodePath, fwdSpeed = 1, rotSpeed = 1):
         print ("Initalizng pet")
+
         self.serialNum = Mover.SerialNum
         Mover.SerialNum += 1
         self.VecType = Vec3
         self.impulses = {}
 
-        self.objNodePath = objNodePath
-        self.moverTarget = None
+        # NEW VARIABLES
+        self.petNodePath = objNodePath
+        self.targetNodePath = NodePath('targetNodepath')
 
-        self.fwdSpeed = fwdSpeed
-        self.rotSpeed = rotSpeed
-
+        self.petLocked = False
+        self.petMode = 'unstick'
         self._sadMult = 0.3
+        self.fwdSpeed = fwdSpeed
         self.sadFwdSpeed = self.fwdSpeed * self._sadMult
-        self.sadRotSpeed = self.rotSpeed * self._sadMult
 
-        self.rotVel = None
-        self.vel = None
 
-       
-        self.enabled = 0
+        # Temporary garbage
         self.taskOn = 0
 
-        self.locked = False
-        
         self.setAI()
 
 
@@ -52,9 +49,11 @@ class Mover():
             self.removeImpulse(name)
 
 
+
     def addImpulse(self, name, impulse):
         self.impulses[name] = impulse
         impulse._setMover(self)
+
 
 
     def removeImpulse(self, name):
@@ -63,6 +62,7 @@ class Mover():
             return
         self.impulses[name]._clearMover(self)
         del self.impulses[name]
+
 
 
     def processImpulses(self, dt = 1):
@@ -93,8 +93,6 @@ class Mover():
 
 
 
-
-
     def integrate(self):
         try:
             # Do this once
@@ -107,35 +105,46 @@ class Mover():
 
     def AIUpdate(self, task):
         try:
-            self.petCloseToToon()
             self.AIworld.update()
+            self.petCollisions()
+            self.petRotationFix()
         except:
             pass
+
+
         return Task.cont
 
 
-    def petCloseToToon(self):
+
+    def petCollisions(self):
         try:
             # This piece of code is to check the distance between the toon and pet,
             # in order to make sure the doodle does not collide with the toon.
-            xToon = int(self.moverTarget.getX())
-            xPet = int(self.objNodePath.getX())
-            yToon = int(self.moverTarget.getY())
-            yPet = int(self.objNodePath.getY())
+            xToon = int(self.targetNodePath.getX())
+            xPet = int(self.petNodePath.getX())
+            yToon = int(self.targetNodePath.getY())
+            yPet = int(self.petNodePath.getY())
 
             xDifference = abs(xToon - xPet) # Get the absolute value because we don't care about exact position in the environment
             yDifference = abs(yToon - yPet)
 
             stopDistance = 2 # Distance the pet should stop before reaching toon
 
-            print (xDifference)
-
             if xDifference <= stopDistance and yDifference <= stopDistance: # If the distance between toon and pet is 2; stop moving
-                self.stopMovingObj() # Stop the pet from moving
-                print 'Stopped pet'
+                self.AIbehaviors.pauseAi('all') # Stop the pet from moving
 
         except:
             pass
+
+
+    def petRotationFix(self):
+
+        if self.petMode != 'stick':
+            currentHPet = self.petNodePath.getH()
+            correctedHPet = currentHPet - 180
+
+            self.petNodePath.setH(correctedHPet)
+
 
 
     def setAI(self):
@@ -143,64 +152,43 @@ class Mover():
 
         self.AIworld = AIWorld(Mover.render)
  
-        self.AIchar = AICharacter("objNodePath", self.objNodePath, 50, 10, 25)
+        self.AIchar = AICharacter("petNodePath", self.petNodePath, 50, 10, 25)
         self.AIworld.addAiChar(self.AIchar)
         self.AIbehaviors = self.AIchar.getAiBehaviors()
 
 
 
-    def setInterestTarget(self, moverTarget):
-        self.locked = False
-        self.objNodePath.lookAt(moverTarget)
-        self.moverTarget = moverTarget
-        self.AIbehaviors.pursue(moverTarget)
+    def setPetAIMode(self, petMode, target = nullTargetNodePath):
 
-    def getInterestTarget(self):
-        return self.moverTarget
+        self.petMode = petMode
+        self.targetNodePath = target # This is in case we need to do something else with the target later
 
+        self.AIbehaviors.pauseAi('all') # Before we do any state changes, pause the AI
 
-    def setStaticTarget(self, moverTarget):
-        self.locked = False
-        self.stopMovingObj()
-        self.moverTarget = moverTarget
-        self.AIbehaviors.seek(moverTarget)
+        if self.petMode == 'stick': # Locks pet and doesn't allow movement
+            self.petLocked = True
+            self.AIbehaviors.pauseAi('all')
 
-    def setWander(self):
-        self.locked = False
-        self.stopMovingObj()
-        self.AIbehaviors.wander(10, 0, 50, 1.0)
+        elif self.petMode == 'unstick':
+            self.petLocked = False
 
+        elif self.petMode == 'chase' and self.petLocked == False: # This makes the pet continue to follow a moving object
+            self.AIbehaviors.pursue(target)
 
-    def stopMovingObj(self):
-        self.locked = True
-        self.AIbehaviors.pauseAi('all')
+        elif self.petMode == 'static_chase' and self.petLocked == False: # This makes the pet go to a single spot
+            self.AIbehaviors.seek(target)
 
+        elif self.petMode == 'wander' and self.petLocked == False:
+            self.AIbehaviors.wander(10, 0, 50, 1.0)
 
-    def setFlee(self, chaser):
-        self.locked = False
-        self.AIbehaviors.flee(chaser, 20, 20)
+        elif self.petMode == 'flee' and self.petLocked == False:
+            self.AIbehaviors.flee(chaser, 20, 20)
 
 
 
-
+    # Pet's walking speed
     def setFwdSpeed(self, speed):
         self.fwdSpeed = speed
         self.AIchar.setMaxForce(self.fwdSpeed) 
-
-    def getFwdSpeed(self):
-        return self.fwdSpeed
-        
-    def setRotSpeed(self, speed):
-        self.rotSpeed = speed
-
-    def getRotSpeed(self):
-        return self.rotSpeed
-
-    def addRotShove(self, rotVel):
-        self.rotVel = rotVel
-
-    def addShove(self, vel):
-        self.vel = vel
-
 
 

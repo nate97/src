@@ -31,41 +31,42 @@ class PetActionFSM(FSM.FSM):
     def enterChase(self, target):
         PetActionFSM.notify.debug('enterChase: %s' % target)
         print ('enter chase fsm')
-        self.pet.mover.setInterestTarget(target)
+        self.pet.mover.setPetAIMode('chase', target)
 
     def exitChase(self):
         print ('exit chase fsm')
-        self.pet.mover.stopMovingObj()
+        self.pet.mover.setPetAIMode('wander')
 
 
 
     def enterFlee(self, chaser):
         print 'fsm flee'
         PetActionFSM.notify.debug('enterFlee: %s' % chaser)
-        self.pet.mover.setFlee(chaser)
+        self.pet.mover.setPetAIMode('flee', chaser)
 
     def exitFlee(self):
-        self.pet.mover.stopMovingObj()
+        self.pet.mover.setPetAIMode('wander')
 
 
 
     def enterWander(self):
         print 'fsm wander'
         PetActionFSM.notify.debug('enterWander')
-        self.pet.mover.setWander()
+        self.pet.mover.setPetAIMode('wander')
 
     def exitWander(self):
-        self.pet.mover.stopMovingObj()
+        self.pet.mover.setPetAIMode('stick')
 
 
 
 
     def enterUnstick(self):
         PetActionFSM.notify.debug('enterUnstick')
-        self.pet.mover.setWander()
+        self.pet.mover.setPetAIMode('unstick')
+        self.pet.mover.setPetAIMode('wander')
 
     def exitUnstick(self):
-        self.pet.mover.stopMovingObj()
+        self.pet.mover.setPetAIMode('stick')
 
 
 
@@ -81,17 +82,18 @@ class PetActionFSM(FSM.FSM):
     def enterHeal(self, avatar):
         PetActionFSM.notify.debug('enterHeal')
         avatar.toonUp(3)
-        self.pet.mover.setStaticTarget(avatar)
+        self.pet.mover.setPetAIMode('unstick')
+        self.pet.mover.setPetAIMode('static_chase', avatar)
 
     def exitHeal(self):
-        self.pet.mover.stopMovingObj()
+        self.pet.mover.setPetAIMode('stick')
 
     def enterTrick(self, avatar, trickId):
         PetActionFSM.notify.debug('enterTrick')
         # NF
         # Broken
-        if not self.pet.mover.locked:
-            self.pet.mover.stopMovingObj()
+        if not self.pet.mover.petLocked:
+            self.pet.mover.setPetAIMode('stick')
         self.pet.sendUpdate('doTrick', [trickId, globalClockDelta.getRealNetworkTime()])
 
         def finish(avatar = avatar, trickId = trickId, self = self):
@@ -107,8 +109,9 @@ class PetActionFSM(FSM.FSM):
                                 av.toonUp(healAmt)
 
                 self.pet._handleDidTrick(trickId)
-                if not self.pet.mover.locked:
-                    self.pet.mover.setWander()
+                if not self.pet.mover.petLocked:
+                    self.pet.mover.setPetAIMode('unstick')
+                    self.pet.mover.setPetAIMode('wander')
                 messenger.send(self.getTrickDoneEvent())
 
         self.trickDoneEvent = 'trickDone-%s-%s' % (self.pet.doId, self.trickSerialNum)
@@ -128,6 +131,10 @@ class PetActionFSM(FSM.FSM):
         del self.trickFinishIval
         #if self.pet.isLockedDown():
         #    self.pet.unlockPet()
+
+        if self.pet.mover.petLocked:
+            self.pet.mover.setPetAIMode('unstick')
+            self.pet.mover.setPetAIMode('wander')
         del self.trickDoneEvent
 
     def enterMovie(self):

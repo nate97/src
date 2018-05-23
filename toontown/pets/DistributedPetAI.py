@@ -11,7 +11,7 @@ from toontown.toonbase import ToontownGlobals
 from direct.task import Task
 from otp.movement import Mover
 from toontown.pets import PetLeash
-from toontown.pets import PetCollider, PetSphere, PetLookerAI
+from toontown.pets import PetSphere, PetLookerAI
 from toontown.pets import PetConstants, PetDNA, PetTraits
 from toontown.pets import PetObserve, PetBrain, PetMood
 from toontown.pets import PetActionFSM, PetBase, PetGoal, PetTricks
@@ -786,21 +786,18 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
 
     def gaitEnterNeutral(self):
         self.mover.setFwdSpeed(PetConstants.FwdSpeed)
-        self.mover.setRotSpeed(PetConstants.RotSpeed)
 
     def gaitExitNeutral(self):
         pass
 
     def gaitEnterHappy(self):
         self.mover.setFwdSpeed(PetConstants.HappyFwdSpeed)
-        self.mover.setRotSpeed(PetConstants.HappyRotSpeed)
 
     def gaitExitHappy(self):
         pass
 
     def gaitEnterSad(self):
         self.mover.setFwdSpeed(PetConstants.SadFwdSpeed)
-        self.mover.setRotSpeed(PetConstants.SadRotSpeed)
 
     def gaitExitSad(self):
         pass

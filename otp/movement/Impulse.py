@@ -17,7 +17,7 @@ class Impulse(DirectObject.DirectObject):
     def _setMover(self, mover):
         self.mover = mover
 
-        self.nodePath = self.mover.objNodePath
+        self.nodePath = self.mover.petNodePath
         self.VecType = self.mover.VecType
 
     def _clearMover(self, mover):

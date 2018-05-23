@@ -17,4 +17,3 @@ class PetLeash(Impulse.Impulse):
             shove = self.VecType(myPos)
             shove.normalize()
             shove *= -excess
-            self.mover.addShove(shove)

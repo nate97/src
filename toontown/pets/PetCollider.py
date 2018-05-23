@@ -47,7 +47,7 @@ class PetCollider(Impulse.Impulse):
         del self.vel
 
     def calcCollLines(self):
-        self.fwdCLine.setPointB(Point3(0, self.mover.getFwdSpeed(), 0))
+        self.fwdCLine.setPointB(Point3(0, 10, 0)) # 10 Is pet speed
         self.leftCLine.setPointB(Point3(-self.petRadius, self.petRadius, 0))
         self.rightCLine.setPointB(Point3(self.petRadius, self.petRadius, 0))
 
