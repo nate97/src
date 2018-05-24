@@ -1708,8 +1708,7 @@ class OTPClientRepository(ClientRepositoryBase):
         list = []
         for s in self.activeDistrictMap.values():
             if s.available:
-                list.append((s.doId, s.name, s.avatarCount, s.newAvatarCount,
-                             s.invasionStatus))
+                list.append((s.doId, s.name, s.avatarCount, s.newAvatarCount))
 
         return list
 

@@ -80,10 +80,6 @@ class ToontownDistrictStats(DistributedObject.DistributedObject):
         if self.toontownDistrictId in self.cr.activeDistrictMap:
             self.cr.activeDistrictMap[self.toontownDistrictId].newAvatarCount = newAvatarCount
 
-    def setInvasionStatus(self, invasionStatus):
-        if self.toontownDistrictId in self.cr.activeDistrictMap:
-            self.cr.activeDistrictMap[self.toontownDistrictId].invasionStatus = invasionStatus
-
     def setStats(self, avatarCount, newAvatarCount):
         self.setAvatarCount(avatarCount)
         self.setNewAvatarCount(newAvatarCount)

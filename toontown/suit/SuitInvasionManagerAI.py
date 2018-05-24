@@ -86,12 +86,6 @@ class SuitInvasionManagerAI:
         self.flySuits()
         self.notifyInvasionStarted()
 
-        # Update the invasion tracker on the districts page in the Shticker Book:
-        if self.suitDeptIndex is not None:
-            self.air.districtStats.b_setInvasionStatus(self.suitDeptIndex + 1)
-        else:
-            self.air.districtStats.b_setInvasionStatus(5)
-
         # If this is a normal invasion, and the players take too long to defeat
         # all of the Cogs, we'll want the invasion to timeout:
         if type == INVASION_TYPE_NORMAL:
@@ -108,9 +102,6 @@ class SuitInvasionManagerAI:
 
         # Stop the invasion timeout task:
         taskMgr.remove('invasionTimeout')
-
-        # Update the invasion tracker on the districts page in the Shticker Book:
-        self.air.districtStats.b_setInvasionStatus(0)
 
         # Revert what was done when the invasion started:
         self.notifyInvasionEnded()
