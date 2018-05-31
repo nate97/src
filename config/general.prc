@@ -141,9 +141,7 @@ want-live-updates #t
 #want-halloween #t
 active-holidays 60, 64, 65, 66
 
-
-
-
+#side-by-side-stereo 1
 
 
 
