@@ -35,9 +35,9 @@ class DNASign(DNANode.DNANode):
         if not signOrigin:
             signOrigin = nodePath
         node = sign.copyTo(signOrigin)
-        #node.setDepthOffset(50)
+        node.setDepthOffset(50)
         node.setPosHprScale(signOrigin, self.pos, self.hpr, self.scale)
-        node.setPos(node, 0, -0.1, 0)
+        #node.setPos(node, 0, -0.1, 0)
         node.setColor(self.color)
         for child in self.children_:
             child.traverse(node, dnaStorage)

@@ -38,7 +38,7 @@ class PartyPlanner(DirectFrame, FSM):
         FSM.__init__(self, 'PartyPlannerFSM')
         DirectFrame.__init__(self)
         self.doneEvent = doneEvent
-        self.stateArray = ['Off',
+        self.state_Array = ['Off',
          'Welcome',
          'PartyEditor', # 'Guests',  skip over the Guests state.
          'Date',

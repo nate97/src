@@ -462,7 +462,8 @@ class DistributedBuilding(DistributedObject.DistributedObject):
         if backgroundNPGeom:
             backgroundNPGeom.setEffect(DecalEffect.make())
         signTextNodePath = backgroundNP.attachNewNode(textNode.generate())
-        signTextNodePath.setPosHprScale(0.0, -0.01, -0.21 + textHeight * 0.1 / zScale, 0.0, 0.0, 0.0, 0.1, 0.1, 0.1 / zScale)
+        signTextNodePath.setDepthOffset(50)
+        signTextNodePath.setPosHprScale(0.0, 0.0, -0.21 + textHeight * 0.1 / zScale, 0.0, 0.0, 0.0, 0.1, 0.1, 0.1 / zScale)
         signTextNodePath.setColor(1.0, 1.0, 1.0, 1.0)
         frontNP = suitBuildingNP.find('**/*_front/+GeomNode;+s')
         backgroundNP.wrtReparentTo(frontNP)
@@ -564,7 +565,8 @@ class DistributedBuilding(DistributedObject.DistributedObject):
         if backgroundNPGeom:
             backgroundNPGeom.setEffect(DecalEffect.make())
         signTextNodePath = backgroundNP.attachNewNode(textNode.generate())
-        signTextNodePath.setPosHprScale(0.0, -0.01, -0.13 + textHeight * 0.1 / zScale, 0.0, 0.0, 0.0, 0.1 * 8.0 / 20.0, 0.1, 0.1 / zScale)
+        signTextNodePath.setDepthOffset(50)
+        signTextNodePath.setPosHprScale(0.0, 0.0, -0.13 + textHeight * 0.1 / zScale, 0.0, 0.0, 0.0, 0.1 * 8.0 / 20.0, 0.1, 0.1 / zScale)
         signTextNodePath.setColor(1.0, 1.0, 1.0, 1.0)
         frontNP = suitBuildingNP.find('**/*_front/+GeomNode;+s')
         backgroundNP.wrtReparentTo(frontNP)
