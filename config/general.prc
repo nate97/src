@@ -25,6 +25,12 @@ default-model-extension .bam
 # Textures:
 texture-anisotropic-degree 16
 
+# Performance
+#matrix-palette 1
+#vertex-buffers 1
+#display-list-animation 1
+#hardware-animated-vertices 1
+
 # Preferences:
 preferences-filename preferences.json
 

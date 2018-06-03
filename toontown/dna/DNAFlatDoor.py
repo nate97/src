@@ -10,5 +10,6 @@ class DNAFlatDoor(DNADoor.DNADoor):
         node.setScale(NodePath(), (1, 1, 1))
         node.setPosHpr((0.5, 0, 0), (0, 0, 0))
         node.setColor(self.getColor())
+        node.setDepthOffset(1)
         node.getNode(0).setEffect(DecalEffect.make())
         node.flattenStrong()

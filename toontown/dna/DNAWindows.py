@@ -49,6 +49,7 @@ class DNAWindows(DNAGroup.DNAGroup):
             window.setScale(NodePath(), scale)
             window.setHpr(hpr)
             window.setPos(x, 0, z)
+            window.setDepthOffset(1)
             window.setEffect(DecalEffect.make())
             window.flattenStrong()
 

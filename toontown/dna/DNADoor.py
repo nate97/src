@@ -30,7 +30,7 @@ class DNADoor(DNAGroup.DNAGroup):
 
         doorFlat = doorNodePath.find('door_*_flat')
         doorFlat.flattenStrong()
-        doorFlat.setDepthOffset(1)
+        #doorFlat.setDepthOffset(1) # Can cause building shadows to not properly show up on the doors...
         doorFlat.setEffect(DecalEffect.make())
 
         leftHole = doorNodePath.find('door_*_hole_left')

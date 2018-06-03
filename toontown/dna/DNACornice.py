@@ -42,6 +42,7 @@ class DNACornice(DNAGroup.DNAGroup):
             LVector3f(0, 0, 0),
             LVector3f(1, pParentXScale/parentZScale,
                       pParentXScale/parentZScale))
+        np.setDepthOffset(1)
         np.setEffect(DecalEffect.make())
         np.flattenStrong()
         node = node.getParent().find('**/*_nd')
