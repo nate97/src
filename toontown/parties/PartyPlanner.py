@@ -642,7 +642,10 @@ class PartyPlanner(DirectFrame, FSM):
             self.hide()
             self.cleanup()
             self.friendList.removeAndDestroyAllItems()
-            self.friendList.destroy()
+            try:
+                self.friendList.destroy()
+            except:
+                pass
             self.calendarGuiMonth.destroy()
             self.frame.destroy()
         self.partyPlannerHead.delete()
