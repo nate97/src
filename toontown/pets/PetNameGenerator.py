@@ -30,13 +30,29 @@ class PetNameGenerator:
             else:
                 searchPath.appendDirectory(Filename.fromOsSpecific(os.path.expandvars('toontown/src/configfiles')))
             searchPath.appendDirectory(Filename('.'))
+
+
         if __debug__:
-            filename = '../resources/phase_3/etc/'+TTLocalizer.PetNameMaster
+            filename = '../resources/phase_3/etc/' + TTLocalizer.PetNameMaster
         else:
-            filename = '/phase_3/etc/'+TTLocalizer.PetNameMaster
-        input = open(filename, 'r')
+            vfs = VirtualFileSystem.getGlobalPtr() # Define vfs to be available to us
+            filename = '/phase_3/etc/' + TTLocalizer.PetNameMaster
+
+            found = vfs.resolveFilename(filename, searchPath)
+            if not found:
+                print 'Error no pet name file'
+
+
+        if __debug__:
+            input = open(filename, 'r')
+        else:
+            input = StreamReader(vfs.openReadFile(filename, 1), 1)
+
+
         if not input:
-            self.notify.error('PetNameGenerator: Error opening name list text file.')
+            print 'Error no pet name file'
+
+
         currentLine = input.readline()
         while currentLine:
             if currentLine.lstrip()[0:1] != '#':

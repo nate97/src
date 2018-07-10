@@ -1,5 +1,6 @@
 # Python artifacts:
 *.pyc
+*.pyo
 
 # Eclipse IDE:
 .project

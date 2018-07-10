@@ -9796,6 +9796,8 @@ girlFirsts = []
 neutralFirsts = []
 nameDictionary = {}
 searchPath = DSearchPath()
+
+
 if AppRunnerGlobal.appRunner:
     searchPath.appendDirectory(Filename.expandFrom('$TT_3_ROOT/phase_3/etc'))
 else:
@@ -9805,13 +9807,29 @@ else:
     else:
         searchPath.appendDirectory(Filename.fromOsSpecific(os.path.expandvars('toontown/src/configfiles')))
     searchPath.appendDirectory(Filename('.'))
+
+
 if __debug__:
     filename = '../resources/phase_3/etc/' + PetNameMaster
 else:
+    vfs = VirtualFileSystem.getGlobalPtr() # Define vfs to be available to us
     filename = '/phase_3/etc/' + PetNameMaster
-input = open(filename, 'r')
+
+    found = vfs.resolveFilename(filename, searchPath)
+    if not found:
+        print 'Error no pet name file'
+
+
+if __debug__:
+    input = open(filename, 'r')
+else:
+    input = StreamReader(vfs.openReadFile(filename, 1), 1)
+
+
 if not input:
     print 'Error no pet name file'
+
+
 currentLine = input.readline()
 while currentLine:
     if currentLine.lstrip()[0:1] != '#':
@@ -9820,9 +9838,11 @@ while currentLine:
         nameDictionary[int(currentLine[0:a1])] = (int(currentLine[a1 + 1:a2]), currentLine[a2 + 1:len(currentLine) - 1].strip())
     currentLine = input.readline()
 
+
 masterList = [boyFirsts, girlFirsts, neutralFirsts]
 for tu in nameDictionary.values():
     masterList[tu[0]].append(tu[1])
+
 
 def getPetName(uniqueID):
     try:
