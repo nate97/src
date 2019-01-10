@@ -144,8 +144,8 @@ want-live-updates #t
 
 
 # Halloween
-want-halloween #t
-active-holidays 60, 64, 65, 66, 3, 26, 27, 13
+#want-halloween #t
+#active-holidays 60, 64, 65, 66, 3, 26, 27, 13
 
 #side-by-side-stereo 1
 
