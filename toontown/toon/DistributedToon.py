@@ -247,8 +247,12 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
 
     def announceGenerate(self):
         DistributedPlayer.DistributedPlayer.announceGenerate(self)
+        # NF
+        # NJF
+        # I just wanted to be capable of doing the old "scare crow" glitch, hopefully this doesn't break anything important ;)
         if self.animFSM.getCurrentState().getName() == 'off':
-            self.setAnimState('neutral')
+            #self.setAnimState('neutral') # Enable this to fix if causes problems
+            self.enterOff() # Remove this if causes problems
 
     def _handleClientCleanup(self):
         if self.track != None:
