@@ -415,7 +415,7 @@ def skipVP():
                 break
     if not boss:
         return "You aren't in a VP!"
-    if boss.state in ('PrepareBattleThree', 'BattleThree'):
+    if boss.state_ in ('PrepareBattleThree', 'BattleThree'):
         return "You can't skip this round."
     boss.exitIntroduction()
     boss.b_setState('PrepareBattleThree')

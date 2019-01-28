@@ -17,8 +17,11 @@ class CatalogManager(DistributedObject):
             base.cr.catalogManager.delete()
         base.cr.catalogManager = self
         DistributedObject.generate(self)
-        if hasattr(base.localAvatar, 'catalogScheduleNextTime') and base.localAvatar.catalogScheduleNextTime == 0:
-            self.d_startCatalog()
+        try:
+            if hasattr(base.localAvatar, 'catalogScheduleNextTime') and base.localAvatar.catalogScheduleNextTime == 0:
+                self.d_startCatalog()
+        except:
+            pass
 
     def disable(self):
         base.cr.catalogManager = None
