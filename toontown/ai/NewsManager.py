@@ -51,7 +51,10 @@ class NewsManager(DistributedObject.DistributedObject):
         self.holidayDecorator = None
         self.holidayIdList = []
         base.cr.newsManager = self
-        base.localAvatar.inventory.setInvasionCreditMultiplier(1)
+        # NF
+        # NJF
+        # Don't know why this doesn't work... or what it's for...
+        #base.localAvatar.inventory.setInvasionCreditMultiplier(1)
         self.weeklyCalendarHolidays = []
         return
 
