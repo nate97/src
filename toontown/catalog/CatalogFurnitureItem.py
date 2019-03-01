@@ -1189,7 +1189,7 @@ def getMaxTrunks():
 def getAllFurnitures(index):
     list = []
     colors = FurnitureTypes[index][FTColorOptions]
-    for n in range(len(colors)):
+    for n in xrange(len(colors)):
         list.append(CatalogFurnitureItem(index, n))
 
     return list

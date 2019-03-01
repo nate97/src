@@ -6,7 +6,7 @@ from toontown.toon import ToonDNA
 import random, types
 from direct.showbase import PythonUtil
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
+from panda3d.core import *
 
 class CatalogAccessoryItem(CatalogItem.CatalogItem):
 
@@ -76,7 +76,7 @@ class CatalogAccessoryItem(CatalogItem.CatalogItem):
             if hat[0] == defn[0] and hat[1] == defn[1] and hat[2] == defn[2]:
                 return 1
             l = avatar.hatList
-            for i in range(0, len(l), 3):
+            for i in xrange(0, len(l), 3):
                 if l[i] == defn[0] and l[i + 1] == defn[1] and l[i + 2] == defn[2]:
                     return 1
 
@@ -86,7 +86,7 @@ class CatalogAccessoryItem(CatalogItem.CatalogItem):
             if glasses[0] == defn[0] and glasses[1] == defn[1] and glasses[2] == defn[2]:
                 return 1
             l = avatar.glassesList
-            for i in range(0, len(l), 3):
+            for i in xrange(0, len(l), 3):
                 if l[i] == defn[0] and l[i + 1] == defn[1] and l[i + 2] == defn[2]:
                     return 1
 
@@ -96,7 +96,7 @@ class CatalogAccessoryItem(CatalogItem.CatalogItem):
             if backpack[0] == defn[0] and backpack[1] == defn[1] and backpack[2] == defn[2]:
                 return 1
             l = avatar.backpackList
-            for i in range(0, len(l), 3):
+            for i in xrange(0, len(l), 3):
                 if l[i] == defn[0] and l[i + 1] == defn[1] and l[i + 2] == defn[2]:
                     return 1
 
@@ -106,7 +106,7 @@ class CatalogAccessoryItem(CatalogItem.CatalogItem):
             if shoes[0] == defn[0] and shoes[1] == defn[1] and shoes[2] == defn[2]:
                 return 1
             l = avatar.shoesList
-            for i in range(0, len(l), 3):
+            for i in xrange(0, len(l), 3):
                 if l[i] == defn[0] and l[i + 1] == defn[1] and l[i + 2] == defn[2]:
                     return 1
 

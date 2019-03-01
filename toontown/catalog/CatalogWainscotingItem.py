@@ -59,7 +59,7 @@ class CatalogWainscotingItem(CatalogSurfaceItem):
         return WainscotingTypes[self.patternIndex][WSTBasePrice]
 
     def loadTexture(self):
-        from pandac.PandaModules import Texture
+        from panda3d.core import Texture
         filename = WainscotingTypes[self.patternIndex][WSTTextureName]
         texture = loader.loadTexture(filename)
         texture.setMinfilter(Texture.FTLinearMipmapLinear)
@@ -110,7 +110,7 @@ def getAllWainscotings(*indexList):
     for index in indexList:
         colors = WainscotingTypes[index][WSTColor]
         if colors:
-            for n in range(len(colors)):
+            for n in xrange(len(colors)):
                 list.append(CatalogWainscotingItem(index, n))
 
         else:
@@ -134,7 +134,7 @@ def getWainscotingRange(fromIndex, toIndex, *otherRanges):
             if patternIndex >= fromIndex and patternIndex <= toIndex:
                 colors = WainscotingTypes[patternIndex][WSTColor]
                 if colors:
-                    for n in range(len(colors)):
+                    for n in xrange(len(colors)):
                         list.append(CatalogWainscotingItem(patternIndex, n))
 
                 else:

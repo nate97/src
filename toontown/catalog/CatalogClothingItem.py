@@ -5,7 +5,7 @@ from toontown.toon import ToonDNA
 import random
 from direct.showbase import PythonUtil
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
+from panda3d.core import *
 CTArticle = 0
 CTString = 1
 CTBasePrice = 2
@@ -356,7 +356,7 @@ class CatalogClothingItem(CatalogItem.CatalogItem):
             if dna.topTex == defn[0] and dna.topTexColor == defn[2][self.colorIndex][0] and dna.sleeveTex == defn[1] and dna.sleeveTexColor == defn[2][self.colorIndex][1]:
                 return 1
             l = avatar.clothesTopsList
-            for i in range(0, len(l), 4):
+            for i in xrange(0, len(l), 4):
                 if l[i] == defn[0] and l[i + 1] == defn[2][self.colorIndex][0] and l[i + 2] == defn[1] and l[i + 3] == defn[2][self.colorIndex][1]:
                     return 1
 
@@ -365,7 +365,7 @@ class CatalogClothingItem(CatalogItem.CatalogItem):
             if dna.botTex == defn[0] and dna.botTexColor == defn[1][self.colorIndex]:
                 return 1
             l = avatar.clothesBottomsList
-            for i in range(0, len(l), 2):
+            for i in xrange(0, len(l), 2):
                 if l[i] == defn[0] and l[i + 1] == defn[1][self.colorIndex]:
                     return 1
 
@@ -597,7 +597,7 @@ def getAllClothes(*clothingTypes):
     for clothingType in clothingTypes:
         base = CatalogClothingItem(clothingType, 0)
         list.append(base)
-        for n in range(1, len(base.getColorChoices())):
+        for n in xrange(1, len(base.getColorChoices())):
             list.append(CatalogClothingItem(clothingType, n))
 
     return list

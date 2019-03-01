@@ -25,7 +25,7 @@ from toontown.toonbase import ToontownGlobals
 import types
 import random
 import time
-from pandac.PandaModules import *
+from panda3d.core import *
 MetaItems = {100: getAllClothes(101, 102, 103, 104, 105, 106, 107, 108, 109, 109, 111, 115, 201, 202, 203, 204, 205, 206, 207, 208, 209, 209, 211, 215),
  300: getAllClothes(301, 302, 303, 304, 305, 308, 401, 403, 404, 405, 407, 451, 452, 453),
  2000: getChatRange(0, 1999),
@@ -1560,7 +1560,7 @@ class CatalogGenerator:
         lastBackCatalog = avatar.backCatalog[:]
         thisWeek = min(len(WeeklySchedule), week - 1)
         lastWeek = min(len(WeeklySchedule), previousWeek)
-        for week in range(thisWeek, lastWeek, -1):
+        for week in xrange(thisWeek, lastWeek, -1):
             self.notify.debug('Adding items from week %s to back catalog' % week)
             schedule = WeeklySchedule[week - 1]
             if not isinstance(schedule, Sale):
@@ -1665,7 +1665,7 @@ class CatalogGenerator:
                 selection.append(item)
         elif item != None:
             list = item[:]
-            for i in range(chooseCount):
+            for i in xrange(chooseCount):
                 if len(list) == 0:
                     return selection
                 item = self.__chooseFromList(avatar, list, duplicateItems)
@@ -1741,7 +1741,7 @@ class CatalogGenerator:
 
     def generateScheduleDictionary(self):
         sched = {}
-        for index in range(len(WeeklySchedule)):
+        for index in xrange(len(WeeklySchedule)):
             week = index + 1
             schedule = WeeklySchedule[index]
             if isinstance(schedule, Sale):
