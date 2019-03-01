@@ -1,4 +1,5 @@
-from panda3d.core import *
+from direct.directnotify import DirectNotifyGlobal
+from pandac.PandaModules import *
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals
 from direct.interval.IntervalGlobal import *
@@ -6,8 +7,6 @@ from direct.distributed.PyDatagram import PyDatagram
 from direct.distributed.PyDatagramIterator import PyDatagramIterator
 import types
 import sys
-
-
 CatalogReverseType = None
 CatalogItemVersion = 8
 CatalogBackorderMarkup = 1.2
@@ -23,9 +22,8 @@ CatalogTypeBackorder = 2
 CatalogTypeMonthly = 3
 CatalogTypeLoyalty = 4
 
-
 class CatalogItem:
-    notify = directNotify.newCategory('CatalogItem')
+    notify = DirectNotifyGlobal.directNotify.newCategory('CatalogItem')
 
     def __init__(self, *args, **kw):
         self.saleItem = 0
@@ -130,10 +128,13 @@ class CatalogItem:
         return 0
 
     def setLoyaltyRequirement(self, days):
-        self.loyaltyDays = 0
+        self.loyaltyDays = days
 
     def loyaltyRequirement(self):
-        return 0
+        if not hasattr(self, 'loyaltyDays'):
+            return 0
+        else:
+            return self.loyaltyDays
 
     def getPrice(self, catalogType):
         if catalogType == CatalogTypeBackorder:
@@ -153,7 +154,7 @@ class CatalogItem:
         return int(self.getBasePrice() * CatalogSaleMarkdown)
 
     def getDeliveryTime(self):
-        return 1
+        return 0
 
     def getPicture(self, avatar):
         self.hasPicture = True
@@ -208,6 +209,7 @@ class CatalogItem:
         mailbox.acceptItem(self, index, callback)
 
     def discardItem(self, mailbox, index, callback):
+        print 'Item discardItem'
         mailbox.discardItem(self, index, callback)
 
     def acceptItemCleanup(self):
@@ -282,18 +284,17 @@ class CatalogItem:
                 p = 0.0
                 r = 0.0
             elif versionNumber < 5:
-                # All changed to 254. 256 was broken!
-                h = di.getArg(STInt8, 254.0 / 360.0)
-                p = di.getArg(STInt8, 254.0 / 360.0)
-                r = di.getArg(STInt8, 254.0 / 360.0)
+                h = di.getArg(STInt8, 256.0 / 360.0)
+                p = di.getArg(STInt8, 256.0 / 360.0)
+                r = di.getArg(STInt8, 256.0 / 360.0)
                 hpr = oldToNewHpr(VBase3(h, p, r))
                 h = hpr[0]
                 p = hpr[1]
                 r = hpr[2]
             else:
-                h = di.getArg(STInt8, 254.0 / 360.0)
-                p = di.getArg(STInt8, 254.0 / 360.0)
-                r = di.getArg(STInt8, 254.0 / 360.0)
+                h = di.getArg(STInt8, 256.0 / 360.0)
+                p = di.getArg(STInt8, 256.0 / 360.0)
+                r = di.getArg(STInt8, 256.0 / 360.0)
             self.posHpr = (x,
              y,
              z,
@@ -314,11 +315,9 @@ class CatalogItem:
             dg.putArg(self.posHpr[0], STInt16, 10)
             dg.putArg(self.posHpr[1], STInt16, 10)
             dg.putArg(self.posHpr[2], STInt16, 100)
-            # Changed from 256 to 254. 256 goes over value limit!
-            # Had issue with furniture roation crashing ai
-            dg.putArg(self.posHpr[3], STInt8, 254.0 / 360.0)
-            dg.putArg(self.posHpr[4], STInt8, 254.0 / 360.0)
-            dg.putArg(self.posHpr[5], STInt8, 254.0 / 360.0)
+            dg.putArg(self.posHpr[3], STInt8, 256.0 / 360.0)
+            dg.putArg(self.posHpr[4], STInt8, 256.0 / 360.0)
+            dg.putArg(self.posHpr[5], STInt8, 256.0 / 360.0)
         if store & GiftTag:
             dg.addString(self.giftTag)
         dg.addUint8(self.specialEventId)
@@ -338,13 +337,13 @@ class CatalogItem:
                 tex = loader.loadTexture(color)
                 tex.setMinfilter(Texture.FTLinearMipmapLinear)
                 tex.setMagfilter(Texture.FTLinear)
-                for i in xrange(matches.getNumPaths()):
+                for i in range(matches.getNumPaths()):
                     matches.getPath(i).setTexture(tex, 1)
 
             else:
                 needsAlpha = color[3] != 1
                 color = VBase4(color[0], color[1], color[2], color[3])
-                for i in xrange(matches.getNumPaths()):
+                for i in range(matches.getNumPaths()):
                     matches.getPath(i).setColorScale(color, 1)
                     if needsAlpha:
                         matches.getPath(i).setTransparency(1)

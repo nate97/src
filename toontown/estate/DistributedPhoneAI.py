@@ -122,7 +122,6 @@ class DistributedPhoneAI(DistributedFurnitureItemAI):
             item.deliveryDate = int(time.time()/60) + item.getDeliveryTime()
             av.onOrder.append(item)
             av.b_setDeliverySchedule(av.onOrder)
-            self.air.popularItemManager.avBoughtItem(item)
             self.sendUpdateToAvatarId(avId, 'requestPurchaseResponse', [context, ToontownGlobals.P_ItemOnOrder])
             taskMgr.doMethodLater(0.2, self.sendUpdateToAvatarId, 'purchaseItemComplete-%d' % self.getDoId(), extraArgs=[avId, 'purchaseItemComplete', []])
         else:
@@ -132,8 +131,6 @@ class DistributedPhoneAI(DistributedFurnitureItemAI):
             resp = item.recordPurchase(av, optional)
             if resp < 0:
                     av.addMoney(price)
-            else:
-                self.air.popularItemManager.avBoughtItem(item)
 
             self.sendUpdateToAvatarId(avId, 'requestPurchaseResponse', [context, resp])
             taskMgr.doMethodLater(0.2, self.sendUpdateToAvatarId, 'purchaseItemComplete-%d' % self.getDoId(), extraArgs=[avId, 'purchaseItemComplete', []])

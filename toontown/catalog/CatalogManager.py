@@ -1,42 +1,31 @@
-from direct.distributed.DistributedObject import DistributedObject
-from toontown.catalog.CatalogItemList import CatalogItemList
-import time
+from direct.distributed import DistributedObject
+from direct.directnotify import DirectNotifyGlobal
 
-
-class CatalogManager(DistributedObject):
-    notify = directNotify.newCategory('CatalogManager')
+class CatalogManager(DistributedObject.DistributedObject):
+    notify = DirectNotifyGlobal.directNotify.newCategory('CatalogManager')
     neverDisable = 1
 
     def __init__(self, cr):
-        DistributedObject.__init__(self, cr)
-
-        self.popularItems = None
+        DistributedObject.DistributedObject.__init__(self, cr)
 
     def generate(self):
         if base.cr.catalogManager != None:
             base.cr.catalogManager.delete()
         base.cr.catalogManager = self
-        DistributedObject.generate(self)
-        try:
-            if hasattr(base.localAvatar, 'catalogScheduleNextTime') and base.localAvatar.catalogScheduleNextTime == 0:
-                self.d_startCatalog()
-        except:
-            pass
+        DistributedObject.DistributedObject.generate(self)
+        if hasattr(base.localAvatar, 'catalogScheduleNextTime') and base.localAvatar.catalogScheduleNextTime == 0:
+            self.d_startCatalog()
+        return
 
     def disable(self):
         base.cr.catalogManager = None
-        DistributedObject.disable(self)
+        DistributedObject.DistributedObject.disable(self)
+        return
 
     def delete(self):
         base.cr.catalogManager = None
-        DistributedObject.delete(self)
+        DistributedObject.DistributedObject.delete(self)
+        return
 
     def d_startCatalog(self):
-        self.sendUpdate('startCatalog')
-
-    def fetchPopularItems(self):
-        self.sendUpdate('fetchPopularItems')
-
-    def setPopularItems(self, popularItems):
-        self.popularItems = CatalogItemList(popularItems)
-        messenger.send('PopularItemsSet')
+        self.sendUpdate('startCatalog', [])

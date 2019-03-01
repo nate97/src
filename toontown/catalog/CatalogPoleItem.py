@@ -40,6 +40,9 @@ class CatalogPoleItem(CatalogItem.CatalogItem):
     def isGift(self):
         return 0
 
+    def getDeliveryTime(self):
+        return 24 * 60
+
     def getPicture(self, avatar):
         rodPath = FishGlobals.RodFileDict.get(self.rodId)
         pole = Actor.Actor(rodPath, {'cast': 'phase_4/models/props/fishing-pole-chan'})
@@ -103,7 +106,7 @@ def nextAvailablePole(avatar, duplicateItems):
 
 def getAllPoles():
     list = []
-    for rodId in xrange(0, FishGlobals.MaxRodId + 1):
+    for rodId in range(0, FishGlobals.MaxRodId + 1):
         list.append(CatalogPoleItem(rodId))
 
     return list

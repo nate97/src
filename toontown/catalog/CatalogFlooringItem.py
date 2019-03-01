@@ -83,7 +83,7 @@ class CatalogFlooringItem(CatalogSurfaceItem):
         return FlooringTypes[self.patternIndex][FTBasePrice]
 
     def loadTexture(self):
-        from panda3d.core import Texture
+        from pandac.PandaModules import Texture
         filename = FlooringTypes[self.patternIndex][FTTextureName]
         texture = loader.loadTexture(filename)
         texture.setMinfilter(Texture.FTLinearMipmapLinear)
@@ -115,7 +115,7 @@ class CatalogFlooringItem(CatalogSurfaceItem):
         if versionNumber < 4 or store & CatalogItem.Customization:
             self.colorIndex = di.getUint8()
         else:
-            self.colorIndex = None
+            self.colorIndex = 0
         wtype = FlooringTypes[self.patternIndex]
         return
 
@@ -123,10 +123,7 @@ class CatalogFlooringItem(CatalogSurfaceItem):
         CatalogAtticItem.CatalogAtticItem.encodeDatagram(self, dg, store)
         dg.addUint16(self.patternIndex)
         if store & CatalogItem.Customization:
-            colorIndex = self.colorIndex
-            if self.colorIndex is None:
-                colorIndex = 0
-            dg.addUint8(colorIndex)
+            dg.addUint8(self.colorIndex)
 
 
 def getFloorings(*indexList):
@@ -142,7 +139,7 @@ def getAllFloorings(*indexList):
     for index in indexList:
         colors = FlooringTypes[index][FTColor]
         if colors:
-            for n in xrange(len(colors)):
+            for n in range(len(colors)):
                 list.append(CatalogFlooringItem(index, n))
 
         else:
@@ -166,7 +163,7 @@ def getFlooringRange(fromIndex, toIndex, *otherRanges):
             if patternIndex >= fromIndex and patternIndex <= toIndex:
                 colors = FlooringTypes[patternIndex][FTColor]
                 if colors:
-                    for n in xrange(len(colors)):
+                    for n in range(len(colors)):
                         list.append(CatalogFlooringItem(patternIndex, n))
 
                 else:

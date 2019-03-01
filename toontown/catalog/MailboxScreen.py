@@ -1,7 +1,7 @@
 from direct.directnotify.DirectNotifyGlobal import *
 from direct.gui.DirectGui import *
 from direct.showbase import DirectObject, PythonUtil
-from panda3d.core import *
+from pandac.PandaModules import *
 from toontown.parties import PartyGlobals
 from toontown.parties.InviteInfo import InviteInfoBase
 from toontown.parties.PartyGlobals import InviteStatus
@@ -11,7 +11,7 @@ from toontown.toontowngui import TTDialog
 from toontown.toontowngui.TeaserPanel import TeaserPanel
 from toontown.parties.InviteVisual import InviteVisual
 import CatalogItem
-#from direct.showbase.PythonUtil import StackTrace
+from direct.showbase.PythonUtil import StackTrace
 
 class MailboxScreen(DirectObject.DirectObject):
     notify = directNotify.newCategory('MailboxScreen')
@@ -44,11 +44,10 @@ class MailboxScreen(DirectObject.DirectObject):
             self.frame.hide()
         else:
             self.notify.warning('hide called, but frame is deleted, self.frame deleted in:')
-            # NF
-            #if hasattr(self, 'frameDelStackTrace'):
-            #    print self.frameDelStackTrace
-            #self.notify.warning('current stackTrace =')
-            #print StackTrace()
+            if hasattr(self, 'frameDelStackTrace'):
+                print self.frameDelStackTrace
+            self.notify.warning('current stackTrace =')
+            print StackTrace()
             self.notify.warning('crash averted, but root cause unknown')
 
     def load(self):
@@ -140,7 +139,7 @@ class MailboxScreen(DirectObject.DirectObject):
         if hasattr(self, 'frame'):
             self.frame.destroy()
             del self.frame
-            #self.frameDelStackTrace = StackTrace()
+            self.frameDelStackTrace = StackTrace()
         else:
             self.notify.warning('unload, no self.frame')
         if hasattr(self, 'mailbox'):
@@ -177,7 +176,7 @@ class MailboxScreen(DirectObject.DirectObject):
             messenger.send(self.doneEvent)
 
     def __handleAccept(self):
-        if base.config.GetBool('want-qa-regression', 0):
+        if config.GetBool('want-qa-regression', 0):
             self.notify.info('QA-REGRESSION: MAILBOX: Accept item')
         if self.acceptingIndex != None:
             return

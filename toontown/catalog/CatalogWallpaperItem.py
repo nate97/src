@@ -1,25 +1,19 @@
 from CatalogSurfaceItem import *
-
 WTTextureName = 0
 WTColor = 1
 WTBorderList = 2
 WTBasePrice = 3
 BDTextureName = 0
 BDColor = 1
-
-All = (
- 1000,
+All = (1000,
  1010,
  1020,
  1030,
  1040,
  1050,
  1060,
- 1070
-)
-
-WallpaperTypes = {
- 1000: ('phase_5.5/maps/flat_wallpaper1.jpg',
+ 1070)
+WallpaperTypes = {1000: ('phase_5.5/maps/flat_wallpaper1.jpg',
         CTFlatColor,
         (0, 1000),
         180),
@@ -465,11 +459,8 @@ WallpaperTypes = {
  13300: ('phase_5.5/maps/StPatWallpaper4.jpg',
          CTWhite,
          (0, 13000),
-         400)
-}
-
-WallpaperGroups = {
- 1100: (1100,
+         400)}
+WallpaperGroups = {1100: (1100,
         1110,
         1120,
         1130,
@@ -533,9 +524,7 @@ WallpaperGroups = {
  2700: (2700, 2710),
  2800: (2800, 2810),
  2900: (2900, 2910)}
-
-BorderTypes = {
- 1000: ('phase_5.5/maps/bd_grey_border1.jpg', CTFlatColorDark),
+BorderTypes = {1000: ('phase_5.5/maps/bd_grey_border1.jpg', CTFlatColorDark),
  1010: ('phase_5.5/maps/diamonds_border2.jpg', CTWhite),
  1020: ('phase_5.5/maps/diamonds_border2ch.jpg', CTWhite),
  1030: ('phase_5.5/maps/diamonds_border3ch.jpg', CTWhite),
@@ -561,17 +550,15 @@ BorderTypes = {
  12000: ('phase_5.5/maps/Vborder1a.jpg', CTWhite),
  12010: ('phase_5.5/maps/Vborder1b.jpg', CTWhite),
  12020: ('phase_5.5/maps/Vborder2b.jpg', CTWhite),
- 13000: ('phase_5.5/maps/StPatBorder1.jpg', CTWhite)
-}
-
+ 13000: ('phase_5.5/maps/StPatBorder1.jpg', CTWhite)}
 
 class CatalogWallpaperItem(CatalogSurfaceItem):
+
     def makeNewItem(self, patternIndex, colorIndex = None, borderIndex = 0, borderColorIndex = 0):
         self.patternIndex = patternIndex
         self.colorIndex = colorIndex
         self.borderIndex = borderIndex
         self.borderColorIndex = borderColorIndex
-
         CatalogSurfaceItem.makeNewItem(self)
 
     def needsCustomize(self):
@@ -582,7 +569,7 @@ class CatalogWallpaperItem(CatalogSurfaceItem):
 
     def getName(self):
         name = TTLocalizer.WallpaperNames.get(self.patternIndex)
-        if name is None:
+        if name == None:
             century = self.patternIndex - self.patternIndex % 100
             name = TTLocalizer.WallpaperNames.get(century)
         if name:
@@ -610,10 +597,10 @@ class CatalogWallpaperItem(CatalogSurfaceItem):
 
     def output(self, store = -1):
         return 'CatalogWallpaperItem(%s, %s, %s, %s%s)' % (self.patternIndex,
-                                                           self.colorIndex,
-                                                           self.borderIndex,
-                                                           self.borderColorIndex,
-                                                           self.formatOptionalData(store))
+         self.colorIndex,
+         self.borderIndex,
+         self.borderColorIndex,
+         self.formatOptionalData(store))
 
     def getFilename(self):
         return WallpaperTypes[self.patternIndex][WTTextureName]
@@ -626,13 +613,14 @@ class CatalogWallpaperItem(CatalogSurfaceItem):
         return 0
 
     def getHashContents(self):
-        return self.patternIndex - self.patternIndex % 100
+        century = self.patternIndex - self.patternIndex % 100
+        return century
 
     def getBasePrice(self):
         return WallpaperTypes[self.patternIndex][WTBasePrice]
 
     def loadTexture(self):
-        from panda3d.core import Texture
+        from pandac.PandaModules import Texture
         filename = WallpaperTypes[self.patternIndex][WTTextureName]
         texture = loader.loadTexture(filename)
         texture.setMinfilter(Texture.FTLinearMipmapLinear)
@@ -640,7 +628,7 @@ class CatalogWallpaperItem(CatalogSurfaceItem):
         return texture
 
     def getColor(self):
-        if self.colorIndex is None:
+        if self.colorIndex == None:
             colorIndex = 0
         else:
             colorIndex = self.colorIndex
@@ -648,10 +636,12 @@ class CatalogWallpaperItem(CatalogSurfaceItem):
         if colorIndex < len(colors):
             return colors[colorIndex]
         else:
+            print 'Warning: colorIndex > len(colors). Returning white.'
             return CT_WHITE
+        return
 
     def loadBorderTexture(self):
-        from panda3d.core import Texture
+        from pandac.PandaModules import Texture
         if self.borderIndex == None or self.borderIndex == 0:
             return self.loadTexture()
         borderInfo = BorderTypes[self.borderIndex]
@@ -670,10 +660,10 @@ class CatalogWallpaperItem(CatalogSurfaceItem):
             return colors[self.borderColorIndex]
         else:
             return CT_WHITE
+        return
 
     def decodeDatagram(self, di, versionNumber, store):
         CatalogAtticItem.CatalogAtticItem.decodeDatagram(self, di, versionNumber, store)
-
         self.colorIndex = 0
         if store & CatalogItem.Customization:
             self.borderIndex = 0
@@ -693,10 +683,10 @@ class CatalogWallpaperItem(CatalogSurfaceItem):
                 self.borderIndex = di.getUint16()
                 self.borderColorIndex = di.getUint8()
         wtype = WallpaperTypes[self.patternIndex]
+        return
 
     def encodeDatagram(self, dg, store):
         CatalogAtticItem.CatalogAtticItem.encodeDatagram(self, dg, store)
-
         dg.addUint16(self.patternIndex)
         if store & CatalogItem.Customization:
             dg.addUint8(self.colorIndex)
@@ -708,7 +698,9 @@ def getWallpapers(*typeList):
     list = []
     for type in typeList:
         list.append(CatalogWallpaperItem(type))
+
     return list
+
 
 def getAllWallpapers(*typeList):
     list = []
@@ -722,11 +714,13 @@ def getAllWallpapers(*typeList):
                     numBorderColors = len(borderData[BDColor])
                 else:
                     numBorderColors = 1
-                for borderColorIndex in xrange(numBorderColors):
+                for borderColorIndex in range(numBorderColors):
                     colors = WallpaperTypes[index][WTColor]
-                    for n in xrange(len(colors)):
+                    for n in range(len(colors)):
                         list.append(CatalogWallpaperItem(index, n, borderKey, borderColorIndex))
+
     return list
+
 
 def getWallpaperRange(fromIndex, toIndex, *otherRanges):
     list = []
@@ -737,6 +731,7 @@ def getWallpaperRange(fromIndex, toIndex, *otherRanges):
         froms.append(otherRanges[i])
         tos.append(otherRanges[i + 1])
         i += 2
+
     for patternIndex in WallpaperTypes.keys():
         for fromIndex, toIndex in zip(froms, tos):
             if patternIndex >= fromIndex and patternIndex <= toIndex:
@@ -747,8 +742,9 @@ def getWallpaperRange(fromIndex, toIndex, *otherRanges):
                         numBorderColors = len(borderData[BDColor])
                     else:
                         numBorderColors = 1
-                    for borderColorIndex in xrange(numBorderColors):
+                    for borderColorIndex in range(numBorderColors):
                         colors = WallpaperTypes[patternIndex][WTColor]
-                        for n in xrange(len(colors)):
+                        for n in range(len(colors)):
                             list.append(CatalogWallpaperItem(patternIndex, n, borderKey, borderColorIndex))
+
     return list

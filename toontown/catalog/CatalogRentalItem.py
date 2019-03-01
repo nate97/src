@@ -50,7 +50,7 @@ class CatalogRentalItem(CatalogItem.CatalogItem):
         self.notify.debug('rental -- record purchase')
         if avatar:
             self.notify.debug('rental -- has avater')
-            estate = simbase.air.estateManager._lookupEstate(avatar.doId)
+            estate = simbase.air.estateManager.toon2estate.get(avatar)
             if estate:
                 self.notify.debug('rental -- has estate')
                 estate.rentItem(self.typeIndex, self.duration)
@@ -105,6 +105,9 @@ class CatalogRentalItem(CatalogItem.CatalogItem):
         dg.addUint16(self.cost)
         dg.addUint16(self.duration)
         dg.addUint16(self.typeIndex)
+
+    def getDeliveryTime(self):
+        return 1
 
     def isRental(self):
         return 1

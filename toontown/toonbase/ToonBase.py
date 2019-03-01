@@ -58,27 +58,22 @@ class ToonBase(OTPBase.OTPBase):
         self.nativeWidth = base.pipe.getDisplayWidth()
         self.nativeHeight = base.pipe.getDisplayHeight()
 
-        self.nativeRatio = round(float(self.nativeWidth) / float(self.nativeHeight), 2)
+        self.failOverWidth= (800)
+        self.failOverHeight = (600)
+
+        self.nativeRatio = round(float(self.failOverWidth) / float(self.failOverHeight), 2)
+
+
+
 
         # Finally, choose the best resolution if we're either fullscreen, or
         # don't have one defined in our preferences:
         fullscreen = settings.get('fullscreen', False)
         if ('res' not in settings) or fullscreen:
-            if fullscreen:
-                # If we're fullscreen, we want to fit the entire screen:
-                res = (self.nativeWidth, self.nativeHeight)
-            elif len(self.resDict[self.nativeRatio]) > 1:
-                # We have resolutions that match our native ratio and fit it!
-                # Let's use one:
-                res = sorted(self.resDict[self.nativeRatio])[0]
-            else:
-                # Okay, we don't have any resolutions that match our native
-                # ratio and fit it (besides the native resolution itself, of
-                # course). Let's just use one of the second largest ratio's
-                # resolutions:
-                ratios = sorted(self.resDict.keys(), reverse=False)
-                nativeIndex = ratios.index(self.nativeRatio)
-                res = sorted(self.resDict[ratios[nativeIndex - 1]])[0]
+
+            # If we're fullscreen, we want to fit the entire screen:
+            res = (self.failOverWidth, self.failOverHeight)
+
 
             # Store our result:
             settings['res'] = res

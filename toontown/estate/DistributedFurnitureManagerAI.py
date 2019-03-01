@@ -100,8 +100,6 @@ class DistributedFurnitureManagerAI(DistributedObjectAI):
             item.destroy()
         self.items = []
 
-        items.removeDuplicates(FLCloset)
-
         # Due to a bug, some people are missing their closets...
         hasCloset = False
         for item in items:

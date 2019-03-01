@@ -68,7 +68,7 @@ class CatalogMouldingItem(CatalogSurfaceItem):
         return MouldingTypes[self.patternIndex][MTBasePrice]
 
     def loadTexture(self):
-        from panda3d.core import Texture
+        from pandac.PandaModules import Texture
         filename = MouldingTypes[self.patternIndex][MTTextureName]
         texture = loader.loadTexture(filename)
         texture.setMinfilter(Texture.FTLinearMipmapLinear)
@@ -119,7 +119,7 @@ def getAllMouldings(*indexList):
     for index in indexList:
         colors = MouldingTypes[index][MTColor]
         if colors:
-            for n in xrange(len(colors)):
+            for n in range(len(colors)):
                 list.append(CatalogMouldingItem(index, n))
 
         else:
@@ -143,7 +143,7 @@ def getMouldingRange(fromIndex, toIndex, *otherRanges):
             if patternIndex >= fromIndex and patternIndex <= toIndex:
                 colors = MouldingTypes[patternIndex][MTColor]
                 if colors:
-                    for n in xrange(len(colors)):
+                    for n in range(len(colors)):
                         list.append(CatalogMouldingItem(patternIndex, n))
 
                 else:

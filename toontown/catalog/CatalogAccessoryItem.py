@@ -6,7 +6,7 @@ from toontown.toon import ToonDNA
 import random, types
 from direct.showbase import PythonUtil
 from direct.gui.DirectGui import *
-from panda3d.core import *
+from pandac.PandaModules import *
 
 class CatalogAccessoryItem(CatalogItem.CatalogItem):
 
@@ -19,20 +19,23 @@ class CatalogAccessoryItem(CatalogItem.CatalogItem):
         return 1
 
     def notOfferedTo(self, avatar):
-        article = AccessoryTypes[self.accessoryType][ATArticle]
-        if article in [AHat,
-         AGlasses,
-         ABackpack,
-         AShoes]:
-            return 0
-        forBoys = article in [ABoysHat,
-         ABoysGlasses,
-         ABoysBackpack,
-         ABoysShoes]
-        if avatar.getStyle().getGender() == 'm':
-            return not forBoys
-        else:
-            return forBoys
+        if config.GetBool('want-accessories', 1):
+            article = AccessoryTypes[self.accessoryType][ATArticle]
+            if article in [AHat,
+             AGlasses,
+             ABackpack,
+             AShoes]:
+                return 0
+            forBoys = article in [ABoysHat,
+             ABoysGlasses,
+             ABoysBackpack,
+             ABoysShoes]
+            if avatar.getStyle().getGender() == 'm':
+                return not forBoys
+            else:
+                return forBoys
+        # If we get here, we probably don't want accessories yet.
+        return 1
 
     def forBoysOnly(self):
         article = AccessoryTypes[self.accessoryType][ATArticle]
@@ -73,7 +76,7 @@ class CatalogAccessoryItem(CatalogItem.CatalogItem):
             if hat[0] == defn[0] and hat[1] == defn[1] and hat[2] == defn[2]:
                 return 1
             l = avatar.hatList
-            for i in xrange(0, len(l), 3):
+            for i in range(0, len(l), 3):
                 if l[i] == defn[0] and l[i + 1] == defn[1] and l[i + 2] == defn[2]:
                     return 1
 
@@ -83,7 +86,7 @@ class CatalogAccessoryItem(CatalogItem.CatalogItem):
             if glasses[0] == defn[0] and glasses[1] == defn[1] and glasses[2] == defn[2]:
                 return 1
             l = avatar.glassesList
-            for i in xrange(0, len(l), 3):
+            for i in range(0, len(l), 3):
                 if l[i] == defn[0] and l[i + 1] == defn[1] and l[i + 2] == defn[2]:
                     return 1
 
@@ -93,7 +96,7 @@ class CatalogAccessoryItem(CatalogItem.CatalogItem):
             if backpack[0] == defn[0] and backpack[1] == defn[1] and backpack[2] == defn[2]:
                 return 1
             l = avatar.backpackList
-            for i in xrange(0, len(l), 3):
+            for i in range(0, len(l), 3):
                 if l[i] == defn[0] and l[i + 1] == defn[1] and l[i + 2] == defn[2]:
                     return 1
 
@@ -103,7 +106,7 @@ class CatalogAccessoryItem(CatalogItem.CatalogItem):
             if shoes[0] == defn[0] and shoes[1] == defn[1] and shoes[2] == defn[2]:
                 return 1
             l = avatar.shoesList
-            for i in xrange(0, len(l), 3):
+            for i in range(0, len(l), 3):
                 if l[i] == defn[0] and l[i + 1] == defn[1] and l[i + 2] == defn[2]:
                     return 1
 
@@ -136,18 +139,18 @@ class CatalogAccessoryItem(CatalogItem.CatalogItem):
                  defn[2]))
                 return ToontownGlobals.P_ItemAvailable
             hat = avatar.getHat()
-            added = avatar.addToAccessoriesList(ToonDNA.HAT, defn[0], defn[1], defn[2])
+            added = avatar.addToAccessoriesList(ToonDNA.HAT, hat[0], hat[1], hat[2])
             if added:
                 avatar.b_setHatList(avatar.getHatList())
                 self.notify.info('Avatar %s put hat %d,%d,%d in trunk.' % (avatar.doId,
-                 defn[0],
-                 defn[1],
-                 defn[2]))
+                 hat[0],
+                 hat[1],
+                 hat[2]))
             else:
                 self.notify.warning('Avatar %s lost current hat %d %d %d; trunk full.' % (avatar.doId,
-                 defn[0],
-                 defn[1],
-                 defn[2]))
+                 hat[0],
+                 hat[1],
+                 hat[2]))
             avatar.b_setHat(defn[0], defn[1], defn[2])
         elif self.areGlasses():
             defn = ToonDNA.GlassesStyles[str]
@@ -158,18 +161,18 @@ class CatalogAccessoryItem(CatalogItem.CatalogItem):
                  defn[2]))
                 return ToontownGlobals.P_ItemAvailable
             glasses = avatar.getGlasses()
-            added = avatar.addToAccessoriesList(ToonDNA.GLASSES, defn[0], defn[1], defn[2])
+            added = avatar.addToAccessoriesList(ToonDNA.GLASSES, glasses[0], glasses[1], glasses[2])
             if added:
                 avatar.b_setGlassesList(avatar.getGlassesList())
                 self.notify.info('Avatar %s put glasses %d,%d,%d in trunk.' % (avatar.doId,
-                 defn[0],
-                 defn[1],
-                 defn[2]))
+                 glasses[0],
+                 glasses[1],
+                 glasses[2]))
             else:
                 self.notify.warning('Avatar %s lost current glasses %d %d %d; trunk full.' % (avatar.doId,
-                 defn[0],
-                 defn[1],
-                 defn[2]))
+                 glasses[0],
+                 glasses[1],
+                 glasses[2]))
             avatar.b_setGlasses(defn[0], defn[1], defn[2])
         elif self.isBackpack():
             defn = ToonDNA.BackpackStyles[str]
@@ -180,18 +183,18 @@ class CatalogAccessoryItem(CatalogItem.CatalogItem):
                  defn[2]))
                 return ToontownGlobals.P_ItemAvailable
             backpack = avatar.getBackpack()
-            added = avatar.addToAccessoriesList(ToonDNA.BACKPACK, defn[0], defn[1], defn[2])
+            added = avatar.addToAccessoriesList(ToonDNA.BACKPACK, backpack[0], backpack[1], backpack[2])
             if added:
                 avatar.b_setBackpackList(avatar.getBackpackList())
                 self.notify.info('Avatar %s put backpack %d,%d,%d in trunk.' % (avatar.doId,
-                 defn[0],
-                 defn[1],
-                 defn[2]))
+                 backpack[0],
+                 backpack[1],
+                 backpack[2]))
             else:
                 self.notify.warning('Avatar %s lost current backpack %d %d %d; trunk full.' % (avatar.doId,
-                 defn[0],
-                 defn[1],
-                 defn[2]))
+                 backpack[0],
+                 backpack[1],
+                 backpack[2]))
             avatar.b_setBackpack(defn[0], defn[1], defn[2])
         else:
             defn = ToonDNA.ShoesStyles[str]
@@ -202,21 +205,24 @@ class CatalogAccessoryItem(CatalogItem.CatalogItem):
                  defn[2]))
                 return ToontownGlobals.P_ItemAvailable
             shoes = avatar.getShoes()
-            added = avatar.addToAccessoriesList(ToonDNA.SHOES, defn[0], defn[1], defn[2])
+            added = avatar.addToAccessoriesList(ToonDNA.SHOES, shoes[0], shoes[1], shoes[2])
             if added:
                 avatar.b_setShoesList(avatar.getShoesList())
                 self.notify.info('Avatar %s put shoes %d,%d,%d in trunk.' % (avatar.doId,
-                 defn[0],
-                 defn[1],
-                 defn[2]))
+                 shoes[0],
+                 shoes[1],
+                 shoes[2]))
             else:
                 self.notify.warning('Avatar %s lost current shoes %d %d %d; trunk full.' % (avatar.doId,
-                 defn[0],
-                 defn[1],
-                 defn[2]))
+                 shoes[0],
+                 shoes[1],
+                 shoes[2]))
             avatar.b_setShoes(defn[0], defn[1], defn[2])
         avatar.d_catalogGenAccessories()
         return ToontownGlobals.P_ItemAvailable
+
+    def getDeliveryTime(self):
+        return 60
 
     def getPicture(self, avatar):
         model = self.loadModel()
@@ -326,7 +332,7 @@ class CatalogAccessoryItem(CatalogItem.CatalogItem):
         return article in [AShoes, ABoysShoes, AGirlsShoes]
 
     def output(self, store = -1):
-        return 'CatalogAccessoryItem(%s%s)' % (self.accessoryType, self.formatOptionalData(store))
+        return 'CatalogAccessoryItem(%s, %s)' % (self.accessoryType, self.formatOptionalData(store))
 
     def getFilename(self):
         str = AccessoryTypes[self.accessoryType][ATString]

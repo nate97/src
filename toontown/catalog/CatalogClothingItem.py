@@ -5,7 +5,7 @@ from toontown.toon import ToonDNA
 import random
 from direct.showbase import PythonUtil
 from direct.gui.DirectGui import *
-from panda3d.core import *
+from pandac.PandaModules import *
 CTArticle = 0
 CTString = 1
 CTBasePrice = 2
@@ -17,7 +17,8 @@ ABoysShorts = 3
 AGirlsShorts = 4
 AGirlsSkirt = 5
 AShorts = 6
-ClothingTypes = {101: (ABoysShirt, 'bss1', 40),
+ClothingTypes = {
+ 101: (ABoysShirt, 'bss1', 40),
  102: (ABoysShirt, 'bss2', 40),
  103: (ABoysShirt, 'bss3', 40),
  105: (ABoysShirt, 'bss4', 40),
@@ -355,7 +356,7 @@ class CatalogClothingItem(CatalogItem.CatalogItem):
             if dna.topTex == defn[0] and dna.topTexColor == defn[2][self.colorIndex][0] and dna.sleeveTex == defn[1] and dna.sleeveTexColor == defn[2][self.colorIndex][1]:
                 return 1
             l = avatar.clothesTopsList
-            for i in xrange(0, len(l), 4):
+            for i in range(0, len(l), 4):
                 if l[i] == defn[0] and l[i + 1] == defn[2][self.colorIndex][0] and l[i + 2] == defn[1] and l[i + 3] == defn[2][self.colorIndex][1]:
                     return 1
 
@@ -364,7 +365,7 @@ class CatalogClothingItem(CatalogItem.CatalogItem):
             if dna.botTex == defn[0] and dna.botTexColor == defn[1][self.colorIndex]:
                 return 1
             l = avatar.clothesBottomsList
-            for i in xrange(0, len(l), 2):
+            for i in range(0, len(l), 2):
                 if l[i] == defn[0] and l[i + 1] == defn[1][self.colorIndex]:
                     return 1
 
@@ -425,6 +426,9 @@ class CatalogClothingItem(CatalogItem.CatalogItem):
         avatar.b_setDNAString(dna.makeNetString())
         avatar.d_catalogGenClothes()
         return ToontownGlobals.P_ItemAvailable
+
+    def getDeliveryTime(self):
+        return 60
 
     def getPicture(self, avatar):
         from toontown.toon import Toon
@@ -593,7 +597,7 @@ def getAllClothes(*clothingTypes):
     for clothingType in clothingTypes:
         base = CatalogClothingItem(clothingType, 0)
         list.append(base)
-        for n in xrange(1, len(base.getColorChoices())):
+        for n in range(1, len(base.getColorChoices())):
             list.append(CatalogClothingItem(clothingType, n))
 
     return list

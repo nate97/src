@@ -1,4 +1,4 @@
-from panda3d.core import *
+from pandac.PandaModules import *
 import CatalogAtticItem
 import CatalogItem
 from toontown.toonbase import ToontownGlobals
@@ -42,6 +42,9 @@ class CatalogWindowItem(CatalogAtticItem.CatalogAtticItem):
         if retcode >= 0:
             house.addWindow(self)
         return retcode
+
+    def getDeliveryTime(self):
+        return 4 * 60
 
     def getPicture(self, avatar):
         frame = self.makeFrame()
