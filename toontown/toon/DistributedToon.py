@@ -2149,7 +2149,8 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self.setDisplayName(self.getName())
 
     def getAvIdName(self):
-        paidStr = PythonUtil.choice(self.getGameAccess() == OTPGlobals.AccessFull, 'P', 'F')
+        #paidStr = PythonUtil.choice(self.getGameAccess() == OTPGlobals.AccessFull, 'P', 'F')
+        paidStr = ("") # NJF
         return '%s\n%s (%s)' % (self.getName(), self.doId, paidStr)
 
     def playCurrentDialogue(self, dialogue, chatFlags, interrupt = 1):

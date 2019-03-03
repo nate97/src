@@ -738,7 +738,7 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
             self.notify.warning("Don't know who friend %s is." % doId)
             return
         if not ((isinstance(avatar, DistributedToon.DistributedToon) and avatar.__class__ is DistributedToon.DistributedToon) or isinstance(avatar, DistributedPet.DistributedPet)):
-            self.notify.warning('friendsNotify%s: invalid friend object %s' % (choice(source, '(%s)' % source, ''), doId))
+            self.notify.warning('friendsNotify%s: invalid friend object %s' % ((source, '(%s)' % source, ''), doId))
             return
         if base.wantPets:
             if avatar.isPet():

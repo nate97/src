@@ -38,6 +38,9 @@ preferences-filename preferences.json
 content-packs-filepath contentpacks/
 content-packs-sort-filename sort.yaml
 
+# Injector:
+want-injector #t
+
 # Backups:
 backups-filepath backups/
 backups-extension .json

@@ -30,6 +30,10 @@ from toontown.toonbase import ToontownAccess
 from toontown.toonbase import ToontownBattleGlobals
 from toontown.toontowngui import TTDialog
 
+from direct.stdpy import threading, thread
+import sys
+import wx
+
 
 class ToonBase(OTPBase.OTPBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('ToonBase')
@@ -226,6 +230,40 @@ class ToonBase(OTPBase.OTPBase):
         self.localAvatarStyle = None
 
         self.filters = CommonFilters(self.win, self.cam)
+
+        self.handleInstallInjector() # NJF
+
+
+
+    def __inject_wx(self, _):
+        code = self.textbox.GetValue()
+        exec (code, globals())
+
+    def openInjector_wx(self):
+        defaultText = ""
+
+        app = wx.App(redirect = False)
+        frame = wx.Frame(None, title = "Toontown Injector", size=(640, 580), style=wx.SYSTEM_MENU | wx.CAPTION | wx.CLOSE_BOX | wx.MINIMIZE_BOX)
+        panel = wx.Panel(frame)
+
+        self.textbox = wx.TextCtrl(parent = panel, id = -1, pos = (20, 22), size = (600, 320), style = wx.TE_MULTILINE)
+        button = wx.Button(parent = panel, id = -1, label = "Inject", size = (600, 175), pos = (20, 350))
+        frame.Bind(wx.EVT_BUTTON, self.__inject_wx, button)
+        frame.Show()
+        app.SetTopWindow(frame)
+        self.textbox.AppendText(defaultText)
+        
+        threading.Thread(target = app.MainLoop).start()
+
+    def handleInstallInjector(self):
+        if self.config.GetBool('want-injector', False):
+            self.openInjector_wx()
+            print ('Injector enabled...')
+
+        else:
+            pass
+
+
 
     def openMainWindow(self, *args, **kw):
         result = OTPBase.OTPBase.openMainWindow(self, *args, **kw)
@@ -539,4 +577,6 @@ class ToonBase(OTPBase.OTPBase):
         wp = WindowProperties()
         wp.setMinimized(True)
         base.win.requestProperties(wp)
+
+
 
