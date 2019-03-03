@@ -403,7 +403,7 @@ MonthlySchedule = ((7,
   9,
   30,
   (
-    # CatalogGardenItem(135, 1)
+    CatalogGardenItem(135, 1) # NJF
     )
   ),
  (1,
@@ -411,7 +411,7 @@ MonthlySchedule = ((7,
   1,
   31,
   (
-    # CatalogGardenItem(135, 1)
+    CatalogGardenItem(135, 1) # NJF
     )
   ),
  (4,
@@ -419,7 +419,7 @@ MonthlySchedule = ((7,
   4,
   30,
   (
-    # CatalogGardenItem(135, 1)
+    CatalogGardenItem(135, 1) # NJF
     )
   ),
  (6,
@@ -427,7 +427,7 @@ MonthlySchedule = ((7,
   6,
   30,
   (
-    # CatalogGardenItem(135, 1)
+    CatalogGardenItem(135, 1) # NJF
     )
   ),
  (6,
@@ -449,8 +449,8 @@ MonthlySchedule = ((7,
   4,
   (CatalogFurnitureItem(680),
    CatalogFurnitureItem(681),
-   # CatalogGardenItem(130, 1),
-   # CatalogGardenItem(131, 1),
+   CatalogGardenItem(130, 1), # NJF
+   CatalogGardenItem(131, 1), # NJF
    CatalogAnimatedFurnitureItem(10020),
    CatalogFurnitureItem(10030, 0))),
  (12,
@@ -525,13 +525,13 @@ MonthlySchedule = ((7,
   12,
   31,
   (
-   # CatalogGardenItem(100, 1),
-   # CatalogGardenItem(101, 1),
-   # CatalogGardenItem(103, 1),
-   # CatalogGardenItem(104, 1),
-   # CatalogToonStatueItem(105, endPoseIndex=108),
-   # CatalogRentalItem(1, 2880, 1000),
-   # CatalogGardenStarterItem(), # We don't want Gardens yet.
+   CatalogGardenItem(100, 1),  # NJF
+   CatalogGardenItem(101, 1),  # NJF
+   CatalogGardenItem(103, 1),  # NJF
+   CatalogGardenItem(104, 1),  # NJF
+   CatalogToonStatueItem(105, endPoseIndex=108),  # NJF
+   CatalogRentalItem(1, 2880, 1000),  # NJF
+   CatalogGardenStarterItem(), # We don't want Gardens yet.  # NJF
    CatalogNametagItem(100),
    CatalogNametagItem(0),
    CatalogClothingItem(1608, 0, 720),
@@ -615,8 +615,8 @@ MonthlySchedule = ((7,
   ((3, 2910),
    CatalogFurnitureItem(680),
    CatalogFurnitureItem(681),
-   # CatalogGardenItem(130, 1),
-   # CatalogGardenItem(131, 1),
+   CatalogGardenItem(130, 1), # NJF
+   CatalogGardenItem(131, 1), # NJF
    CatalogAnimatedFurnitureItem(10020),
    CatalogFurnitureItem(10030, 0),
    CatalogWallpaperItem(11000),

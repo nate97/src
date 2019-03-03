@@ -11,7 +11,7 @@ export TTI_PLAYCOOKIE=$ttiUsername
 export TTI_GAMESERVER="127.0.0.1"
 
 echo "==============================="
-echo "Starting Toontown Infinite..."
+echo "Starting Toontown Online..."
 echo "Username: $ttiUsername"
 echo "Gameserver: $TTI_GAMESERVER"
 echo "==============================="

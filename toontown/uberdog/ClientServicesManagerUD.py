@@ -936,8 +936,7 @@ class LoadAvatarFSM(AvatarOperationFSM):
         # Activate the avatar on the DBSS:
         self.csm.air.sendActivate(
             self.avId, 0, 0, self.csm.air.dclassesByName['DistributedToonUD'],
-            {'setAdminAccess': [self.account.get('ACCESS_LEVEL', 100)],
-             'setBankMoney': [self.account.get('MONEY', 0)]})
+            {'setAdminAccess': [self.account.get('ACCESS_LEVEL', 100)]})
 
         # Next, add them to the avatar channel:
         datagram = PyDatagram()

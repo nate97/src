@@ -918,13 +918,12 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         if hasattr(self, 'suitPage'):
             self.suitPage.updateBuildingRadarButtons(radar)
 
+
+
     def setCogTypes(self, types):
         self.cogTypes = types
         if self.disguisePage:
             self.disguisePage.updatePage()
-
-    def getCogTypes(self):
-        return self.cogTypes
 
     def setCogLevels(self, levels):
         self.cogLevels = levels
@@ -969,14 +968,13 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
             else:
                 self.putOnSuit(index, rental=True)
 
-    def setPromotionStatus(self, status):
-        self.promotionStatus = status
-
     def isCog(self):
         if self.cogIndex == -1:
             return 0
         else:
             return 1
+
+
 
     def setDisguisePageFlag(self, flag):
         if flag and hasattr(self, 'book'):

@@ -13,7 +13,7 @@ set TTI_PLAYCOOKIE=%ttiUsername%
 set TTI_GAMESERVER=10.0.0.29
 
 echo ===============================
-echo Starting Toontown Infinite...
+echo Starting Toontown Online...
 echo ppython: %PPYTHON_PATH%
 echo Username: %ttiUsername%
 echo Gameserver: %TTI_GAMESERVER%

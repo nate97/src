@@ -109,7 +109,7 @@ class DistributedPhoneAI(DistributedFurnitureItemAI):
             return
 
         if item.getDeliveryTime():
-            if len(av.onOrder) > 5:
+            if len(av.onOrder) > 30: # NJF
                 self.sendUpdateToAvatarId(avId, 'requestPurchaseResponse', [context, ToontownGlobals.P_OnOrderListFull])
                 return
 

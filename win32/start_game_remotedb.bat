@@ -11,7 +11,7 @@ set /P TTI_GAMESERVER="Gameserver (DEFAULT: 167.114.28.238): " || ^
 set TTI_GAMESERVER=167.114.28.238
 
 echo ===============================
-echo Starting Toontown Infinite...
+echo Starting Toontown Online...
 echo ppython: %PPYTHON_PATH%
 echo Username: %ttiUsername%
 echo Gameserver: %TTI_GAMESERVER%

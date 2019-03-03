@@ -14,7 +14,7 @@ set ttiPassword=password
 set TTI_PLAYCOOKIE=%ttiUsername%
 
 echo ===============================
-echo Starting Toontown Infinite...
+echo Starting Toontown Online...
 echo ppython: %PPYTHON_PATH%
 echo Username: %ttiUsername%
 echo Gameserver: %TTI_GAMESERVER%

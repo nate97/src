@@ -2614,7 +2614,9 @@ class Toon(Avatar.Avatar, ToonHead):
         elif effect == ToontownGlobals.CEVirtual:
             return self.__doVirtual()
         elif effect == ToontownGlobals.CEGhost:
-            alpha = 0.25
+            # NJF
+            #alpha = 0.25 # TTI
+            alpha = 0 # TTO
             if base.localAvatar.getAdminAccess() < self.adminAccess:
                 alpha = 0
             return Sequence(self.__doToonGhostColorScale(VBase4(1, 1, 1, alpha), lerpTime, keepDefault=1), Func(self.nametag3d.hide))
