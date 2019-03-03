@@ -15,13 +15,20 @@ Don't just start contributing. We talk about what we are about to do before we d
 
 ## Requirements ##
 
-## You must compile dependencies for yourself. ##
+##### You must compile dependencies for yourself. #####
+
+#### Panda3d ####
 This software requires a modified version of the Panda3D game engine to correctly function. This issue will be addressed at a later date.
-Link here: https://github.com/nate97/panda3d
+##### Panda3D link here: https://github.com/nate97/panda3d
 
+#### Astron ####
 This software requires an older version of Astron to be compiled. (v0.1.0)
-Link here: https://github.com/nate97/Astron/releases 
+##### Astron link here: https://github.com/nate97/Astron/releases 
 
 
+##### Python dependencies ######
 
-**Note:** Issues submitted in this repository are designed for *code-related* issues only. Issues involving starting the game will be ignored. Please view the [dependencies](https://github.com/ToontownInfinite/src/wiki/Dependencies) page in the wiki for help starting Toontown.
+Please view the [dependencies](https://github.com/ToontownInfinite/src/wiki/Dependencies) page in the wiki for help starting Toontown.
+
+
+**Note:** Issues submitted in this repository are designed for *code-related* issues only. Issues involving starting the game will be ignored.
