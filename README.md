@@ -18,12 +18,12 @@ Don't just start contributing. We talk about what we are about to do before we d
 ##### You must compile dependencies yourself, ask for assistance if needed. #####
 
 #### PANDA3D
-##### This software requires a modified version of the Panda3D game engine to correctly function. This issue will be addressed at a later date.
+This software requires a modified version of the Panda3D game engine to correctly function. This issue will be addressed at a later date.
 ##### Link: https://github.com/nate97/panda3d
 
 
 #### ASTRON
-##### This software requires an older version of Astron to be compiled. (v0.1.0)
+This software requires an older version of Astron to be compiled. (v0.1.0)
 ##### Link: https://github.com/nate97/Astron/releases 
 
 #### Python dependencies ####
