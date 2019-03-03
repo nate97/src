@@ -925,6 +925,10 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         if self.disguisePage:
             self.disguisePage.updatePage()
 
+    def getCogTypes(self):
+        return self.cogTypes
+
+
     def setCogLevels(self, levels):
         self.cogLevels = levels
         if self.disguisePage:
