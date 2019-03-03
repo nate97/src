@@ -13,7 +13,7 @@ No profanity allowed, keep it professional.
 ### Contributing ###
 Don't just start contributing. We talk about what we are about to do before we do it! All changes, except for emergency bug fixes, should be done in either a separate branch, or a fork -- **not** to the master or release branches. When you are ready to merge your changes, submit a _pull request_ for review.
 
-### Requirements ###
+## Requirements ##
 
 ## You must compile dependencies for yourself. ##
 This software requires a modified version of the Panda3D game engine to correctly function. This issue will be addressed at a later date.
