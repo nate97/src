@@ -25,10 +25,7 @@ This software requires a modified version of the Panda3D game engine to correctl
 This software requires an older version of Astron to be compiled. (v0.1.0)
 ##### Astron link here: https://github.com/nate97/Astron/releases 
 
-
-##### Python dependencies ######
-
+#### Python dependencies ####
 Please view the [dependencies](https://github.com/ToontownInfinite/src/wiki/Dependencies) page in the wiki for help starting Toontown.
-
 
 **Note:** Issues submitted in this repository are designed for *code-related* issues only. Issues involving starting the game will be ignored.
