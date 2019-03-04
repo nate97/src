@@ -18,6 +18,9 @@ class DistributedBankAI(DistributedFurnitureItemAI):
                 self.sendBankMovie(avId)
             else:
                 self.sendNotOwnerMovie(avId)
+                self.busy = 0
+                self.freeAvatar()
+
 
             self.acceptOnce(self.air.getAvatarExitEvent(avId),
                             self.__handleUnexpectedExit)
@@ -36,7 +39,6 @@ class DistributedBankAI(DistributedFurnitureItemAI):
 
     def sendNotOwnerMovie(self, avId):
         self.setMovie(BANK_MOVIE_NOT_OWNER, avId)
-        self.busy = 0
 
     def sendExitMovie(self):
         self.setMovie(BANK_MOVIE_WITHDRAW, self.busy)
