@@ -3,7 +3,7 @@ import base64
 from direct.directnotify.DirectNotifyGlobal import directNotify
 from direct.distributed.DistributedObjectGlobalUD import DistributedObjectGlobalUD
 from direct.distributed.PyDatagram import *
-from direct.fsm.FSM import FSM
+from toontown.fsm.FSM import FSM
 import hashlib
 import hmac
 import json

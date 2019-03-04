@@ -1,7 +1,7 @@
 import math
 from direct.showbase.DirectObject import DirectObject
 from direct.directnotify import DirectNotifyGlobal
-from direct.fsm.FSM import FSM
+from toontown.fsm.FSM import FSM
 from direct.task.Task import Task
 from direct.interval.IntervalGlobal import Sequence, Parallel, LerpScaleInterval, LerpFunctionInterval, Func, Wait, LerpFunc, SoundInterval, ParallelEndTogether, LerpPosInterval, ActorInterval, LerpPosHprInterval, LerpHprInterval
 from direct.directutil import Mopath

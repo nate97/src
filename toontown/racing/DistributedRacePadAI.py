@@ -2,7 +2,7 @@ from direct.directnotify import DirectNotifyGlobal
 from toontown.racing.DistributedKartPadAI import DistributedKartPadAI
 from toontown.racing.DistributedRaceAI import DistributedRaceAI
 from toontown.racing import RaceGlobals
-from direct.fsm.FSM import FSM
+from toontown.fsm.FSM import FSM
 from direct.distributed.ClockDelta import *
 from direct.task import *
 from toontown.racing.KartShopGlobals import KartGlobals

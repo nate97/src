@@ -2,7 +2,7 @@ import calendar
 from datetime import datetime
 from datetime import timedelta
 from direct.directnotify import DirectNotifyGlobal
-from direct.fsm.FSM import FSM
+from toontown.fsm.FSM import FSM
 from direct.gui import DirectGuiGlobals
 from direct.gui.DirectGui import DirectFrame, DirectButton, DirectLabel, DirectScrolledList, DirectCheckButton
 from direct.showbase import DirectObject

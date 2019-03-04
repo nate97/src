@@ -1,6 +1,6 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.ClockDelta import *
-from direct.fsm.FSM import FSM
+from toontown.fsm.FSM import FSM
 from direct.task import Task
 from otp.ai.AIBase import *
 from toontown.building import DistributedElevatorFSMAI

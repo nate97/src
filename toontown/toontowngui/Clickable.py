@@ -1,4 +1,4 @@
-from direct.fsm.FSM import FSM
+from toontown.fsm.FSM import FSM
 from direct.showbase.DirectObject import DirectObject
 from panda3d.core import PandaNode, PGButton, NodePath, MouseWatcherRegion
 

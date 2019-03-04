@@ -1,5 +1,5 @@
 from panda3d.core import Point3, NodePath
-from direct.fsm.FSM import FSM
+from toontown.fsm.FSM import FSM
 from direct.interval.IntervalGlobal import ProjectileInterval, Track, ActorInterval
 from direct.interval.IntervalGlobal import Func, Sequence, Parallel
 from CogdoMazeGameObjects import CogdoMazeSplattable

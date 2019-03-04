@@ -12,7 +12,7 @@ from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals
 from direct.task.Task import Task
 from toontown.hood import ZoneUtil
-from direct.fsm.FSM import FSM
+from toontown.fsm.FSM import FSM
 
 class DistributedElevatorFSM(DistributedObject.DistributedObject, FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedElevator')

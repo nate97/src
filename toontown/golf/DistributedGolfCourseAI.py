@@ -3,7 +3,7 @@ from direct.directnotify import DirectNotifyGlobal
 from toontown.toonbase import ToontownGlobals
 from toontown.golf import DistributedGolfHoleAI
 from panda3d.core import *
-from direct.fsm.FSM import FSM
+from toontown.fsm.FSM import FSM
 from toontown.ai.ToonBarrier import *
 from toontown.golf import GolfGlobals
 INITIAL = 0

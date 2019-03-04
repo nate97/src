@@ -1,6 +1,6 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
-from direct.fsm.FSM import FSM
+from toontown.fsm.FSM import FSM
 
 class DistributedTrickOrTreatTargetAI(DistributedObjectAI, FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory("DistributedTrickOrTreatTargetAI")

@@ -10,7 +10,7 @@ from direct.fsm import ClassicFSM
 from direct.fsm import State
 from toontown.hood import ZoneUtil
 from toontown.toonbase import TTLocalizer
-from direct.fsm.FSM import FSM
+from toontown.fsm.FSM import FSM
 from direct.task import Task
 from toontown.distributed import DelayDelete
 from direct.showbase import PythonUtil

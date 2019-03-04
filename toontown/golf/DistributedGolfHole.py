@@ -11,7 +11,7 @@ from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownTimer
 from direct.gui.DirectGui import DirectWaitBar, DGG, DirectLabel
 from direct.task import Task
-from direct.fsm.FSM import FSM
+from toontown.fsm.FSM import FSM
 from toontown.minigame import ArrowKeys
 from direct.showbase import PythonUtil
 from toontown.golf import BuildGeometry

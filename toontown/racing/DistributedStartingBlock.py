@@ -14,7 +14,7 @@ from toontown.toontowngui import TTDialog
 from direct.distributed import DistributedObject
 from direct.distributed import DistributedSmoothNode
 from direct.actor import Actor
-from direct.fsm.FSM import FSM
+from toontown.fsm.FSM import FSM
 from direct.showbase import PythonUtil
 from toontown.toonbase.ToontownTimer import ToontownTimer
 from toontown.racing.Kart import Kart

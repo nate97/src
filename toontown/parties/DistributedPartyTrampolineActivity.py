@@ -4,7 +4,7 @@ import random
 from direct.task import Task
 from direct.directnotify import DirectNotifyGlobal
 from direct.actor.Actor import Actor
-from direct.fsm.FSM import FSM
+from toontown.fsm.FSM import FSM
 from direct.gui.DirectGui import DirectButton
 from direct.gui.OnscreenText import OnscreenText
 from direct.interval.FunctionInterval import Func

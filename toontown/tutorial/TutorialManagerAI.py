@@ -1,6 +1,6 @@
 from direct.directnotify.DirectNotifyGlobal import *
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
-from direct.fsm.FSM import FSM
+from toontown.fsm.FSM import FSM
 
 from toontown.ai import DistributedBlackCatMgrAI
 from toontown.building import FADoorCodes

@@ -10,7 +10,7 @@ from toontown.toonbase import TTLocalizer
 from panda3d.core import *
 from direct.gui.DirectGui import *
 from direct.distributed.ClockDelta import *
-from direct.fsm.FSM import FSM
+from toontown.fsm.FSM import FSM
 from toontown.golf import GolfGlobals
 from toontown.golf import GolfScoreBoard
 from toontown.golf import GolfRewardDialog

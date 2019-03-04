@@ -5,7 +5,7 @@ from direct.gui.DirectGui import DirectFrame, DirectButton, DirectLabel, DirectS
 from direct.gui import DirectGuiGlobals
 from direct.showbase.DirectObject import DirectObject
 from direct.showbase import PythonUtil
-from direct.fsm.FSM import FSM
+from toontown.fsm.FSM import FSM
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import TTLocalizer
 from toontown.parties import PartyGlobals

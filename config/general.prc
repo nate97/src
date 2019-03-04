@@ -18,8 +18,8 @@ aux-display p3tinydisplay
 #multisamples 2
 
 # Models:
-model-cache-models #f
-model-cache-textures #f
+model-cache-models #t
+model-cache-textures #t
 default-model-extension .bam
 
 # Textures:

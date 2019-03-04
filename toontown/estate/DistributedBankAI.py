@@ -36,6 +36,7 @@ class DistributedBankAI(DistributedFurnitureItemAI):
 
     def sendNotOwnerMovie(self, avId):
         self.setMovie(BANK_MOVIE_NOT_OWNER, avId)
+        self.busy = 0
 
     def sendExitMovie(self):
         self.setMovie(BANK_MOVIE_WITHDRAW, self.busy)
