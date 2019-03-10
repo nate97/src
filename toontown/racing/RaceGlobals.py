@@ -22,6 +22,12 @@ RT_Urban_2 = 64
 RT_Urban_2_rev = 65
 KARTING_TICKETS_HOLIDAY_MULTIPLIER = 2
 
+
+SpeedwayList = [RT_Speedway_1, RT_Speedway_1_rev, RT_Speedway_2, RT_Speedway_2_rev]
+RuralList = [RT_Rural_1, RT_Rural_1_rev, RT_Rural_2, RT_Rural_2_rev]
+UrbanList = [RT_Urban_1, RT_Urban_1_rev, RT_Urban_2, RT_Urban_2_rev]
+
+
 def getTrackGenre(trackId):
     if trackId in (RT_Speedway_1,
      RT_Speedway_1_rev,

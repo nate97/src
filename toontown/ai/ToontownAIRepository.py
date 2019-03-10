@@ -47,6 +47,10 @@ from toontown.toonbase import ToontownGlobals
 from toontown.tutorial.TutorialManagerAI import TutorialManagerAI
 from toontown.uberdog.DistributedPartyManagerAI import DistributedPartyManagerAI
 
+from toontown.racing.DistributedLeaderBoardManagerAI import DistributedLeaderBoardManagerAI
+
+
+
 # Code Redemption
 from toontown.coderedemption.TTCodeRedemptionMgrAI import TTCodeRedemptionMgrAI
 
@@ -126,6 +130,10 @@ class ToontownAIRepository(ToontownInternalRepository):
             self.partyManager.generateWithRequired(2)
             # Setup view of global ub party manager
             self.globalPartyMgr = self.generateGlobalObject(OTP_DO_ID_GLOBAL_PARTY_MANAGER, 'GlobalPartyManager')
+
+        self.wantLeaderBoardMgr = True
+        if self.wantLeaderBoardMgr:
+            self.leaderBoardMgr = DistributedLeaderBoardManagerAI(self)
 
 
         # Need work

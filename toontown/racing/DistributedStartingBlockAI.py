@@ -43,7 +43,7 @@ class DistributedStartingBlockAI(DistributedObjectAI):
         if av.getTickets() < RaceGlobals.getEntryFee(self.pad.trackId, self.pad.trackType):
             self.sendUpdateToAvatarId(avId, 'rejectEnter', [KartGlobals.ERROR_CODE.eTickets])
             return        
-        if self.pad.state == 'AllAboard' or self.pad.state == 'WaitBoarding' :
+        if self.pad.state_ == 'AllAboard' or self.pad.state_ == 'WaitBoarding' :
             self.sendUpdateToAvatarId(avId, 'rejectEnter', [KartGlobals.ERROR_CODE.eBoardOver])
             return
         if self.avId != 0:

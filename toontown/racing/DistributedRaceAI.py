@@ -4,6 +4,7 @@ from direct.distributed.DistributedObjectAI import DistributedObjectAI
 from toontown.fsm.FSM import FSM
 from direct.task import Task
 import random
+import time
 
 from toontown.racing import RaceGlobals
 from toontown.racing.DistributedGagAI import DistributedGagAI
@@ -18,6 +19,8 @@ class DistributedRaceAI(DistributedObjectAI, FSM):
         DistributedObjectAI.__init__(self, air)
         FSM.__init__(self, 'DistributedRaceAI')
         self.air = air
+
+
         self.zoneId = 0
         self.trackId = 0
         self.raceType = 0
@@ -273,7 +276,9 @@ class DistributedRaceAI(DistributedObjectAI, FSM):
         if set(self.finishedAvatars) == set(self.avatars) or len(self.avatars) == 0:
             self.requestDelete()
 
-    def heresMyT(self, avId, laps, currentLapT, timestamp):
+
+
+    def heresMyT(self, avId, laps, currentLapT, timestamp): # NJF
         realAvId = self.air.getAvatarIdFromSender()
         if not avId == realAvId:
             self.air.writeServerEvent('suspicious', realAvId, 'Toon tried to send a message as another toon!')
@@ -284,6 +289,9 @@ class DistributedRaceAI(DistributedObjectAI, FSM):
         if laps == self.lapCount:
             self.avatarFinished(avId)
         self.avatarProgress[avId] = laps + currentLapT
+
+
+
 
     def avatarFinished(self, avId):
         if not avId in self.avatars:
@@ -316,7 +324,26 @@ class DistributedRaceAI(DistributedObjectAI, FSM):
         av.b_setTickets(av.getTickets() + winnings)
         if av.getTickets() > RaceGlobals.MaxTickets:
             av.b_setTickets(RaceGlobals.MaxTickets)
+
+
+        genre = RaceGlobals.getTrackGenre(self.trackId)
+        av = self.air.doId2do[avId]
+        timeStamp = time.time()
+
+
+        print (self.trackId)
+        print (genre)
+        print (totalTime)
+        print (av)
+
+
+
+        self.air.leaderBoardMgr.setScore(self.trackId, genre, totalTime, av, timeStamp)
+        print ("TRACK INDEX!!!!!!!!!!!!!!!!")
+
         self.sendUpdate('setPlace', [avId, totalTime, place, entryFee, qualify, max((winnings-entryFee), 0), bonus, trophies, [], 0])
+
+
 
     def calculateTrophies(self, avId, won, qualify, time):
         av = self.air.doId2do[avId]

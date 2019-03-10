@@ -39,7 +39,7 @@ content-packs-filepath contentpacks/
 content-packs-sort-filename sort.yaml
 
 # Injector:
-want-injector #t
+want-injector #f
 
 # Backups:
 backups-filepath backups/

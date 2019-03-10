@@ -8,6 +8,7 @@ from toontown.racing.DistributedRacePadAI import DistributedRacePadAI
 from toontown.racing.DistributedStartingBlockAI import DistributedStartingBlockAI
 from toontown.racing.DistributedViewPadAI import DistributedViewPadAI
 from toontown.racing.DistributedStartingBlockAI import DistributedViewingBlockAI
+from toontown.racing.DistributedLeaderBoardAI import DistributedLeaderBoardAI
 from toontown.toonbase import ToontownGlobals
 
 
@@ -31,7 +32,7 @@ class GSHoodAI(HoodAI.HoodAI):
 
         self.createStartingBlocks()
         self.createLeaderBoards()
-        self.cycleLeaderBoards()
+        #self.cycleLeaderBoards()
         if simbase.config.GetBool('want-classic-chars', True):
             if simbase.config.GetBool('want-goofy', True):
                 self.createClassicChar()
@@ -126,29 +127,67 @@ class GSHoodAI(HoodAI.HoodAI):
             for viewingBlock in foundViewingBlocks:
                 viewPad.addStartingBlock(viewingBlock)
 
-    def findLeaderBoards(self, dnaData, zoneId):
-        return []  # TODO
 
-    def createLeaderBoards(self):
+
+
+    def findLeaderBoards(self, dnaGroup, zoneId):
+        if isinstance(dnaGroup, DNAGroup) and ('leaderBoard' in dnaGroup.getName()):
+            boardType = dnaGroup.getName()
+            x, y, z = dnaGroup.getPos()
+            h, p, r = dnaGroup.getHpr()
+
+            leaderBoard = DistributedLeaderBoardAI(simbase.air)
+            leaderBoard.setArea(zoneId)
+            leaderBoard.generateWithRequired(zoneId)
+            leaderBoard.setPosHpr(x,y,z,h,p,r)
+
+            if boardType == "leaderBoard_stadium":
+                leaderBoard.setType("stadium")
+            elif boardType == "leaderBoard_city":
+                leaderBoard.setType("city")
+            else:
+                leaderBoard.setType("country")
+
+            self.leaderBoards.append(leaderBoard)
+
+            self.air.leaderBoardMgr.appendBoards(leaderBoard)
+
+
+        for i in xrange(dnaGroup.getNumChildren()):
+            (foundLeaderBoards) = self.findLeaderBoards(dnaGroup.at(i), zoneId)
+        
+        return (self.leaderBoards)
+
+
+
+    def createLeaderBoards(self): # NJF
         self.leaderBoards = []
-        dnaData = self.air.dnaDataMap[self.zoneId]
+        #dnaData = self.air.dnaDataMap[self.zoneId]
+        dnaData = self.air.dnaDataMap.get(self.zoneId, None)
         if dnaData.getName() == 'root':
             self.leaderBoards = self.findLeaderBoards(dnaData, self.zoneId)
         for leaderBoard in self.leaderBoards:
             if not leaderBoard:
                 continue
-            if 'city' in leaderBoard.getName():
+            if 'city' in leaderBoard.getType():
                 leaderBoardType = 'city'
-            elif 'stadium' in leaderBoard.getName():
-                leaderBoardType = 'stadium'
-            elif 'country' in leaderBoard.getName():
-                leaderBoardType = 'country'
-            for subscription in RaceGlobals.LBSubscription[leaderBoardType]:
-                leaderBoard.subscribeTo(subscription)
+                leaderBoard.setDisplay("")
 
-    def cycleLeaderBoards(self, task=None):
-        messenger.send('leaderBoardSwap-' + str(self.zoneId))
-        taskMgr.doMethodLater(10, self.cycleLeaderBoards, 'leaderBoardSwitch')
+            elif 'stadium' in leaderBoard.getType():
+                leaderBoardType = 'stadium'
+                leaderBoard.setDisplay("")
+
+            elif 'country' in leaderBoard.getType():
+                leaderBoardType = 'country'
+                leaderBoard.setDisplay("")
+
+
+
+    #def cycleLeaderBoards(self, task=None):
+        #messenger.send('leaderBoardSwap-' + str(self.zoneId))
+        #taskMgr.doMethodLater(10, self.cycleLeaderBoards, 'leaderBoardSwitch')
+
+
 
     def createClassicChar(self):
         if simbase.air.wantHalloween:

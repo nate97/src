@@ -34,8 +34,8 @@ class DistributedLeaderBoard(DistributedObject.DistributedObject):
     def announceGenerate(self):
         DistributedObject.DistributedObject.announceGenerate(self)
         self.board.reparentTo(render)
-        self.accept('decorator-holiday-%d-ending' % ToontownGlobals.CRASHED_LEADERBOARD, self.showLists)
-        self.accept('decorator-holiday-%d-starting' % ToontownGlobals.CRASHED_LEADERBOARD, self.hideLists)
+        #self.accept('decorator-holiday-%d-ending' % ToontownGlobals.CRASHED_LEADERBOARD, self.showLists)
+        #self.accept('decorator-holiday-%d-starting' % ToontownGlobals.CRASHED_LEADERBOARD, self.hideLists)
         newsManager = base.cr.newsManager
         if newsManager:
             if ToontownGlobals.CRASHED_LEADERBOARD in newsManager.holidayIdList:
@@ -51,9 +51,21 @@ class DistributedLeaderBoard(DistributedObject.DistributedObject):
         self.surface.setPosHpr(x, y, z, h, p, r)
 
     def setDisplay(self, pData):
+
         self.notify.debug('setDisplay: changing leaderboard text on local side')
-        trackName, recordTitle, scores = cPickle.loads(pData)
+        
+        boardInfo = cPickle.loads(pData)
+
+        trackName = boardInfo.get("name")
+        recordTitle = boardInfo.get("scoreType")
+        scores = boardInfo.get("scores")
+
+        print (trackName)
+        print (recordTitle)
+
         self.display(trackName, recordTitle, scores)
+
+
 
     def buildListParts(self):
         self.surface = self.board.attachNewNode('surface')
@@ -89,6 +101,10 @@ class DistributedLeaderBoard(DistributedObject.DistributedObject):
         self.surface.flattenLight()
 
     def display(self, pTrackTitle = 'Track Title', pPeriodTitle = 'Period Title', pLeaderList = []):
+
+        print pLeaderList
+
+        print ("DISPLAY!!!!!!!!!!!!!!!!")
         self.titleTextNode.setText(pPeriodTitle)
         self.trackNameNode.setText(pTrackTitle)
         self.updateCount += 1
@@ -97,8 +113,15 @@ class DistributedLeaderBoard(DistributedObject.DistributedObject):
                 self.nameTextNodes[i].setText('-')
                 self.timeTextNodes[i].setText('-')
             else:
-                name = pLeaderList[i][1]
-                time = pLeaderList[i][0]
+
+                #name = pLeaderList[i][1]
+                #time = pLeaderList[i][0]
+                try:
+                    name = pLeaderList[i][3]
+                    time = pLeaderList[i][2]
+                except:
+                    name = "Goofy"
+                    time = 50
                 secs, hundredths = divmod(time, 1)
                 min, sec = divmod(secs, 60)
                 self.nameTextNodes[i].setText(name[:22])

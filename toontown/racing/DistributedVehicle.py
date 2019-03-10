@@ -28,40 +28,40 @@ class DistributedVehicle(DistributedSmoothNode.DistributedSmoothNode, Kart.Kart,
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedVehicle')
     cheatFactor = 1.0
     proRacer = 0
-    physicsCalculationsPerSecond = 60
+    physicsCalculationsPerSecond = 120
     maxPhysicsDt = 1.0
     physicsDt = 1.0 / float(physicsCalculationsPerSecond)
     maxPhysicsFrames = maxPhysicsDt * physicsCalculationsPerSecond
-    maxSpeed = 200 * cheatFactor
+    maxSpeed = 800 * cheatFactor
     turnRatio = 1.0 / 0.025 * math.sqrt(cheatFactor)
-    accelerationMult = 35
-    accelerationBase = 20
+    accelerationMult = 500
+    accelerationBase = 500
     if proRacer:
-        accelerationMult = 35
-        accelerationBase = 30
+        accelerationMult = 500
+        accelerationBase = 500
     surfaceModifiers = {'asphalt': {'shake': 0.1,
                  'driftMin': 65,
-                 'windResistance': 0.2,
+                 'windResistance': -900,
                  'particleColor': Vec4(0.7, 0.7, 0.7, 1.0)},
      'gravel': {'shake': 0.2,
                 'driftMin': 65,
-                'windResistance': 0.2,
+                'windResistance': -900,
                 'particleColor': Vec4(0.53, 0.53, 0.53, 1.0)},
      'dirt': {'shake': 0.4,
               'driftMin': 35,
-              'windResistance': 0.3,
+              'windResistance': -900,
               'particleColor': Vec4(1.0, 1.0, 1.0, 1.0)},
      'grass': {'shake': 0.8,
                'driftMin': 15,
-               'windResistance': 0.4,
+               'windResistance': -900,
                'particleColor': Vec4(0.8, 0.42, 0.8, 1.0)},
      'ice': {'shake': 0.0,
              'driftMin': 0,
-             'windResistance': 0.01,
+             'windResistance': -900,
              'particleColor': Vec4(1.0, 1.0, 1.0, 1.0)},
      '': {'shake': 0,
           'driftMin': 1,
-          'windResistance': 0.2,
+          'windResistance': -900,
           'particleColor': Vec4(1.0, 1.0, 1.0, 1.0)}}
     SFX_BaseDir = 'phase_6/audio/sfx/'
     SFX_WallHits = [SFX_BaseDir + 'KART_Hitting_Wood_Fence.ogg',
