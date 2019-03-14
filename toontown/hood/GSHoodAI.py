@@ -25,6 +25,10 @@ class GSHoodAI(HoodAI.HoodAI):
         self.leaderBoards = []
         self.classicChar = None
 
+        self.Stadium = 0
+        self.Rural = 1
+        self.Urban = 2
+
         self.startup()
 
     def startup(self):
@@ -32,7 +36,7 @@ class GSHoodAI(HoodAI.HoodAI):
 
         self.createStartingBlocks()
         self.createLeaderBoards()
-        #self.cycleLeaderBoards()
+
         if simbase.config.GetBool('want-classic-chars', True):
             if simbase.config.GetBool('want-goofy', True):
                 self.createClassicChar()
@@ -129,7 +133,6 @@ class GSHoodAI(HoodAI.HoodAI):
 
 
 
-
     def findLeaderBoards(self, dnaGroup, zoneId):
         if isinstance(dnaGroup, DNAGroup) and ('leaderBoard' in dnaGroup.getName()):
             boardType = dnaGroup.getName()
@@ -138,19 +141,18 @@ class GSHoodAI(HoodAI.HoodAI):
 
             leaderBoard = DistributedLeaderBoardAI(simbase.air)
             leaderBoard.setArea(zoneId)
+
+            if boardType == "leaderBoard_stadium":
+                leaderBoard.setGenre(self.Stadium)
+            elif boardType == "leaderBoard_country":
+                leaderBoard.setGenre(self.Rural)
+            elif boardType == "leaderBoard_city":
+                leaderBoard.setGenre(self.Urban)
+
             leaderBoard.generateWithRequired(zoneId)
             leaderBoard.setPosHpr(x,y,z,h,p,r)
 
-            if boardType == "leaderBoard_stadium":
-                leaderBoard.setType("stadium")
-            elif boardType == "leaderBoard_city":
-                leaderBoard.setType("city")
-            else:
-                leaderBoard.setType("country")
-
             self.leaderBoards.append(leaderBoard)
-
-            self.air.leaderBoardMgr.appendBoards(leaderBoard)
 
 
         for i in xrange(dnaGroup.getNumChildren()):
@@ -169,23 +171,8 @@ class GSHoodAI(HoodAI.HoodAI):
         for leaderBoard in self.leaderBoards:
             if not leaderBoard:
                 continue
-            if 'city' in leaderBoard.getType():
-                leaderBoardType = 'city'
-                leaderBoard.setDisplay("")
 
-            elif 'stadium' in leaderBoard.getType():
-                leaderBoardType = 'stadium'
-                leaderBoard.setDisplay("")
-
-            elif 'country' in leaderBoard.getType():
-                leaderBoardType = 'country'
-                leaderBoard.setDisplay("")
-
-
-
-    #def cycleLeaderBoards(self, task=None):
-        #messenger.send('leaderBoardSwap-' + str(self.zoneId))
-        #taskMgr.doMethodLater(10, self.cycleLeaderBoards, 'leaderBoardSwitch')
+            leaderBoardType = leaderBoard.getGenre()
 
 
 

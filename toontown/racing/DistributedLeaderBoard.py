@@ -50,7 +50,9 @@ class DistributedLeaderBoard(DistributedObject.DistributedObject):
     def setPosHpr(self, x, y, z, h, p, r):
         self.surface.setPosHpr(x, y, z, h, p, r)
 
-    def setDisplay(self, pData):
+
+
+    def setDisplay(self, pData): # NJF
 
         self.notify.debug('setDisplay: changing leaderboard text on local side')
         
@@ -62,6 +64,7 @@ class DistributedLeaderBoard(DistributedObject.DistributedObject):
 
         print (trackName)
         print (recordTitle)
+        print scores
 
         self.display(trackName, recordTitle, scores)
 
@@ -100,32 +103,26 @@ class DistributedLeaderBoard(DistributedObject.DistributedObject):
 
         self.surface.flattenLight()
 
-    def display(self, pTrackTitle = 'Track Title', pPeriodTitle = 'Period Title', pLeaderList = []):
 
-        print pLeaderList
 
-        print ("DISPLAY!!!!!!!!!!!!!!!!")
+    def display(self, pTrackTitle = 'Track Title', pPeriodTitle = 'Period Title', pLeaderList = []): # NJF
         self.titleTextNode.setText(pPeriodTitle)
         self.trackNameNode.setText(pTrackTitle)
         self.updateCount += 1
         for i in xrange(10):
-            if i > len(pLeaderList):
+            if i >= len(pLeaderList):
                 self.nameTextNodes[i].setText('-')
                 self.timeTextNodes[i].setText('-')
             else:
+                name = pLeaderList[i][0]
+                time = pLeaderList[i][1]
 
-                #name = pLeaderList[i][1]
-                #time = pLeaderList[i][0]
-                try:
-                    name = pLeaderList[i][3]
-                    time = pLeaderList[i][2]
-                except:
-                    name = "Goofy"
-                    time = 50
                 secs, hundredths = divmod(time, 1)
                 min, sec = divmod(secs, 60)
                 self.nameTextNodes[i].setText(name[:22])
                 self.timeTextNodes[i].setText('%02d:%02d:%02d' % (min, sec, hundredths * 100))
+
+
 
     def buildTitleRow(self):
         row = hidden.attachNewNode('TitleRow')

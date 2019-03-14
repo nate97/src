@@ -335,11 +335,15 @@ class DistributedRaceAI(DistributedObjectAI, FSM):
         print (genre)
         print (totalTime)
         print (av)
+        av = str(av)
+        av = av.split("/")[1]
 
 
+        self.air.leaderBoardMgr.specificListProxy(self.trackId, 0, av, totalTime, timeStamp)
+        self.air.leaderBoardMgr.specificListProxy(self.trackId, 1, av, totalTime, timeStamp)
+        self.air.leaderBoardMgr.specificListProxy(self.trackId, 2, av, totalTime, timeStamp)
 
-        self.air.leaderBoardMgr.setScore(self.trackId, genre, totalTime, av, timeStamp)
-        print ("TRACK INDEX!!!!!!!!!!!!!!!!")
+        print ("TRACK INDEX!!!")
 
         self.sendUpdate('setPlace', [avId, totalTime, place, entryFee, qualify, max((winnings-entryFee), 0), bonus, trophies, [], 0])
 
