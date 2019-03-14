@@ -1,12 +1,24 @@
 from direct.directnotify.DirectNotifyGlobal import *
 from direct.distributed import DistributedObjectAI
-
-
+import csv
+import ast
+import os
 
 class DistributedLeaderBoardManagerAI(DistributedObjectAI.DistributedObjectAI):
     notify = directNotify.newCategory('LeaderBoardManagerAI')
 
     def __init__(self, air):
+
+        self.air = air
+
+        # Directory
+        self.backDir = 'backups/'
+        self.folderName = 'raceboards/'
+        self.fileName = str(self.air.districtId) # Used for our filename
+        self.extension = '.csv'
+        self.fullPath = self.backDir + self.folderName 
+        self.fullName = self.fileName + self.extension
+
 
         # Genres
         Speedway = 0
@@ -152,6 +164,13 @@ class DistributedLeaderBoardManagerAI(DistributedObjectAI.DistributedObjectAI):
 
         }
 
+        self.createCSV()
+
+        #print self.recordLists
+
+
+
+
         self.stadiumCount = 0
         self.ruralCount = 0
         self.cityCount = 0
@@ -165,6 +184,42 @@ class DistributedLeaderBoardManagerAI(DistributedObjectAI.DistributedObjectAI):
         self.stadiumBoard = None
         self.ruralBoard = None
         self.urbanBoard = None
+
+
+
+
+    def createCSV(self):
+        if not os.path.exists(self.fullPath):
+            os.mkdir(self.fullPath)
+            self.writeToCSV()
+
+        else:
+
+            if not os.path.exists(self.fullPath + self.fullName):
+                self.writeToCSV()
+            else:
+
+                reader = csv.reader(open(self.fullPath + self.fullName, 'r'))
+                previousScores = {}
+                for row in reader:
+                    key, value = row
+
+                    key = ast.literal_eval(key)
+                    value = ast.literal_eval(value)
+
+                    previousScores[key] = value
+
+                del reader
+
+                self.recordLists = previousScores
+
+
+
+    def writeToCSV(self):
+        w = csv.writer(open(self.fullPath + self.fullName, 'w'))
+        for key, val in self.recordLists.items():
+            w.writerow([key, val])
+        del w # Close
 
 
 
@@ -196,7 +251,7 @@ class DistributedLeaderBoardManagerAI(DistributedObjectAI.DistributedObjectAI):
         iterCount, curRaceTrackScores = self.iterateThroughBoard(genre, self.countIteratorList[genre], trackKey)
         self.countIteratorList[genre] = iterCount
 
-        print curRaceTrackScores
+        #print curRaceTrackScores
 
         # SEND BACK TO CORRECT GENRE BOARD
         #print trackKey
@@ -207,15 +262,9 @@ class DistributedLeaderBoardManagerAI(DistributedObjectAI.DistributedObjectAI):
         recordTitle = self.RecordPeriodStrings[trackKey[1]]
 
 
-        print trackTitle
-        print recordTitle
-        print records
-
         ourTuple = (trackTitle, recordTitle, records)
 
         leaderBoard.setDisplay(ourTuple)
-
-
 
 
 
@@ -257,10 +306,10 @@ class DistributedLeaderBoardManagerAI(DistributedObjectAI.DistributedObjectAI):
             scoreList = self.recordLists[currentTuple]
 
             identifyTuple = (raceId, recordTitleId)
-            completedTuple = (raceId, recordTitleId, raceTitle, recordTitle, scoreList)
-
+            completedTuple = (raceId, recordTitleId, raceTitle, recordTitle, scoreList) # IMPORTANT!!! THIS IS WHERE WE'RE APPENDING NEW STUFF
 
             boardDict[identifyTuple] = completedTuple
+
 
         return boardDict
 
@@ -299,6 +348,7 @@ class DistributedLeaderBoardManagerAI(DistributedObjectAI.DistributedObjectAI):
                 newEntry = (av, totalTime, timeStamp)
                 recordList.append(newEntry) # Append to correct racetrack and record type list
 
+                self.writeToCSV()
 
 
     def cycleLeaderBoard(self, task=None):
