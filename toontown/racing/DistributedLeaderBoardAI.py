@@ -25,17 +25,16 @@ class DistributedLeaderBoardAI(DistributedObjectAI):
 
 
     def generate(self):
-        self.sendLeaderboard()
+        self.defineLeaderboard()
 
 
 
-    def sendLeaderboard(self):
+    def defineLeaderboard(self): # Sends over genre and instance of this leaderboard to the leaderboard manager
         self.air.leaderBoardMgr.setBoard(self.genre, self)
 
 
 
     def setDisplay(self, display=""):
-
         trackTitle = display[0]
         recordTitle = display[1]
         currentScores = display[2]
@@ -57,6 +56,7 @@ class DistributedLeaderBoardAI(DistributedObjectAI):
         self.genre = genre
 
 
+
     def getGenre(self):
         return self.genre
 
@@ -69,27 +69,6 @@ class DistributedLeaderBoardAI(DistributedObjectAI):
 
     def getPosHpr(self):
         return [0,0,0,0,0,0]
-
-
-
-    def setArea(self, area):
-        self.area = area
-    
-
-
-    def d_setArea(self, area):
-        self.sendUpdate('setArea', [area])
-        
-
-
-    def b_setArea(self, area):
-        self.setArea(area)
-        self.d_setArea(self, area)
-    
-
-
-    def getArea(self):
-        return self.area
 
 
 

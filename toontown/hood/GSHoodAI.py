@@ -140,7 +140,6 @@ class GSHoodAI(HoodAI.HoodAI):
             h, p, r = dnaGroup.getHpr()
 
             leaderBoard = DistributedLeaderBoardAI(simbase.air)
-            leaderBoard.setArea(zoneId)
 
             if boardType == "leaderBoard_stadium":
                 leaderBoard.setGenre(self.Stadium)

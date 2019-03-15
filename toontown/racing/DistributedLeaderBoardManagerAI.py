@@ -40,13 +40,13 @@ class DistributedLeaderBoardManagerAI(DistributedObjectAI.DistributedObjectAI):
         LeaderBoard_AllTime = 'All Time Best Scores'
         self.RecordPeriodStrings = [LeaderBoard_Daily, LeaderBoard_Weekly, LeaderBoard_AllTime]
 
+
+
         # Racetrack IDs
         RT_Speedway_1 = 0
         RT_Speedway_1_rev = 1
-
         RT_Speedway_2 = 60
         RT_Speedway_2_rev = 61
-
         RT_Rural_1 = 20
         RT_Rural_1_rev = 21
         RT_Rural_2 = 62
@@ -55,6 +55,31 @@ class DistributedLeaderBoardManagerAI(DistributedObjectAI.DistributedObjectAI):
         RT_Urban_1_rev = 41
         RT_Urban_2 = 64
         RT_Urban_2_rev = 65
+
+        # Minimum requirements to get on board
+        speedway1Minimum = 115
+        speedway2Minimum = 210
+        rural1Minimum = 230
+        rural2Minimum = 360
+        urban1Minimum = 305
+        urban2Minimum = 280
+
+        # Minimum values dict
+        self.minimumValueDict = {
+        RT_Speedway_1: speedway1Minimum,
+        RT_Speedway_1_rev: speedway1Minimum,
+        RT_Speedway_2: speedway2Minimum,
+        RT_Speedway_2_rev: speedway2Minimum,
+        RT_Rural_1: rural1Minimum,
+        RT_Rural_1_rev: rural1Minimum,
+
+        RT_Rural_2: rural2Minimum,
+        RT_Rural_2_rev: rural2Minimum,
+        RT_Urban_1: urban1Minimum,
+        RT_Urban_1_rev: urban1Minimum,
+        RT_Urban_2: urban2Minimum,
+        RT_Urban_2_rev: urban2Minimum,
+        }
 
         # Racetrack names
         KartRace_Reverse = ' Rev'
@@ -72,6 +97,8 @@ class DistributedLeaderBoardManagerAI(DistributedObjectAI.DistributedObjectAI):
         RT_Urban_2: 'Blizzard Boulevard',
         RT_Urban_2_rev: 'Blizzard Boulevard' + KartRace_Reverse
         }
+
+
 
 
         self.LBSubscription = {
@@ -168,9 +195,6 @@ class DistributedLeaderBoardManagerAI(DistributedObjectAI.DistributedObjectAI):
 
         self.createCSV()
 
-        #print self.recordLists
-
-
         self.stadiumCount = 0
         self.ruralCount = 0
         self.cityCount = 0
@@ -184,6 +208,8 @@ class DistributedLeaderBoardManagerAI(DistributedObjectAI.DistributedObjectAI):
         self.stadiumBoard = None
         self.ruralBoard = None
         self.urbanBoard = None
+
+        self.cycleLeaderBoard()
 
 
 
@@ -226,18 +252,13 @@ class DistributedLeaderBoardManagerAI(DistributedObjectAI.DistributedObjectAI):
 
 
 
-    def setBoard(self, genre, board): # This function allows us to send the leaderboard over to us so we can manage it directly
+    def setBoard(self, genre, board): # This function allows us to define the three different leaderboards for us to control them
         if genre == 0: # Stadium
             self.stadiumBoard = board
         elif genre == 1: # Rural
             self.ruralBoard = board
         elif genre == 2: # Urban
             self.urbanBoard = board
-
-
-        # SHOULDN'T BE HERE, IMPORTANT!!!
-        if self.ruralBoard: # If all boards have been generated initiate tasks
-            self.cycleLeaderBoard()
 
 
 
@@ -269,13 +290,14 @@ class DistributedLeaderBoardManagerAI(DistributedObjectAI.DistributedObjectAI):
         records = self.sortScores(records)
 
 
+
         # Purge expired scores!!!
         if records != [] and recordId != 2: # If our records list is NOT empty...
             # Remove old stuff from records
             records = self.removeAfterXtime(genre, trackId, recordId)
         else:
             pass
-            # Append our DEFAULT GOOFY SCORES here! """   
+            # Append our DEFAULT GOOFY SCORES here!
 
 
 
@@ -334,7 +356,13 @@ class DistributedLeaderBoardManagerAI(DistributedObjectAI.DistributedObjectAI):
         # Continue from here!!! ######################################
 
         # Function to find requiredTime called here!!!
-        #requiredTime = 5
+        minimumTimeRequirement =  self.minimumValueDict[raceId]
+        print minimumTimeRequirement
+        if totalTime >= minimumTimeRequirement:
+            return # This player took too long to be displayed on the board!
+
+
+        
 
         #if totalTime >= requiredTime: # Return if totalTime exceeds minimum requirement!!!
             #return
@@ -408,6 +436,8 @@ class DistributedLeaderBoardManagerAI(DistributedObjectAI.DistributedObjectAI):
                         recordList.remove(players)
                         #print "REMOVED"
 
+        recordList = self.sortScores(recordList) # Make SURE everything is sorted correctly
+
         self.writeToCSV(self.recordLists)
         return recordList
 
@@ -420,11 +450,16 @@ class DistributedLeaderBoardManagerAI(DistributedObjectAI.DistributedObjectAI):
 
 
     def cycleLeaderBoard(self, task=None):
-        self.iterateManager(0, self.stadiumBoard)
-        self.iterateManager(1, self.ruralBoard)
-        self.iterateManager(2, self.urbanBoard)
+        if self.ruralBoard: # If all boards have been generated initiate tasks
+            self.iterateManager(0, self.stadiumBoard)
+            self.iterateManager(1, self.ruralBoard)
+            self.iterateManager(2, self.urbanBoard)
 
         taskMgr.doMethodLater(10, self.cycleLeaderBoard, 'cycleLeaderBoards')
+
+
+
+
 
 
 

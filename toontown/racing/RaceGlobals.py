@@ -5,23 +5,32 @@ MaxTickets = 99999
 Practice = 0
 ToonBattle = 1
 Circuit = 2
+
 Speedway = 0
 Rural = 1
 Urban = 2
+
 RT_Speedway_1 = 0
 RT_Speedway_1_rev = 1
+
 RT_Rural_1 = 20
 RT_Rural_1_rev = 21
+
 RT_Urban_1 = 40
 RT_Urban_1_rev = 41
+
+
+
 RT_Speedway_2 = 60
 RT_Speedway_2_rev = 61
+
 RT_Rural_2 = 62
 RT_Rural_2_rev = 63
+
 RT_Urban_2 = 64
 RT_Urban_2_rev = 65
-KARTING_TICKETS_HOLIDAY_MULTIPLIER = 2
 
+KARTING_TICKETS_HOLIDAY_MULTIPLIER = 2
 
 SpeedwayList = [RT_Speedway_1, RT_Speedway_1_rev, RT_Speedway_2, RT_Speedway_2_rev]
 RuralList = [RT_Rural_1, RT_Rural_1_rev, RT_Rural_2, RT_Rural_2_rev]
