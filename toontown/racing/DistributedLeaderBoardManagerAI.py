@@ -1,5 +1,7 @@
 from direct.directnotify.DirectNotifyGlobal import *
 from direct.distributed import DistributedObjectAI
+import datetime
+import time
 import csv
 import ast
 import os
@@ -169,8 +171,6 @@ class DistributedLeaderBoardManagerAI(DistributedObjectAI.DistributedObjectAI):
         #print self.recordLists
 
 
-
-
         self.stadiumCount = 0
         self.ruralCount = 0
         self.cityCount = 0
@@ -187,16 +187,15 @@ class DistributedLeaderBoardManagerAI(DistributedObjectAI.DistributedObjectAI):
 
 
 
-
     def createCSV(self):
         if not os.path.exists(self.fullPath):
             os.mkdir(self.fullPath)
-            self.writeToCSV()
+            self.writeToCSV(self.recordLists)
 
         else:
 
             if not os.path.exists(self.fullPath + self.fullName):
-                self.writeToCSV()
+                self.writeToCSV(self.recordLists)
             else:
 
                 reader = csv.reader(open(self.fullPath + self.fullName, 'r'))
@@ -215,9 +214,13 @@ class DistributedLeaderBoardManagerAI(DistributedObjectAI.DistributedObjectAI):
 
 
 
-    def writeToCSV(self):
+
+
+
+
+    def writeToCSV(self, scoreList):
         w = csv.writer(open(self.fullPath + self.fullName, 'w'))
-        for key, val in self.recordLists.items():
+        for key, val in scoreList.items():
             w.writerow([key, val])
         del w # Close
 
@@ -239,42 +242,58 @@ class DistributedLeaderBoardManagerAI(DistributedObjectAI.DistributedObjectAI):
 
 
     def iterateManager(self, genre, leaderBoard):
-        #self.countIteratorList[genre] # We have to directly call this variable because I can't think of how todo this better right now
+        records = []
 
         currentTracks = self.LBSubscription[genre]
-        
+   
         if self.countIteratorList[genre] > 11: # If we go over 11 tracks, reset
             self.countIteratorList[genre] = 0
 
         trackKey = currentTracks[self.countIteratorList[genre]]
-        
+        trackId = trackKey[0]
+        recordId = trackKey[1]
+
         iterCount, curRaceTrackScores = self.iterateThroughBoard(genre, self.countIteratorList[genre], trackKey)
         self.countIteratorList[genre] = iterCount
 
-        #print curRaceTrackScores
 
-        # SEND BACK TO CORRECT GENRE BOARD
-        #print trackKey
 
-        records = curRaceTrackScores[4]
-        
-        trackTitle = self.KartRace_TrackNames[trackKey[0]]
-        recordTitle = self.RecordPeriodStrings[trackKey[1]]
+        #######################################################################################
+        ########################### PROBABLY SHOULD BE NEW FUNCTION ###########################
+        #######################################################################################
 
+        records = curRaceTrackScores[4] # IMPORTANT!!! Our current list of player records
+        #print records
+
+        # Sort records from least amount of time to greatest
+        records = self.sortScores(records)
+
+
+        # Purge expired scores!!!
+        if records != [] and recordId != 2: # If our records list is NOT empty...
+            # Remove old stuff from records
+            records = self.removeAfterXtime(genre, trackId, recordId)
+        else:
+            pass
+            # Append our DEFAULT GOOFY SCORES here! """   
+
+
+
+
+        trackTitle = self.KartRace_TrackNames[trackId] # Text
+        recordTitle = self.RecordPeriodStrings[recordId] # Text
 
         ourTuple = (trackTitle, recordTitle, records)
 
-        leaderBoard.setDisplay(ourTuple)
+        # SEND BACK TO CORRECT BOARD
+        leaderBoard.setDisplay(ourTuple) # SHOULD BE MOVED TO IT'S OWN FUNCTION!!!
 
 
 
     def iterateThroughBoard(self, genre, iterCount, trackKey):
         genreDict = self.allDicts[genre]
-
         curRaceTrackScores = genreDict[trackKey]
-
         iterCount = iterCount + 1
-
         return iterCount, curRaceTrackScores
         
 
@@ -297,38 +316,45 @@ class DistributedLeaderBoardManagerAI(DistributedObjectAI.DistributedObjectAI):
             raceTitle = self.KartRace_TrackNames[raceId]
             recordTitle = self.RecordPeriodStrings[recordTitleId]
 
-            #print ""
-            #print raceTitle
-            #print recordTitle
 
             currentTuple = (raceId, recordTitleId)
 
             scoreList = self.recordLists[currentTuple]
 
             identifyTuple = (raceId, recordTitleId)
-            completedTuple = (raceId, recordTitleId, raceTitle, recordTitle, scoreList) # IMPORTANT!!! THIS IS WHERE WE'RE APPENDING NEW STUFF
+            completedList = [raceId, recordTitleId, raceTitle, recordTitle, scoreList] # IMPORTANT!!! THIS IS WHERE WE'RE APPENDING NEW STUFF
 
-            boardDict[identifyTuple] = completedTuple
-
+            boardDict[identifyTuple] = completedList
 
         return boardDict
 
 
 
-    def specificListProxy(self, raceId, recordTitle, av = 0, totalTime = 0, timeStamp = 0): # This is a proxy for a race to append a winner, will need more data
+    def specificListProxy(self, raceId, recordId, av = 0, totalTime = 0, timeStamp = 0): # This is a proxy for a race to append a winner, will need more data
+        # Continue from here!!! ######################################
+
+        # Function to find requiredTime called here!!!
+        #requiredTime = 5
+
+        #if totalTime >= requiredTime: # Return if totalTime exceeds minimum requirement!!!
+            #return
+
+
+        # Go through all genre's and track titles
+
+
         for genre in range(0,3): # iterate over all three genres
             try:
-                self.findSpecificList(raceId, recordTitle, genre, av, totalTime, timeStamp)
+                self.findSpecificList(raceId, recordId, genre, av, totalTime, timeStamp)
             except:
                 pass
             
 
 
-    def findSpecificList(self, raceId, recordTitle, genre, av, totalTime, timeStamp): # Finds specific list we want (NEVER CALL THIS DIRECTLY ALWAYS USE PROXY)
-        wantedTuple = (raceId, recordTitle)
+    def findSpecificList(self, raceId, recordId, genre, av, totalTime, timeStamp): # Finds specific list we want (NEVER CALL THIS DIRECTLY ALWAYS USE PROXY)
+        wantedTuple = (raceId, recordId)
 
         for raceTracks in self.LBSubscription[genre]: # genre is in square brackets
-
             iterRaceId = raceTracks[0]
             iterTitleId = raceTracks[1]
 
@@ -343,12 +369,54 @@ class DistributedLeaderBoardManagerAI(DistributedObjectAI.DistributedObjectAI):
 
             if iterateTuple == wantedTuple:
 
-                recordList = currentLists[4] # IMPORTANT LIST FOR THIS TRACK, AND PARTICULAR RECORDTITLE
+                recordList = currentLists[4] # IMPORTANT LIST FOR THIS TRACK, AND PARTICULAR RECORDID
 
                 newEntry = (av, totalTime, timeStamp)
                 recordList.append(newEntry) # Append to correct racetrack and record type list
 
-                self.writeToCSV()
+                self.writeToCSV(self.recordLists)
+
+
+
+    def removeAfterXtime(self, genre, raceId, recordId):
+        if recordId == 0: # Daily
+            addTime = 86400 # 24 Hours
+        elif recordId == 1: # Weekly
+            addTime = 604800
+
+        wantedTuple = (raceId, recordId)
+
+        for raceTracks in self.LBSubscription[genre]: # genre is in square brackets
+
+            genreDict = self.allDicts[genre]
+            currentLists = genreDict[raceTracks]
+
+            iterRaceId = raceTracks[0]
+            iterTitleId = raceTracks[1]
+            iterateTuple = (iterRaceId, iterTitleId)
+
+            if iterateTuple == wantedTuple:
+   
+                recordList = currentLists[4] # IMPORTANT LIST FOR THIS TRACK, AND PARTICULAR RECORDID
+                for players in recordList:
+                    print players
+                    staticTimeStamp = players[2]
+                    futureTimeStamp = staticTimeStamp + addTime # 24 Hours out from whenever the timestamp was created for ending of race
+                    currentTime = time.time()
+
+                    if currentTime >= futureTimeStamp:
+                        recordList.remove(players)
+                        #print "REMOVED"
+
+        self.writeToCSV(self.recordLists)
+        return recordList
+
+
+
+    def sortScores(self, scores):
+        sortedScores = sorted(scores, key=lambda player: player[1])   # sort by time it took to complete race
+        return sortedScores
+
 
 
     def cycleLeaderBoard(self, task=None):
