@@ -20,6 +20,7 @@ class DistributedLeaderBoardAI(DistributedObjectAI):
         self.Urban = 2
 
         self.area = None
+
         self.genre = self.Speedway
 
 

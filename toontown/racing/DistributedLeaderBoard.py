@@ -187,3 +187,6 @@ class DistributedLeaderBoard(DistributedObject.DistributedObject):
         self.ignoreAll()
         self.board.removeNode()
         DistributedObject.DistributedObject.delete(self)
+
+
+
