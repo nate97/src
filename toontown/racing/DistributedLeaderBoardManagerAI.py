@@ -301,8 +301,7 @@ class DistributedLeaderBoardManagerAI(DistributedObjectAI.DistributedObjectAI):
             self.countIteratorList[genre] = 0
 
         activeTracks = self.orderedTrackKeys[genre]
-        curTrack = activeTracks[self.countIteratorList[genre]]
-        print curTrack        
+        curTrack = activeTracks[self.countIteratorList[genre]]      
 
         trackId = curTrack[0]
         recordId = curTrack[1]
