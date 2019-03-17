@@ -339,9 +339,9 @@ class DistributedRaceAI(DistributedObjectAI, FSM):
         av = av.split("/")[1]
 
 
-        self.air.leaderBoardMgr.specificListProxy(self.trackId, 0, av, totalTime, timeStamp)
-        self.air.leaderBoardMgr.specificListProxy(self.trackId, 1, av, totalTime, timeStamp)
-        self.air.leaderBoardMgr.specificListProxy(self.trackId, 2, av, totalTime, timeStamp)
+        self.air.leaderBoardMgr.appendNewRaceEntry(self.trackId, 0, av, totalTime, timeStamp)
+        self.air.leaderBoardMgr.appendNewRaceEntry(self.trackId, 1, av, totalTime, timeStamp)
+        self.air.leaderBoardMgr.appendNewRaceEntry(self.trackId, 2, av, totalTime, timeStamp)
 
         print ("TRACK INDEX!!!")
 

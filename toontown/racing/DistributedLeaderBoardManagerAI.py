@@ -21,6 +21,13 @@ class DistributedLeaderBoardManagerAI(DistributedObjectAI.DistributedObjectAI):
         self.fullPath = self.backDir + self.folderName 
         self.fullName = self.fileName + self.extension
 
+        # Leaderboard instances
+        self.stadiumBoard = None
+        self.ruralBoard = None
+        self.urbanBoard = None
+
+        # How long it takes before we display the next race scores
+        self.cycleTime = 10
 
         # Genres
         Speedway = 0
@@ -32,15 +39,14 @@ class DistributedLeaderBoardManagerAI(DistributedObjectAI.DistributedObjectAI):
         Weekly = 1
         AllTime = 2
 
-        LeaderBoard_Name = 'Racer Name'
+        # Name used for default race player
+        self.defaultName = "Goofy"
 
         # Record text
         LeaderBoard_Daily = 'Daily Scores'
         LeaderBoard_Weekly = 'Weekly Scores'
         LeaderBoard_AllTime = 'All Time Best Scores'
-        self.RecordPeriodStrings = [LeaderBoard_Daily, LeaderBoard_Weekly, LeaderBoard_AllTime]
-
-
+        self.recordPeriodStrings = [LeaderBoard_Daily, LeaderBoard_Weekly, LeaderBoard_AllTime]
 
         # Racetrack IDs
         RT_Speedway_1 = 0
@@ -98,10 +104,7 @@ class DistributedLeaderBoardManagerAI(DistributedObjectAI.DistributedObjectAI):
         RT_Urban_2_rev: 'Blizzard Boulevard' + KartRace_Reverse
         }
 
-
-
-
-        self.LBSubscription = {
+        self.orderedTrackKeys = {
             Speedway: [(RT_Speedway_1, Daily),
                     (RT_Speedway_1, Weekly),
                     (RT_Speedway_1, AllTime),
@@ -140,88 +143,70 @@ class DistributedLeaderBoardManagerAI(DistributedObjectAI.DistributedObjectAI):
                     (RT_Urban_2_rev, AllTime)]
         }
 
-
         self.recordLists = {
             (RT_Speedway_1, Daily): [],
             (RT_Speedway_1, Weekly): [],
             (RT_Speedway_1, AllTime): [],
-
             (RT_Speedway_1_rev, Daily): [],
             (RT_Speedway_1_rev, Weekly): [],
             (RT_Speedway_1_rev, AllTime): [],
-
             (RT_Rural_1, Daily): [],
             (RT_Rural_1, Weekly): [],
             (RT_Rural_1, AllTime): [],
-
             (RT_Rural_1_rev, Daily): [],
             (RT_Rural_1_rev, Weekly): [],
             (RT_Rural_1_rev, AllTime): [],
-
-
             (RT_Urban_1, Daily): [],
             (RT_Urban_1, Weekly): [],
             (RT_Urban_1, AllTime): [],
-
             (RT_Urban_1_rev, Daily): [],
             (RT_Urban_1_rev, Weekly): [],
             (RT_Urban_1_rev, AllTime): [],
-
             (RT_Speedway_2, Daily): [],
             (RT_Speedway_2, Weekly): [],
             (RT_Speedway_2, AllTime): [],
-
             (RT_Speedway_2_rev, Daily): [],
             (RT_Speedway_2_rev, Weekly): [],
             (RT_Speedway_2_rev, AllTime): [],
-
             (RT_Rural_2, Daily): [],
             (RT_Rural_2, Weekly): [],
             (RT_Rural_2, AllTime): [],
-
             (RT_Rural_2_rev, Daily): [],
             (RT_Rural_2_rev, Weekly): [],
             (RT_Rural_2_rev, AllTime): [],
-
             (RT_Urban_2, Daily): [],
             (RT_Urban_2, Weekly): [],
             (RT_Urban_2, AllTime): [],
-
             (RT_Urban_2_rev, Daily): [],
             (RT_Urban_2_rev, Weekly): [],
             (RT_Urban_2_rev, AllTime): []
-
         }
-
-        self.createCSV()
 
         self.stadiumCount = 0
         self.ruralCount = 0
         self.cityCount = 0
         self.countIteratorList = [self.stadiumCount, self.ruralCount, self.cityCount]
 
-        self.stadiumDict = self.createBoardDict(0) # Will be created for each leaderboard
-        self.ruralDict = self.createBoardDict(1) # Will be created for each leaderboard
-        self.urbanDict = self.createBoardDict(2) # Will be created for each leaderboard
-        self.allDicts = [self.stadiumDict, self.ruralDict, self.urbanDict]
-
-        self.stadiumBoard = None
-        self.ruralBoard = None
-        self.urbanBoard = None
-
-        self.cycleLeaderBoard()
+        self.createScoreCSV()
+        self.leaderBoardTask()
 
 
 
-    def createCSV(self):
+    ###############################################################################################
+    ############################### BUILDING OUR DEFAULT DICTIONARY ###############################
+    ###############################################################################################
+
+    def createScoreCSV(self):
         if not os.path.exists(self.fullPath):
             os.mkdir(self.fullPath)
-            self.writeToCSV(self.recordLists)
+            self.raceScoresDict = self.createRaceScoreDict()
+            self.exportScores(self.raceScoresDict)
 
         else:
 
             if not os.path.exists(self.fullPath + self.fullName):
-                self.writeToCSV(self.recordLists)
+                self.raceScoresDict = self.createRaceScoreDict()
+                self.exportScores(self.raceScoresDict)
             else:
 
                 reader = csv.reader(open(self.fullPath + self.fullName, 'r'))
@@ -236,15 +221,15 @@ class DistributedLeaderBoardManagerAI(DistributedObjectAI.DistributedObjectAI):
 
                 del reader
 
-                self.recordLists = previousScores
+                if previousScores != {}: # Patch to not overwrite if file ends up being blank
+                    self.raceScoresDict = previousScores
+                else:
+                    self.raceScoresDict = self.createRaceScoreDict()
+                    self.exportScores(self.raceScoresDict)
 
 
 
-
-
-
-
-    def writeToCSV(self, scoreList):
+    def exportScores(self, scoreList):
         w = csv.writer(open(self.fullPath + self.fullName, 'w'))
         for key, val in scoreList.items():
             w.writerow([key, val])
@@ -252,214 +237,155 @@ class DistributedLeaderBoardManagerAI(DistributedObjectAI.DistributedObjectAI):
 
 
 
-    def setBoard(self, genre, board): # This function allows us to define the three different leaderboards for us to control them
-        if genre == 0: # Stadium
-            self.stadiumBoard = board
-        elif genre == 1: # Rural
-            self.ruralBoard = board
-        elif genre == 2: # Urban
-            self.urbanBoard = board
-
-
-
-    def iterateManager(self, genre, leaderBoard):
-        records = []
-
-        currentTracks = self.LBSubscription[genre]
-   
-        if self.countIteratorList[genre] > 11: # If we go over 11 tracks, reset
-            self.countIteratorList[genre] = 0
-
-        trackKey = currentTracks[self.countIteratorList[genre]]
-        trackId = trackKey[0]
-        recordId = trackKey[1]
-
-        iterCount, curRaceTrackScores = self.iterateThroughBoard(genre, self.countIteratorList[genre], trackKey)
-        self.countIteratorList[genre] = iterCount
-
-
-
-        #######################################################################################
-        ########################### PROBABLY SHOULD BE NEW FUNCTION ###########################
-        #######################################################################################
-
-        records = curRaceTrackScores[4] # IMPORTANT!!! Our current list of player records
-        #print records
-
-        # Sort records from least amount of time to greatest
-        records = self.sortScores(records)
-
-
-
-        # Purge expired scores!!!
-        if records != [] and recordId != 2: # If our records list is NOT empty...
-            # Remove old stuff from records
-            records = self.removeAfterXtime(genre, trackId, recordId)
-        else:
-            pass
-            # Append our DEFAULT GOOFY SCORES here!
-
-
-
-
-        trackTitle = self.KartRace_TrackNames[trackId] # Text
-        recordTitle = self.RecordPeriodStrings[recordId] # Text
-
-        ourTuple = (trackTitle, recordTitle, records)
-
-        # SEND BACK TO CORRECT BOARD
-        leaderBoard.setDisplay(ourTuple) # SHOULD BE MOVED TO IT'S OWN FUNCTION!!!
-
-
-
-    def iterateThroughBoard(self, genre, iterCount, trackKey):
-        genreDict = self.allDicts[genre]
-        curRaceTrackScores = genreDict[trackKey]
-        iterCount = iterCount + 1
-        return iterCount, curRaceTrackScores
-        
-
-
-    def sendDisplayToLeaderboard(self, genre):
-        pass
-
-
-
-    def createBoardDict(self, genre = 1):
+    def createRaceScoreDict(self): # Only called if records file is empty!
         boardDict = {}
 
-        something = self.LBSubscription[genre]
-        
-        for trackrecord in something:
+        allTrackGenres = self.orderedTrackKeys
 
-            raceId = trackrecord[0]
-            recordTitleId = trackrecord[1]
-    
-            raceTitle = self.KartRace_TrackNames[raceId]
-            recordTitle = self.RecordPeriodStrings[recordTitleId]
+        for genre in allTrackGenres:
+            trackRecords = allTrackGenres[genre]
 
+            for raceKey in trackRecords: # raceKey is used in of itsself as a key in the boardDict
+                raceId = raceKey[0]
+                recordTitleId = raceKey[1]
 
-            currentTuple = (raceId, recordTitleId)
+                raceScores = self.recordLists[raceKey]
+                raceScores = self.setDefaultWins(raceScores, raceId) # Furnish our list with the default race player ( Goofy )
+      
+                completedList = raceScores # IMPORTANT!!! THIS IS WHERE WE'RE APPENDING NEW STUFF
 
-            scoreList = self.recordLists[currentTuple]
-
-            identifyTuple = (raceId, recordTitleId)
-            completedList = [raceId, recordTitleId, raceTitle, recordTitle, scoreList] # IMPORTANT!!! THIS IS WHERE WE'RE APPENDING NEW STUFF
-
-            boardDict[identifyTuple] = completedList
+                boardDict[raceKey] = completedList
 
         return boardDict
 
 
 
-    def specificListProxy(self, raceId, recordId, av = 0, totalTime = 0, timeStamp = 0): # This is a proxy for a race to append a winner, will need more data
-        # Continue from here!!! ######################################
+    def setDefaultWins(self, raceScores, raceId):
+        for defaultRacer in range(0, 10):
+            self.setDefaultRacer(raceScores, raceId)
+        return raceScores # Returns furnished list
 
-        # Function to find requiredTime called here!!!
+
+
+    def setDefaultRacer(self, raceScores, raceId):
+        raceScores.append((self.defaultName, self.minimumValueDict[raceId], 0))
+
+
+
+    ###############################################################################################
+    ############################### THIS MANAGES OUR BOARD INSTANCES ##############################
+    ###############################################################################################
+
+    def defineBoardInstance(self, genre, boardInstance): # This function allows us to define the three different leaderboards for us to control them
+        if genre == 0: # Stadium
+            self.stadiumBoard = boardInstance
+        elif genre == 1: # Rural
+            self.ruralBoard = boardInstance
+        elif genre == 2: # Urban
+            self.urbanBoard = boardInstance
+
+
+
+    def leaderBoardTask(self, task=None):
+        if self.ruralBoard: # If all boards have been generated initiate tasks
+            self.cycleBoardMgr(0, self.stadiumBoard)
+            self.cycleBoardMgr(1, self.ruralBoard)
+            self.cycleBoardMgr(2, self.urbanBoard)
+
+        taskMgr.doMethodLater(self.cycleTime, self.leaderBoardTask, 'leaderBoardTask')
+
+
+
+    def cycleBoardMgr(self, genre, boardInstance):
+        if self.countIteratorList[genre] >= 12: # If we go over 12, reset ( Cycles 0 through 12 )
+            self.countIteratorList[genre] = 0
+
+        activeTracks = self.orderedTrackKeys[genre]
+        curTrack = activeTracks[self.countIteratorList[genre]]
+        print curTrack        
+
+        trackId = curTrack[0]
+        recordId = curTrack[1]
+        trackScores = self.raceScoresDict[curTrack]
+
+        self.removeAfterXtime(trackId, recordId) # Keeps old entries from accumulating
+
+        trackTitle = self.KartRace_TrackNames[trackId] # Text
+        recordTitle = self.recordPeriodStrings[recordId] # Text
+        trackData = (trackTitle, recordTitle, trackScores)
+
+        self.setBoardDisplay(trackData, boardInstance) # Send data back to leader board
+
+        self.countIteratorList[genre] = self.countIteratorList[genre] + 1 # Count up
+
+
+
+    def setBoardDisplay(self, trackData, boardInstance):
+        boardInstance.setDisplay(trackData) 
+
+
+
+    ###########################################################################################################
+    ############################### MECHANISMS FOR APPENDING & REMOVING PLAYERS ###############################
+    ###########################################################################################################
+
+
+
+    def appendNewRaceEntry(self, raceId, recordId, av, totalTime, timeStamp): # Appends new race entry IF they qualify
         minimumTimeRequirement =  self.minimumValueDict[raceId]
-        print minimumTimeRequirement
         if totalTime >= minimumTimeRequirement:
             return # This player took too long to be displayed on the board!
 
+        scoreList = self.findRaceScoreList(raceId, recordId)
 
-        
-
-        #if totalTime >= requiredTime: # Return if totalTime exceeds minimum requirement!!!
-            #return
-
-
-        # Go through all genre's and track titles
-
-
-        for genre in range(0,3): # iterate over all three genres
-            try:
-                self.findSpecificList(raceId, recordId, genre, av, totalTime, timeStamp)
-            except:
-                pass
-            
-
-
-    def findSpecificList(self, raceId, recordId, genre, av, totalTime, timeStamp): # Finds specific list we want (NEVER CALL THIS DIRECTLY ALWAYS USE PROXY)
-        wantedTuple = (raceId, recordId)
-
-        for raceTracks in self.LBSubscription[genre]: # genre is in square brackets
-            iterRaceId = raceTracks[0]
-            iterTitleId = raceTracks[1]
-
-            genreDict = self.allDicts[genre]
-
-            currentLists = genreDict[raceTracks]
-            iterRaceText = currentLists[0]
-            iterTitleText = currentLists[1]     
-    
-
-            iterateTuple = (iterRaceId, iterTitleId)
-
-            if iterateTuple == wantedTuple:
-
-                recordList = currentLists[4] # IMPORTANT LIST FOR THIS TRACK, AND PARTICULAR RECORDID
-
-                newEntry = (av, totalTime, timeStamp)
-                recordList.append(newEntry) # Append to correct racetrack and record type list
-
-                self.writeToCSV(self.recordLists)
+        newRaceEntry = (av, totalTime, timeStamp) # Player's info
+        scoreList.append(newRaceEntry) # Append this racer to the leaderboard
+        self.sortScores(scoreList) # Sort our scores based off of the total time players took
+        scoreList.pop() # Remove player who took the longest
+        self.exportScores(self.raceScoresDict)
 
 
 
-    def removeAfterXtime(self, genre, raceId, recordId):
+    def removeAfterXtime(self, raceId, recordId):
         if recordId == 0: # Daily
             addTime = 86400 # 24 Hours
         elif recordId == 1: # Weekly
             addTime = 604800
+        else: # Best, DO NOT REMOVE BEST SCORES
+            return
 
-        wantedTuple = (raceId, recordId)
+        scoreList = self.findRaceScoreList(raceId, recordId)
 
-        for raceTracks in self.LBSubscription[genre]: # genre is in square brackets
+        tempIterScores = list(scoreList) # This is because of some weirdness that happens if we remove something from the original list when trying to loop through it aswell
+        for race in tempIterScores:
 
-            genreDict = self.allDicts[genre]
-            currentLists = genreDict[raceTracks]
+            staticTimeStamp = race[2]
+            expirationimeStamp = staticTimeStamp + addTime # 24 Hours out from whenever the timestamp was created for ending of race
+            currentTime = time.time()
 
-            iterRaceId = raceTracks[0]
-            iterTitleId = raceTracks[1]
-            iterateTuple = (iterRaceId, iterTitleId)
-
-            if iterateTuple == wantedTuple:
-   
-                recordList = currentLists[4] # IMPORTANT LIST FOR THIS TRACK, AND PARTICULAR RECORDID
-                for players in recordList:
-                    print players
-                    staticTimeStamp = players[2]
-                    futureTimeStamp = staticTimeStamp + addTime # 24 Hours out from whenever the timestamp was created for ending of race
-                    currentTime = time.time()
-
-                    if currentTime >= futureTimeStamp:
-                        recordList.remove(players)
-                        #print "REMOVED"
-
-        recordList = self.sortScores(recordList) # Make SURE everything is sorted correctly
-
-        self.writeToCSV(self.recordLists)
-        return recordList
+            if staticTimeStamp != 0: # A special case here, this is for the default racer ( Goofy ) So that it doesn't get inadvertantly removed.
+                if currentTime >= expirationimeStamp: # If the present time is greater than the experiation, we will remove it
+                    scoreList.remove(race) # Remove the race entry
+                    self.setDefaultRacer(scoreList, raceId) # Append default racer in place of old entry
+                    self.sortScores(scoreList)
 
 
 
-    def sortScores(self, scores):
-        sortedScores = sorted(scores, key=lambda player: player[1])   # sort by time it took to complete race
-        return sortedScores
+    def findRaceScoreList(self, raceId, recordId): # Find specified race list we want
+        wantedKey = (raceId, recordId)
+        for raceKey in self.raceScoresDict:
+            raceScores = self.raceScoresDict[raceKey]
+    
+            iterRaceId = raceKey[0]
+            iterTitleId = raceKey[1]
+
+            if raceKey == wantedKey:
+                return raceScores
 
 
 
-    def cycleLeaderBoard(self, task=None):
-        if self.ruralBoard: # If all boards have been generated initiate tasks
-            self.iterateManager(0, self.stadiumBoard)
-            self.iterateManager(1, self.ruralBoard)
-            self.iterateManager(2, self.urbanBoard)
-
-        taskMgr.doMethodLater(10, self.cycleLeaderBoard, 'cycleLeaderBoards')
-
-
-
-
+    def sortScores(self, scoreList):
+        scoreList.sort(key=lambda player: player[1]) # Sort by time it took to complete race
 
 
 

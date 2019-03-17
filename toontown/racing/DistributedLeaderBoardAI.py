@@ -30,7 +30,7 @@ class DistributedLeaderBoardAI(DistributedObjectAI):
 
 
     def defineLeaderboard(self): # Sends over genre and instance of this leaderboard to the leaderboard manager
-        self.air.leaderBoardMgr.setBoard(self.genre, self)
+        self.air.leaderBoardMgr.defineBoardInstance(self.genre, self)
 
 
 
