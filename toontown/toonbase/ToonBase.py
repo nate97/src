@@ -63,10 +63,10 @@ class ToonBase(OTPBase.OTPBase):
         self.nativeWidth = base.pipe.getDisplayWidth()
         self.nativeHeight = base.pipe.getDisplayHeight()
 
-        self.nativeRatio = round(
-            float(self.nativeWidth) / float(self.nativeHeight), 2)
-
+        self.nativeRatio = 1.33
+        
         print self.nativeRatio
+        print self.resDict
 
         # Finally, choose the best resolution if we're either fullscreen, or
         # don't have one defined in our preferences:

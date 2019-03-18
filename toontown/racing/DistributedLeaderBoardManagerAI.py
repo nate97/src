@@ -367,7 +367,7 @@ class DistributedLeaderBoardManagerAI(DistributedObjectAI.DistributedObjectAI):
                     scoreList.remove(race) # Remove the race entry
                     self.setDefaultRacer(scoreList, raceId) # Append default racer in place of old entry
                     self.sortScores(scoreList)
-
+                    self.exportScores(self.raceScoresDict)
 
 
     def findRaceScoreList(self, raceId, recordId): # Find specified race list we want
