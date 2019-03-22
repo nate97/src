@@ -9,6 +9,8 @@ from toontown.parties.PartyGlobals import ActivityIds, ActivityTypes, JUKEBOX_TI
 from toontown.parties.PartyGlobals import getMusicRepeatTimes, MUSIC_PATH, sanitizePhase
 from toontown.parties.JukeboxGui import JukeboxGui
 
+MUSIC_MIN_LENGTH_SECONDS = 50.0
+
 class DistributedPartyJukeboxActivityBase(DistributedPartyActivity):
     notify = directNotify.newCategory('DistributedPartyJukeboxActivityBase')
 
@@ -171,9 +173,19 @@ class DistributedPartyJukeboxActivityBase(DistributedPartyActivity):
             if self.__checkPartyValidity() and hasattr(base.cr.playGame.getPlace().loader, 'music') and base.cr.playGame.getPlace().loader.music:
                 base.cr.playGame.getPlace().loader.music.stop()
             self.music.setTime(0.0)
-            self.music.setLoopCount(getMusicRepeatTimes(length))
+
+            musicRepeatTime = int(getMusicRepeatTimes(length))
+            self.music.setLoopCount(musicRepeatTime)
+
+
             self.music.play()
             self.currentSongData = (phase, filename)
+
+    def getMusicRepeatTimes(self, length, minLength = MUSIC_MIN_LENGTH_SECONDS):
+        times = round(float(minLength) / length)
+        if minLength <= 0 or times < 1.0:
+            times = 1.0
+        return times
 
     def __stop(self):
         self.currentSongData = None

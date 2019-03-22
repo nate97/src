@@ -704,6 +704,9 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
         self._tiToken = self.addSetZoneCompleteCallback(Functor(self._placeTeleportInPostZoneComplete, requestStatus), 100)
 
     def _placeTeleportInPostZoneComplete(self, requestStatus):
+        zoneId = requestStatus['zoneId']
+        hoodId = requestStatus['hoodId']
+        
         teleportDebug(requestStatus, '_placeTeleportInPostZoneComplete(%s)' % (requestStatus,))
         NametagGlobals.setWant2dNametags(False)
         base.localAvatar.laffMeter.start()
@@ -713,18 +716,20 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
         avId = requestStatus.get('avId', -1)
         if avId != -1:
             if avId in base.cr.doId2do:
-                teleportDebug(requestStatus, 'teleport to avatar')
-                avatar = base.cr.doId2do[avId]
-                avatar.forceToTruePosition()
-                base.localAvatar.gotoNode(avatar)
-                base.localAvatar.b_teleportGreeting(avId)
+                if hoodId != ToontownGlobals.PartyHood:
+                    teleportDebug(requestStatus, 'teleport to avatar')
+                    avatar = base.cr.doId2do[avId]
+                    avatar.forceToTruePosition()
+                    base.localAvatar.gotoNode(avatar)
+                    base.localAvatar.b_teleportGreeting(avId)
             else:
                 friend = base.cr.identifyAvatar(avId)
                 if friend is None:
                     teleportDebug(requestStatus, 'friend not here, giving up')
-                    base.localAvatar.setSystemMessage(avId,
-                                                    OTPLocalizer.WhisperTargetLeftVisit % (friend.getName(),))
-                    friend.d_teleportGiveup(base.localAvatar.doId)
+                    if friend:
+                        base.localAvatar.setSystemMessage(avId,
+                                                        OTPLocalizer.WhisperTargetLeftVisit % (friend.getName(),))
+                        friend.d_teleportGiveup(base.localAvatar.doId)
 
                 else:
                     def doTeleport(task):
