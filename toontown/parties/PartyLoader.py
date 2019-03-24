@@ -86,6 +86,8 @@ class PartyLoader(SafeZoneLoader.SafeZoneLoader):
             self.setCloudSwitch(self.cloudSwitch)
 
     def enter(self, requestStatus):
+        print "ENTER!!!!!!!!!!"
+        print str(base.localAvatar.doId)
         self.partyOwnerId = requestStatus.get('ownerId', base.localAvatar.doId)
         base.localAvatar.inParty = 1
         self.accept(FireworksStartedEvent, self.__handleFireworksStarted)

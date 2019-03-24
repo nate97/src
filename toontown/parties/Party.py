@@ -182,6 +182,13 @@ class Party(Place.Place):
         self.removeSetZoneCompleteCallback(self._partyTiToken)
 
     def __updateLocalAvatarTeleportIn(self, requestStatus):
+
+        print "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+        print requestStatus
+        print "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+
+        #requestStatus.update({'avId': -1})
+
         self.ignore(DistributedParty.generatedEvent)
         if hasattr(base, 'distributedParty'):
             x, y, z = base.distributedParty.getClearSquarePos()

@@ -176,6 +176,15 @@ class GlobalPartyManagerUD(DistributedObjectGlobalUD):
         self.air.addPostRemove(self._makeAIMsg('partyManagerUdLost', [], channel))
         
     def addParty(self, avId, partyId, start, end, isPrivate, inviteTheme, activities, decorations, inviteeIds):
+        print partyId
+        print "??????????????"
+        try:
+            partyId = str(partyId)
+            partyId = partyId.split("L")[0]
+            partyId = long(partyId)
+
+        except:
+            print "FAILED"
         PARTY_TIME_FORMAT = '%Y-%m-%d %H:%M:%S'
         print 'start time: %s' % start
         startTime = datetime.strptime(start, PARTY_TIME_FORMAT)

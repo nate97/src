@@ -197,6 +197,10 @@ class DistributedLeaderBoardManagerAI(DistributedObjectAI.DistributedObjectAI):
     ###############################################################################################
 
     def createScoreCSV(self):
+
+        if not os.path.exists(self.backDir):
+            os.mkdir(self.backDir)
+
         if not os.path.exists(self.fullPath):
             os.mkdir(self.fullPath)
             self.raceScoresDict = self.createRaceScoreDict()
