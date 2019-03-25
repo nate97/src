@@ -176,24 +176,23 @@ class GlobalPartyManagerUD(DistributedObjectGlobalUD):
         self.air.addPostRemove(self._makeAIMsg('partyManagerUdLost', [], channel))
         
     def addParty(self, avId, partyId, start, end, isPrivate, inviteTheme, activities, decorations, inviteeIds):
-        print partyId
-        print "??????????????"
         try:
             partyId = str(partyId)
             partyId = partyId.split("L")[0]
             partyId = long(partyId)
-
         except:
-            print "FAILED"
+            print "Could not remove L from partId" # NJF
+
         PARTY_TIME_FORMAT = '%Y-%m-%d %H:%M:%S'
         print 'start time: %s' % start
         startTime = datetime.strptime(start, PARTY_TIME_FORMAT)
         endTime = datetime.strptime(end, PARTY_TIME_FORMAT)
         print 'start year: %s' % startTime.year
         if avId in self.host2PartyId:
-            # Sorry, one party at a time
-            print self.id2Party
-            self.sendToAI('addPartyResponseUdToAi', [partyId, AddPartyErrorCode.TooManyHostedParties, self._formatParty(self.id2Party[partyId])])
+            if self.id2Party != {}:
+                # Sorry, one party at a time
+                print self.id2Party
+                self.sendToAI('addPartyResponseUdToAi', [partyId, AddPartyErrorCode.TooManyHostedParties, self._formatParty(self.id2Party[partyId])])
         self.id2Party[partyId] = {'partyId': partyId, 'hostId': avId, 'start': startTime, 'end': endTime, 'isPrivate': isPrivate, 'inviteTheme': inviteTheme, 'activities': activities, 'decorations': decorations, 'inviteeIds': inviteeIds, 'status': PartyStatus.Pending}
         self.host2PartyId[avId] = partyId
         self.sendToAI('addPartyResponseUdToAi', [partyId, AddPartyErrorCode.AllOk, self._formatParty(self.id2Party[partyId])])

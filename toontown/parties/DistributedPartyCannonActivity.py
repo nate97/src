@@ -228,7 +228,7 @@ class DistributedPartyCannonActivity(DistributedPartyActivity):
         self._localPlayedBefore = True
         messenger.send(DistributedPartyCannonActivity.RULES_DONE_EVENT)
 
-    def setCannonWillFire(self, cannonId, zRot, angle):
+    def setCannonWillFire(self, cannonId, zRot, angle): # NJF
         self.notify.debug('setCannonWillFire: %d %d %d' % (cannonId, zRot, angle))
         cannon = base.cr.doId2do.get(cannonId)
         if cannon is None:
@@ -244,17 +244,24 @@ class DistributedPartyCannonActivity(DistributedPartyActivity):
             self.flyingToonCloudsHit = 0
         cannon.updateModel(zRot, angle)
         toonId = cannon.getToonInside().doId
-        task = Task(self.__fireCannonTask)
-        task.toonId = toonId
-        task.cannon = cannon
-        taskMgr.add(task, self.taskNameFireCannon)
+
+        toonData = {}
+        toonData['toonId'] = toonId
+        toonData['cannon'] = cannon
+
+        taskMgr.add(self.__fireCannonTask, self.taskNameFireCannon, extraArgs = [self.taskNameFireCannon, toonData])
+
         self.toonIds.append(toonId)
         return
 
-    def __fireCannonTask(self, task):
+
+
+    def __fireCannonTask(self, task, toonData):
         launchTime = 0.0
-        toonId = task.toonId
-        cannon = task.cannon
+
+        toonId = toonData["toonId"]
+        cannon = toonData["cannon"]
+
         toon = cannon.getToonInside()
         self.notify.debug(str(self.doId) + ' FIRING CANNON FOR TOON ' + str(toonId))
         if not cannon.isToonInside():
@@ -267,9 +274,9 @@ class DistributedPartyCannonActivity(DistributedPartyActivity):
             self.notify.debug('start velocity: ' + str(startVel))
             self.notify.debug('time of launch: ' + str(launchTime))
         cannon.removeToonReadyToFire()
-        shootTask = Task(self.__shootTask, self.taskNameShoot)
-        shootTask.info = {'toonId': toonId,
-         'cannon': cannon}
+
+
+
         if self.isLocalToonId(toonId):
             self.flyingToonOffsetRotation = 0
             self.flyingToonOffsetAngle = 0
@@ -293,16 +300,16 @@ class DistributedPartyCannonActivity(DistributedPartyActivity):
             hpr = toon.getHpr()
             toon.d_setPosHpr(startPos[0], startPos[1], startPos[2], hpr[0], hpr[1], hpr[2])
             self.localFlyingToon.wrtReparentTo(render)
+
             info = {}
             info['toonId'] = toonId
             info['trajectory'] = trajectory
             info['launchTime'] = launchTime
             info['toon'] = self.localFlyingToon
             info['hRot'] = cannon.getRotation()
+
             camera.wrtReparentTo(self.localFlyingToon)
-            flyTask = Task(self.__localFlyTask, self.taskNameFly)
-            flyTask.info = info
-            seqTask = Task.sequence(shootTask, flyTask)
+
             self.__startCollisionHandler()
             self.notify.debug('Disable standard local toon controls.')
             base.localAvatar.disableAvatarControls()
@@ -318,11 +325,21 @@ class DistributedPartyCannonActivity(DistributedPartyActivity):
              startVel[0],
              startVel[1],
              startVel[2]])
+
+            shootTaskname = self.taskName('shootToon') + '-' + str(toonId)
+            flyTaskname = self.taskName('flyingToon') + '-' + str(toonId)
+
+            taskMgr.add(self.__shootTask, shootTaskname, extraArgs = [toonData], appendTask=True)
+            taskMgr.add(self.__localFlyTask, flyTaskname, extraArgs = [info], appendTask=True)
+
         else:
-            seqTask = shootTask
-        taskMgr.add(seqTask, self.taskName('flyingToon') + '-' + str(toonId))
+            shootTaskname = self.taskName('shootToon') + '-' + str(toonId)
+            taskMgr.add(self.__shootTask, shootTaskname, extraArgs = [toonData], appendTask=True)
+
         toon.startSmooth()
         return Task.done
+
+
 
     def setToonTrajectory(self, avId, launchTime, x, y, z, h, p, r, vx, vy, vz):
         if avId == localAvatar.doId:
@@ -379,18 +396,23 @@ class DistributedPartyCannonActivity(DistributedPartyActivity):
         self.trajectory = trajectory
         return startPos, startHpr, startVel, trajectory
 
-    def __shootTask(self, task):
-        task.info['cannon'].fire()
-        toonId = task.info['toonId']
+
+
+    def __shootTask(self, toonData, task):
+        toonData['cannon'].fire()
+        toonId = toonData['toonId']
         toon = base.cr.doId2do.get(toonId)
         if toon:
-            toon.loop('swim')
+            if self.isLocalToonId(toonData['toonId']):
+                base.localAvatar.b_setAnimState("dive")
         else:
             self.notify.debug('__shootTask avoided a crash, toon %d not found' % toonId)
-        if self.isLocalToonId(task.info['toonId']):
+        if self.isLocalToonId(toonData['toonId']):
             self.localFlyingDropShadow.reparentTo(render)
             self.gui.enableAimKeys()
         return Task.done
+
+
 
     def d_setLanded(self, toonId):
         printStack()
@@ -543,12 +565,14 @@ class DistributedPartyCannonActivity(DistributedPartyActivity):
         taskMgr.remove(self.taskName('flyingToon') + '-' + str(toonId))
         self.gui.disableAimKeys()
 
-    def __localFlyTask(self, task):
-        toon = task.info['toon']
+
+
+    def __localFlyTask(self, toonData, task):
+        toon = toonData['toon']
         if toon.isEmpty():
             self.__resetToonToCannon(self.localFlyingToon)
             return Task.done
-        curTime = task.time + task.info['launchTime']
+        curTime = task.time + toonData['launchTime']
         t = curTime
         t *= self.TimeFactor
         self.lastT = self.t
@@ -567,13 +591,13 @@ class DistributedPartyCannonActivity(DistributedPartyActivity):
         else:
             if not self.hitCloud and self.__isFlightKeyPressed():
                 self.__moveFlyingToon(toon)
-                self.__updateFlightVelocity(task.info['trajectory'])
+                self.__updateFlightVelocity(toonData['trajectory'])
             if self.hitCloud == 1:
-                vel = task.info['trajectory'].getVel(t)
+                vel = toonData['trajectory'].getVel(t)
                 startPos = toon.getPos(render)
-                task.info['trajectory'].setStartTime(t)
-                task.info['trajectory'].setStartPos(startPos)
-                task.info['trajectory'].setStartVel(self.lastVel)
+                toonData['trajectory'].setStartTime(t)
+                toonData['trajectory'].setStartPos(startPos)
+                toonData['trajectory'].setStartVel(self.lastVel)
                 toon.lookAt(toon.getPos() + vel)
                 toon.setH(-toon.getH())
                 now = globalClock.getFrameTime()
@@ -596,10 +620,10 @@ class DistributedPartyCannonActivity(DistributedPartyActivity):
                 self.flyingToonOffsetX = 0
                 self.flyingToonOffsetY = 0
                 self.hitCloud = 2
-            pos = task.info['trajectory'].getPos(t)
+            pos = toonData['trajectory'].getPos(t)
             toon.setFluidPos(pos)
             toon.setFluidPos(toon, self.flyingToonOffsetX, self.flyingToonOffsetY, 0)
-            vel = task.info['trajectory'].getVel(t)
+            vel = toonData['trajectory'].getVel(t)
             toon.lookAt(toon.getPos() + Vec3(vel[0], vel[1], vel[2]))
             toon.setP(toon.getP() - 90)
             cameraView = 2
@@ -613,8 +637,10 @@ class DistributedPartyCannonActivity(DistributedPartyActivity):
             self.notify.debug('stopping fly task toon.getZ()=%.2f' % pos.getZ())
             self.__resetToonToCannon(self.localFlyingToon)
             return Task.done
-        self.__setFlyingCameraView(task.info['toon'], cameraView, deltaT)
+        self.__setFlyingCameraView(toonData['toon'], cameraView, deltaT)
         return Task.cont
+
+
 
     def __setFlyingCameraView(self, toon, view, deltaT):
         if toon != base.localAvatar:

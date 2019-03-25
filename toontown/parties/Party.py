@@ -16,6 +16,9 @@ from toontown.hood import SkyUtil
 from toontown.parties import PartyPlanner
 from toontown.parties.DistributedParty import DistributedParty
 
+
+import inspect
+
 class Party(Place.Place):
     notify = DirectNotifyGlobal.directNotify.newCategory('Party')
 
@@ -168,6 +171,13 @@ class Party(Place.Place):
         pass
 
     def enterTeleportIn(self, requestStatus):
+
+
+        curframe = inspect.currentframe()
+        calframe = inspect.getouterframes(curframe, 2)
+        print('caller name:', calframe[1][3])
+
+
         self._partyTiToken = None
         if hasattr(base, 'distributedParty'):
             self.__updateLocalAvatarTeleportIn(requestStatus)
@@ -188,6 +198,7 @@ class Party(Place.Place):
         print "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 
         #requestStatus.update({'avId': -1})
+
 
         self.ignore(DistributedParty.generatedEvent)
         if hasattr(base, 'distributedParty'):
