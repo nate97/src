@@ -31,7 +31,7 @@ class GlobalPartyManagerUD(DistributedObjectGlobalUD):
         self.runAtNextInterval()
 
     # GPMUD -> PartyManagerAI messaging
-    def _makeAIMsg(self, field, values, recipient):
+    def _makeAIMsg(self, field, values, recipient): # NJF
         return self.air.dclassesByName['DistributedPartyManagerUD'].getFieldByName(field).aiFormatUpdate(recipient, recipient, simbase.air.ourChannel, values)
 
     def sendToAI(self, field, values, sender=None):

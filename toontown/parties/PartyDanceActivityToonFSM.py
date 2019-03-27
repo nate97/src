@@ -36,13 +36,13 @@ class PartyDanceActivityToonFSM(FSM):
 
     def enterInit(self, *args):
         if not self.enteredAlready:
-            self.danceNode = NodePath('danceNode-%s' % self.avId)
-            self.danceNode.reparentTo(render)
-            self.danceNode.setPos(0, 0, 0)
-            self.danceNode.setH(self.toonH)
-            pos = self.toon.getPos(self.danceNode)
-            self.toon.reparentTo(self.danceNode)
-            self.toon.setPos(pos)
+            #self.danceNode = NodePath('danceNode-%s' % self.avId)
+            #self.danceNode.reparentTo(render)
+            #self.danceNode.setPos(0, 0, 0)
+            #self.danceNode.setH(self.toonH)
+            #pos = self.toon.getPos(self.danceNode)
+            #self.toon.reparentTo(self.danceNode)
+            #self.toon.setPos(pos)
             self.enteredAlready = True
 
     def exitInit(self):
@@ -50,11 +50,13 @@ class PartyDanceActivityToonFSM(FSM):
 
     def enterCleanup(self, *args):
         if hasattr(base.cr.playGame.hood, 'loader'):
-            pos = self.toon.getPos(self.activity.getParentNodePath())
-            hpr = self.toon.getHpr(self.activity.getParentNodePath())
-            self.toon.reparentTo(self.activity.getParentNodePath())
-            self.toon.setPos(pos)
-            self.toon.setHpr(hpr)
+            #pos = self.toon.getPos(self.activity.getParentNodePath()) # NJF uGH
+            #hpr = self.toon.getHpr(self.activity.getParentNodePath())
+            #self.toon.setPos(pos)
+            #self.toon.setHpr(hpr)
+            #self.toon.reparentTo(self.activity.getParentNodePath())
+
+            pass
         if self.danceNode is not None:
             self.danceNode.removeNode()
             self.danceNode = None
