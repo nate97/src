@@ -25,7 +25,7 @@ class DistributedPartyFireworksActivityAI(DistributedPartyActivityAI, FSM):
 
     def toonJoinRequest(self):
         avId = self.air.getAvatarIdFromSender()
-        host = self.air.doId2do[self.parent].hostId
+        host = self.air.doId2do[self.parent_].hostId
         if avId == host and self.state_ == 'Idle':
             self.request('Active')
             return

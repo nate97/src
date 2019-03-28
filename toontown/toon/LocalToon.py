@@ -1940,6 +1940,15 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
                         result = True
         return result
 
+    def isBookOpen(self):
+        result = False
+        if base.cr and base.cr.playGame and base.cr.playGame.getPlace() and hasattr(base.cr.playGame.getPlace(), 'fsm') and base.cr.playGame.getPlace().fsm:
+            fsm = base.cr.playGame.getPlace().fsm
+            curState = fsm.getCurrentState().getName()
+            if curState == 'stickerBook':
+                result = True
+        return result
+
     def doTeleportResponse(self, fromAvatar, toAvatar, avId, available, shardId, hoodId, zoneId, sendToId):
         self.d_teleportResponse(avId, available, shardId, hoodId, zoneId, sendToId)
 

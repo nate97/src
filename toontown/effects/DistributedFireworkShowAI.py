@@ -36,7 +36,7 @@ class DistributedFireworkShowAI(DistributedObjectAI):
         pass
 
 
-@magicWord(category=CATEGORY_SYSTEM_ADMINISTRATOR, types=[str])
+@magicWord(category=CATEGORY_PROGRAMMER, types=[str])
 def fireworks(showName='july4'):
     """
     Starts a fireworks show on the AI server.
@@ -54,8 +54,8 @@ def fireworks(showName='july4'):
     showIndex = random.randint(0, numShows - 1)
     # TODO: Start the fireworks show in all districts.
     for hood in simbase.air.hoods:
-        if hood.safezone == ToontownGlobals.GolfZone:
-            continue
+        #if hood.safezone == ToontownGlobals.GolfZone:
+        #continue
         fireworkShow = DistributedFireworkShowAI(simbase.air)
         fireworkShow.generateWithRequired(hood.zoneId)
         fireworkShow.b_startShow(showType, showIndex,
