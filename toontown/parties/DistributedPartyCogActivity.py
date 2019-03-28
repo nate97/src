@@ -51,8 +51,8 @@ class DistributedPartyCogActivity(DistributedPartyTeamActivity):
         return TTLocalizer.PartyCogInstructions
 
     def pieThrow(self, toonId, timestamp, h, x, y, z, power):
-        if toonId not in self.toonIds:
-            return
+        #if toonId not in self.toonIds:
+            #return
         if toonId != base.localAvatar.doId:
             self.view.pieThrow(toonId, timestamp, h, Point3(x, y, z), power)
 
@@ -65,6 +65,7 @@ class DistributedPartyCogActivity(DistributedPartyTeamActivity):
         self.d_broadcastPieThrow(toonId, timestamp, h, pos[0], pos[1], pos[2], power)
 
     def d_broadcastPieThrow(self, toonId, timestamp, h, x, y, z, power):
+        print "Broadcast pie throw..."
         self.sendUpdate('pieThrow', [toonId,
          timestamp,
          h,
@@ -74,8 +75,8 @@ class DistributedPartyCogActivity(DistributedPartyTeamActivity):
          power])
 
     def pieHitsToon(self, toonId, timestamp, x, y, z):
-        if toonId not in self.toonIds:
-            return
+        #if toonId not in self.toonIds:
+            #return
         self.view.pieHitsToon(toonId, timestamp, Point3(x, y, z))
 
     def d_broadcastPieHitsToon(self, toonId, timestamp, pos):
@@ -90,8 +91,8 @@ class DistributedPartyCogActivity(DistributedPartyTeamActivity):
         self.d_broadcastPieHitsToon(toonId, timestamp, pos)
 
     def pieHitsCog(self, toonId, timestamp, hitCogNum, x, y, z, direction, part):
-        if toonId not in self.toonIds:
-            return
+        #if toonId not in self.toonIds:
+            #return
         if toonId != base.localAvatar.doId:
             self.view.pieHitsCog(timestamp, hitCogNum, Point3(x, y, z), direction, part)
 

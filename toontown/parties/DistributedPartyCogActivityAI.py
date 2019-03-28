@@ -34,6 +34,8 @@ class DistributedPartyCogActivityAI(DistributedPartyTeamActivityAI):
             self.air.writeServerEvent('suspicious', avId, 'sent DistributedPartyCogActivityAI.pieHitsCog invalid cog num', hitCogNum=hitCogNum)
             return
 
+        self.sendUpdate('pieHitsCog', [avId, timestamp, hitCogNum, x, y, z, direction, part])
+
         mult = PartyGlobals.CogPinataPushBodyFactor
         if part:
             mult = PartyGlobals.CogPinataPushHeadFactor
@@ -115,6 +117,13 @@ class DistributedPartyCogActivityAI(DistributedPartyTeamActivityAI):
 
         self.b_setState('WaitForEnough')
         return task.done
+
+    def pieThrow(self, avId, timestamp, h, x, y, z, power):
+        self.sendUpdate('pieThrow', [avId, timestamp, h, x, y, z, power])
+
+
+    def pieHitsToon(self, avId, timestamp, x, y, z):
+        self.sendUpdate('pieHitsToon', [avId, timestamp, x, y, z])
 
 
 
