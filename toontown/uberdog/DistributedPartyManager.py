@@ -160,6 +160,8 @@ class DistributedPartyManager(DistributedObject):
         self.sendUpdate('requestShardIdZoneIdForHostId', [hostId])
 
     def sendShardIdZoneIdToAvatar(self, shardId, zoneId):
+        # This is a temporary fix for loading hang NJF
+        shardId = None
         DistributedPartyManager.notify.debug('sendShardIdZoneIdToAvatar shardId = %s  zoneId = %s' % (shardId, zoneId))
         if shardId == 0 or zoneId == 0:
             base.cr.playGame.getPlace().handleBookClose()

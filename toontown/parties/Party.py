@@ -172,7 +172,6 @@ class Party(Place.Place):
 
     def enterTeleportIn(self, requestStatus):
 
-
         curframe = inspect.currentframe()
         calframe = inspect.getouterframes(curframe, 2)
         print('caller name:', calframe[1][3])

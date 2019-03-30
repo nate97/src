@@ -269,11 +269,33 @@ class DistributedPartyManagerAI(DistributedObjectAI):
             p.append([party['shardId'], party['zoneId'], guests, party.get('hostName', ''), party.get('activities', []), minLeft])
         return p
 
-    def requestShardIdZoneIdForHostId(self, todo0):
-        pass
+    def requestShardIdZoneIdForHostId(self, hostId):
+        avId = self.air.getAvatarIdFromSender()
 
-    def sendShardIdZoneIdToAvatar(self, todo0, todo1):
-        pass
+        if hostId not in self.host2PartyId:
+            # Uhh, we don't know if the host even has a party. Better ask the ud
+            self.air.globalPartyMgr.queryPartyForHost(hostId)
+            print 'querying for details against hostId %s ' % hostId
+            return
+        partyId = self.host2PartyId[hostId]
+        # Is the party already running?
+        if partyId in self.partyId2Zone:
+            # Yep!
+            zoneId = self.partyId2Zone[partyId]
+        else:
+            self.notify.warning("getPartyZone did not match a case!")
+
+        try:
+            pInfo = self.pubPartyInfo[partyId]
+            shardId = pInfo["shardId"]
+        except:
+            shardId = 0 
+ 
+        self.sendShardIdZoneIdToAvatarA(avId, shardId, zoneId)
+
+
+    def sendShardIdZoneIdToAvatarA(self, av, shardId, zoneId):
+        self.sendUpdateToAvatarId(av, 'sendShardIdZoneIdToAvatar', [shardId, zoneId])
 
     def updateAllPartyInfoToUd(self, todo0, todo1, todo2, todo3, todo4, todo5, todo6, todo7, todo8):
         pass

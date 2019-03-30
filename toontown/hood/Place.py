@@ -356,6 +356,7 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
         base.localAvatar.stopSleepWatch()
         base.localAvatar.book.exit()
         bookStatus = base.localAvatar.book.getDoneStatus()
+
         if bookStatus['mode'] == 'close':
             base.localAvatar.b_setAnimState('CloseBook', 1, callback=self.handleBookClose)
         elif bookStatus['mode'] == 'teleport':
@@ -422,6 +423,7 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
         base.localAvatar.creatingNewPartyWithMagicWord = False
         base.localAvatar.aboutToPlanParty = False
         hoodId = ToontownGlobals.PartyHood
+
         if firstStart:
             zoneId = 0
             ToontownDistrictStats.refresh('shardInfoUpdated')
