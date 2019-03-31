@@ -47,9 +47,14 @@ backups-extension .json
 
 # Server:
 server-timezone EST/EDT/-6
-server-port 7199
+#server-port 7199 # Port for directly connecting to Astron
+server-port 7555 # Port used for reverse proxy server
 account-server-endpoint https://toontowninfinite.com/api/
 account-bridge-filename astron/databases/account-bridge.db
+
+# SSL
+server-force-ssl #t
+client-unverified-ssl #t
 
 # Performance:
 sync-video #f

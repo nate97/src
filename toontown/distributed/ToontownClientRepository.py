@@ -77,6 +77,10 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         self.toons = {}
         if self.http.getVerifySsl() != HTTPClient.VSNoVerify:
             self.http.setVerifySsl(HTTPClient.VSNoDateCheck)
+
+        if base.config.GetBool('client-unverified-ssl', False):
+            self.http.setVerifySsl(0)
+
         self.__forbidCheesyEffects = 0
         self.friendManager = None
         self.speedchatRelay = None
