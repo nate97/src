@@ -1,7 +1,13 @@
+from direct.distributed.ClockDelta import globalClockDelta
 from direct.directnotify.DirectNotifyGlobal import *
+from toontown.ai import DistributedTrickOrTreatTargetAI
+from toontown.ai import DistributedWinterCarolingTargetAI
+from toontown.ai.NewsManagerGlobals import HOLIDAY_SHOPKEEPER_ZONES
 from toontown.building import DistributedBuildingMgrAI
 from toontown.dna.DNAParser import DNAStorage, DNAGroup, DNAVisGroup
+from toontown.effects.DistributedFireworkShowAI import DistributedFireworkShowAI
 from toontown.fishing.DistributedFishingPondAI import DistributedFishingPondAI
+from toontown.fishing.DistributedPondBingoManagerAI import DistributedPondBingoManagerAI
 from toontown.hood import ZoneUtil
 from toontown.safezone import TreasureGlobals
 from toontown.safezone.DistributedFishingSpotAI import DistributedFishingSpotAI
@@ -61,6 +67,12 @@ class HoodAI:
         self.createBuildingManagers()
         if simbase.config.GetBool('want-suit-planners', True):
             self.createSuitPlanners()
+        if simbase.air.wantHalloween or simbase.air.holidayManager.isHolidayRunning(ToontownGlobals.TRICK_OR_TREAT):
+            self.startupTrickOrTreat()
+        if simbase.air.wantChristmas or simbase.air.holidayManager.isHolidayRunning(ToontownGlobals.WINTER_CAROLING):
+            self.startupWinterCaroling()
+        if simbase.air.wantFireworks:
+            self.generateFireworkShow()
 
     def shutdown(self):
         if self.treasurePlanner:
@@ -131,6 +143,10 @@ class HoodAI:
         fishingSpots = []
         for (dnaGroup, fishingPond) in zip(fishingPondGroups, self.fishingPonds):
             fishingSpots.extend(self.findFishingSpots(dnaGroup, fishingPond))
+        for fishingPond in self.fishingPonds:
+            fishingPond.bingoMgr = DistributedPondBingoManagerAI(self.air)
+            fishingPond.bingoMgr.setPondDoId(fishingPond.doId)
+            fishingPond.bingoMgr.generateWithRequired(self.zoneId)
 
     def findPartyGates(self, dnaGroup, zoneId):
         partyGates = []
@@ -184,3 +200,40 @@ class HoodAI:
             suitPlanner.initTasks()
             self.suitPlanners.append(suitPlanner)
             self.air.suitPlanners[zoneId] = suitPlanner
+
+    def startupTrickOrTreat(self):
+        if hasattr(self, 'TrickOrTreatManager'):
+            return
+
+        if self.canonicalHoodId in HOLIDAY_SHOPKEEPER_ZONES[ToontownGlobals.TRICK_OR_TREAT]:
+            self.TrickOrTreatManager = DistributedTrickOrTreatTargetAI.DistributedTrickOrTreatTargetAI(self.air)
+            self.TrickOrTreatManager.generateWithRequired(
+                HOLIDAY_SHOPKEEPER_ZONES[ToontownGlobals.TRICK_OR_TREAT][self.canonicalHoodId]
+            )
+
+    def endTrickOrTreat(self):
+        if hasattr(self, 'TrickOrTreatManager'):
+            self.TrickOrTreatManager.requestDelete()
+            del self.TrickOrTreatManager
+
+    def startupWinterCaroling(self):
+        if hasattr(self, 'WinterCarolingManager'):
+            return
+
+        if self.canonicalHoodId in HOLIDAY_SHOPKEEPER_ZONES[ToontownGlobals.WINTER_CAROLING]:
+            self.WinterCarolingManager = DistributedWinterCarolingTargetAI.DistributedWinterCarolingTargetAI(self.air)
+            self.WinterCarolingManager.generateWithRequired(
+                HOLIDAY_SHOPKEEPER_ZONES[ToontownGlobals.WINTER_CAROLING][self.canonicalHoodId]
+            )
+
+    def endWinterCaroling(self):
+        if hasattr(self, 'WinterCarolingManager'):
+            self.WinterCarolingManager.requestDelete()
+            del self.WinterCarolingManager
+
+    def generateFireworkShow(self):
+        self.fireworkShow = DistributedFireworkShowAI(self.air)
+        self.fireworkShow.generateWithRequired(self.zoneId)
+
+    def startFireworks(self, showType, showIndex):
+        self.fireworkShow.b_startShow(showType, showIndex, globalClockDelta.getRealNetworkTime())

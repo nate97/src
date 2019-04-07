@@ -88,6 +88,7 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.baseXpMultiplier = self.config.GetFloat('base-xp-multiplier', 1.0)
         self.wantHalloween = self.config.GetBool('want-halloween', False)
         self.wantChristmas = self.config.GetBool('want-christmas', False)
+        self.wantFireworks = self.config.GetBool('want-fireworks', False)
 
         self.cogSuitMessageSent = False
 
@@ -98,6 +99,9 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.magicWordManager.generateWithRequired(2)
         self.newsManager = NewsManagerAI(self)
         self.newsManager.generateWithRequired(2)
+
+        self.holidayManager = HolidayManagerAI(self)
+
         self.safeZoneManager = SafeZoneManagerAI(self)
         self.safeZoneManager.generateWithRequired(2)
         self.tutorialManager = TutorialManagerAI(self)
@@ -112,7 +116,7 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.cogSuitMgr = CogSuitManagerAI.CogSuitManagerAI(self)
         self.promotionMgr = PromotionManagerAI.PromotionManagerAI(self)
         self.cogPageManager = CogPageManagerAI.CogPageManagerAI()
-        self.holidayManager = HolidayManagerAI(self)
+
         if self.wantFishing:
             self.fishManager = FishManagerAI(self)
         if self.wantHousing:
@@ -202,6 +206,9 @@ class ToontownAIRepository(ToontownInternalRepository):
         if self.config.GetBool('want-cog-headquarters', True):
             self.notify.info('Creating Cog headquarters...')
             self.createCogHeadquarters()
+
+        self.notify.info('Starting Holiday Manager...')
+        self.holidayManager.start()
 
         self.notify.info('Making district available...')
         self.distributedDistrict.b_setAvailable(1)

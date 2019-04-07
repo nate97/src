@@ -131,19 +131,17 @@ class Estate(Place.Place):
             self.loader.enterAnimatedProps(i)
 
         self.loader.geom.reparentTo(render)
-        # The client April Toons Manager is currently broken, so we have to do this hacky thing instead. :(
-        #if hasattr(base.cr, 'aprilToonsMgr'):
-            #if self.isEventActive(AprilToonsGlobals.EventEstateGravity):
-                #base.localAvatar.startAprilToonsControls()
-        if base.config.GetBool('want-april-toons'):
+
+        if base.cr.newsManager.isHolidayRunning(ToontownGlobals.APRIL_FOOLS_COSTUMES) or base.config.GetBool('want-april-toons'):
             base.localAvatar.startAprilToonsControls()
+
         self.accept('doorDoneEvent', self.handleDoorDoneEvent)
         self.accept('DistributedDoor_doorTrigger', self.handleDoorTrigger)
         self.fsm.request(requestStatus['how'], [requestStatus])
 
     def exit(self):
         base.localAvatar.stopChat()
-        if base.config.GetBool('want-april-toons'):
+        if base.cr.newsManager.isHolidayRunning(ToontownGlobals.APRIL_FOOLS_COSTUMES) or base.config.GetBool('want-april-toons'):
             base.localAvatar.stopAprilToonsControls()
         self._telemLimiter.destroy()
         del self._telemLimiter
@@ -372,7 +370,7 @@ class Estate(Place.Place):
         #if hasattr(base.cr, 'aprilToonsMgr'):
             #if self.isEventActive(AprilToonsGlobals.EventEstateGravity):
                 #base.localAvatar.startAprilToonsControls()
-        if base.config.GetBool('want-april-toons'):
+        if base.cr.newsManager.isHolidayRunning(ToontownGlobals.APRIL_FOOLS_COSTUMES) or base.config.GetBool('want-april-toons'):
             base.localAvatar.startAprilToonsControls()
 
     def __setUnderwaterFog(self):

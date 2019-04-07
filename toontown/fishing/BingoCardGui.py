@@ -438,7 +438,6 @@ class BingoCardGui(DirectFrame):
     def castingStarted(self):
         if taskMgr.hasTaskNamed(self.taskNameFlashFish):
             if not base.localAvatar.bFishBingoMarkTutorialDone:
-                pass
-                #todo: fix setFishBingoMarkTutorialDone
-                #self.showTutorial(BG.TutorialMark)
-                #base.localAvatar.b_setFishBingoMarkTutorialDone(True)
+                self.showTutorial(BG.TutorialMark)
+                base.localAvatar.bFishBingoMarkTutorialDone = True
+                base.localAvatar.sendUpdate('setFishBingoMarkTutorialDone', [True])

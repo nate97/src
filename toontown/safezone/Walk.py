@@ -5,6 +5,9 @@ from direct.fsm import StateData
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 
+from toontown.toonbase import ToontownGlobals
+from toontown.hood import ZoneUtil
+
 class Walk(StateData.StateData):
     notify = DirectNotifyGlobal.directNotify.newCategory('Walk')
 
@@ -25,7 +28,12 @@ class Walk(StateData.StateData):
         del self.fsm
 
     def enter(self, slowWalk = 0):
-        base.localAvatar.startPosHprBroadcast()
+        zoneId = base.localAvatar.zoneId
+        hoodId = ZoneUtil.getHoodId(zoneId)
+
+        if hoodId != ToontownGlobals.Tutorial: # If we're not in the tutorial...
+            base.localAvatar.startPosHprBroadcast()
+
         base.localAvatar.startBlink()
         base.localAvatar.attachCamera()
         shouldPush = 1

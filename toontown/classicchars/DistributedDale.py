@@ -20,6 +20,7 @@ class DistributedDale(DistributedCCharBase.DistributedCCharBase):
             self.fsm.enterInitialState()
             self.handleHolidays()
 
+
     def disable(self):
         self.fsm.requestFinalState()
         DistributedCCharBase.DistributedCCharBase.disable(self)
@@ -31,6 +32,7 @@ class DistributedDale(DistributedCCharBase.DistributedCCharBase):
         del self.walk
         self.fsm.requestFinalState()
 
+
     def delete(self):
         try:
             self.DistributedDale_deleted
@@ -38,6 +40,7 @@ class DistributedDale(DistributedCCharBase.DistributedCCharBase):
             del self.fsm
             self.DistributedDale_deleted = 1
             DistributedCCharBase.DistributedCCharBase.delete(self)
+
 
     def generate(self):
         DistributedCCharBase.DistributedCCharBase.generate(self)
@@ -48,47 +51,61 @@ class DistributedDale(DistributedCCharBase.DistributedCCharBase):
         self.walkDoneEvent = self.taskName(name + '-walk-done')
         self.fsm.request('Neutral')
 
+
     def announceGenerate(self):
         DistributedCCharBase.DistributedCCharBase.announceGenerate(self)
         self.walk = CharStateDatas.CharFollowChipState(self.walkDoneEvent, self, self.chipId)
 
+
     def enterOff(self):
         pass
 
+
     def exitOff(self):
         pass
+
 
     def enterNeutral(self):
         self.neutral.enter()
         self.acceptOnce(self.neutralDoneEvent, self.__decideNextState)
 
+
     def exitNeutral(self):
         self.ignore(self.neutralDoneEvent)
         self.neutral.exit()
+
 
     def enterWalk(self):
         self.walk.enter()
         self.acceptOnce(self.walkDoneEvent, self.__decideNextState)
 
+
     def exitWalk(self):
         self.ignore(self.walkDoneEvent)
         self.walk.exit()
 
+
     def __decideNextState(self, doneStatus):
         self.fsm.request('Neutral')
+
 
     def setWalk(self, srcNode, destNode, timestamp, offsetX = 0, offsetY = 0):
         if destNode and not destNode == srcNode:
             self.walk.setWalk(srcNode, destNode, timestamp, offsetX, offsetY)
             self.fsm.request('Walk')
 
+
     def walkSpeed(self):
         return ToontownGlobals.DaleSpeed
+
 
     def setFollowChip(self, srcNode, destNode, timestamp, offsetX, offsetY):
         if destNode and not destNode == srcNode:
             self.walk.setWalk(srcNode, destNode, timestamp, offsetX, offsetY)
             self.fsm.request('Walk')
 
+
     def setChipId(self, chipId):
         self.chipId = chipId
+
+

@@ -4,6 +4,7 @@ from direct.fsm import State
 import TravelGameGlobals
 from toontown.toonbase import ToontownGlobals
 
+
 class DistributedTravelGameAI(DistributedMinigameAI):
     notify = directNotify.newCategory('DistributedTravelGameAI')
 
@@ -256,14 +257,11 @@ class DistributedTravelGameAI(DistributedMinigameAI):
     def calcMinigames(self):
         numPlayers = len(self.avIdList)
         allowedGames = list(ToontownGlobals.MinigamePlayerMatrix[numPlayers])
-        from toontown.minigame import MinigameCreatorAI
-        allowedGames = MinigameCreatorAI.removeUnreleasedMinigames(allowedGames)
         self.switchToMinigameDict = {}
         for switch in TravelGameGlobals.BoardLayouts[self.boardIndex].keys():
             if self.isLeaf(switch):
                 if len(allowedGames) == 0:
                     allowedGames = list(ToontownGlobals.MinigamePlayerMatrix[numPlayers])
-                    allowedGames = MinigameCreatorAI.removeUnreleasedMinigames(allowedGames)
                 minigame = random.choice(allowedGames)
                 self.switchToMinigameDict[switch] = minigame
                 allowedGames.remove(minigame)

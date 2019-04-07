@@ -7,8 +7,6 @@ from direct.fsm import State
 from direct.task import Task
 from otp.ai.AIBase import *
 from toontown.minigame import MinigameCreatorAI
-from toontown.minigame import TrolleyHolidayMgrAI
-from toontown.minigame import TrolleyWeekendMgrAI
 from toontown.quest import Quests
 from toontown.toonbase.ToontownGlobals import *
 
@@ -273,8 +271,9 @@ class DistributedTrolleyAI(DistributedObjectAI.DistributedObjectAI):
             startingVotes = None
             metagameRound = -1
             trolleyGoesToMetagame = simbase.config.GetBool('want-travel-game', 0)
-            trolleyHoliday = bboard.get(TrolleyHolidayMgrAI.TrolleyHolidayMgrAI.PostName)
-            trolleyWeekend = bboard.get(TrolleyWeekendMgrAI.TrolleyWeekendMgrAI.PostName)
+            trolleyHoliday = simbase.air.holidayManager.isHolidayRunning(TROLLEY_HOLIDAY) or\
+                simbase.air.holidayManager.isHolidayRunning(SILLY_SATURDAY_TROLLEY)
+            trolleyWeekend = simbase.air.holidayManager.isHolidayRunning(TROLLEY_WEEKEND)
             if trolleyGoesToMetagame and (trolleyHoliday or trolleyWeekend):
                 metagameRound = 0
                 if len(playerArray) == 1:

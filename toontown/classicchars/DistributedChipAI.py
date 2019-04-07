@@ -1,5 +1,3 @@
-# File: D (Python 2.4)
-
 from otp.ai.AIBaseGlobal import *
 import DistributedCCharBaseAI
 from direct.directnotify import DirectNotifyGlobal
@@ -64,6 +62,8 @@ class DistributedChipAI(DistributedCCharBaseAI.DistributedCCharBaseAI):
 
     
     def _DistributedChipAI__decideNextState(self, doneStatus):
+        self.handleHalloweenCostumeEnter()
+
         if doneStatus['state'] == 'lonely' and doneStatus['status'] == 'done':
             self.fsm.request('Walk')
         elif doneStatus['state'] == 'chatty' and doneStatus['status'] == 'done':
@@ -74,7 +74,6 @@ class DistributedChipAI(DistributedCCharBaseAI.DistributedCCharBaseAI):
             else:
                 self.fsm.request('Lonely')
         
-
     
     def enterOff(self):
         pass
@@ -89,7 +88,6 @@ class DistributedChipAI(DistributedCCharBaseAI.DistributedCCharBaseAI):
         self.acceptOnce(self.lonelyDoneEvent, self._DistributedChipAI__decideNextState)
         if self.dale:
             self.dale.chipEnteringState(self.fsm.getCurrentState().getName())
-        
 
     
     def exitLonely(self):
@@ -98,7 +96,6 @@ class DistributedChipAI(DistributedCCharBaseAI.DistributedCCharBaseAI):
         if self.dale:
             self.dale.chipLeavingState(self.fsm.getCurrentState().getName())
         
-
     
     def _DistributedChipAI__goForAWalk(self, task):
         self.notify.debug('going for a walk')
@@ -112,7 +109,6 @@ class DistributedChipAI(DistributedCCharBaseAI.DistributedCCharBaseAI):
         if self.dale:
             self.dale.chipEnteringState(self.fsm.getCurrentState().getName())
         
-
     
     def exitChatty(self):
         self.ignore(self.chattyDoneEvent)
@@ -121,7 +117,6 @@ class DistributedChipAI(DistributedCCharBaseAI.DistributedCCharBaseAI):
             self.dale.chipLeavingState(self.fsm.getCurrentState().getName())
         
 
-    
     def enterWalk(self):
         self.notify.debug('going for a walk')
         self.walk.enter()
@@ -130,7 +125,6 @@ class DistributedChipAI(DistributedCCharBaseAI.DistributedCCharBaseAI):
             self.dale.chipEnteringState(self.fsm.getCurrentState().getName())
         
 
-    
     def exitWalk(self):
         self.ignore(self.walkDoneEvent)
         self.walk.exit()
@@ -138,7 +132,6 @@ class DistributedChipAI(DistributedCCharBaseAI.DistributedCCharBaseAI):
             self.dale.chipLeavingState(self.fsm.getCurrentState().getName())
         
 
-    
     def avatarEnterNextState(self):
         if len(self.nearbyAvatars) == 1:
             if self.fsm.getCurrentState().getName() != 'Walk':
@@ -155,8 +148,6 @@ class DistributedChipAI(DistributedCCharBaseAI.DistributedCCharBaseAI):
                 self.fsm.request('Lonely')
             
         
-
-    
     def setDaleId(self, daleId):
         self.daleId = daleId
         self.dale = self.air.doId2do.get(daleId)

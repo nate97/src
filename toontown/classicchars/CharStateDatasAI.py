@@ -251,6 +251,17 @@ class CharFollowChipStateAI(StateData.StateData):
         self._CharFollowChipStateAI__curWalkNode = CCharPaths.startNode
 
     
+    def setCurNode(self, curWalkNode):
+        self._CharFollowChipStateAI__curWalkNode = curWalkNode
+
+
+    def getDestNode(self):
+        if hasattr(self, 'destNode') and self.destNode:
+            return self.destNode
+        else:
+            return self._CharFollowChipStateAI__curWalkNode
+
+
     def enter(self, chipDestNode):
         destNode = self._CharFollowChipStateAI__lastWalkNode
         choices = CCharPaths.getAdjacentNodes(self._CharFollowChipStateAI__curWalkNode, self.paths)
@@ -274,6 +285,7 @@ class CharFollowChipStateAI(StateData.StateData):
         duration = CCharPaths.getWalkDuration(self._CharFollowChipStateAI__curWalkNode, destNode, self.speed, self.paths)
         t = taskMgr.doMethodLater(duration, self._CharFollowChipStateAI__doneHandler, self.character.taskName(self.character.getName() + 'DoneWalking'))
         t.newWalkNode = destNode
+        self.destNode = destNode
 
     
     def exit(self):

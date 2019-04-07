@@ -24,6 +24,7 @@ class DistributedDonald(DistributedCCharBase.DistributedCCharBase):
 
         self.handleHolidays()
 
+
     def disable(self):
         self.fsm.requestFinalState()
         DistributedCCharBase.DistributedCCharBase.disable(self)
@@ -35,6 +36,7 @@ class DistributedDonald(DistributedCCharBase.DistributedCCharBase):
         del self.neutralStartTrack
         self.fsm.requestFinalState()
 
+
     def delete(self):
         try:
             self.DistributedDonald_deleted
@@ -42,6 +44,7 @@ class DistributedDonald(DistributedCCharBase.DistributedCCharBase):
             self.DistributedDonald_deleted = 1
             del self.fsm
             DistributedCCharBase.DistributedCCharBase.delete(self)
+
 
     def generate(self):
         DistributedCCharBase.DistributedCCharBase.generate(self, self.diffPath)
@@ -58,47 +61,57 @@ class DistributedDonald(DistributedCCharBase.DistributedCCharBase):
         self.fsm.request('Neutral')
         return
 
+
     def enterOff(self):
         pass
 
+
     def exitOff(self):
         pass
+
 
     def enterNeutral(self):
         self.notify.debug('Neutral ' + self.getName() + '...')
         self.neutral.enter(startTrack=self.neutralStartTrack, playRate=0.5)
         self.acceptOnce(self.neutralDoneEvent, self.__decideNextState)
 
+
     def exitNeutral(self):
         self.ignore(self.neutralDoneEvent)
         self.neutral.exit()
+
 
     def enterWalk(self):
         self.notify.debug('Walking ' + self.getName() + '...')
         self.walk.enter(startTrack=self.walkStartTrack)
         self.acceptOnce(self.walkDoneEvent, self.__decideNextState)
 
+
     def exitWalk(self):
         self.ignore(self.walkDoneEvent)
         self.walk.exit()
 
+
     def __decideNextState(self, doneStatus):
         self.fsm.request('Neutral')
+
 
     def setWalk(self, srcNode, destNode, timestamp):
         if destNode and not destNode == srcNode:
             self.walk.setWalk(srcNode, destNode, timestamp)
             self.fsm.request('Walk')
 
+
     def walkSpeed(self):
         return ToontownGlobals.DonaldSpeed
+
 
     def handleHolidays(self):
         DistributedCCharBase.DistributedCCharBase.handleHolidays(self)
         if hasattr(base.cr, 'newsManager') and base.cr.newsManager:
-            holidayIds = base.cr.newsManager.getHolidayIdList()
-            if ToontownGlobals.APRIL_FOOLS_COSTUMES in holidayIds and isinstance(self.cr.playGame.hood, GSHood.GSHood):
+            if base.cr.newsManager.isHolidayRunning(ToontownGlobals.APRIL_FOOLS_COSTUMES):
                 self.diffPath = TTLocalizer.Goofy
+
 
     def getCCLocation(self):
         if self.diffPath != None:
@@ -107,6 +120,9 @@ class DistributedDonald(DistributedCCharBase.DistributedCCharBase):
             return 0
         return
 
+
     def getCCChatter(self):
         self.handleHolidays()
         return self.CCChatter
+
+

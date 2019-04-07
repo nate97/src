@@ -1,5 +1,3 @@
-# File: D (Python 2.4)
-
 from otp.ai.AIBaseGlobal import *
 import DistributedCCharBaseAI
 from direct.directnotify import DirectNotifyGlobal
@@ -67,6 +65,8 @@ class DistributedDaleAI(DistributedCCharBaseAI.DistributedCCharBaseAI):
 
     
     def _DistributedDaleAI__decideNextState(self, doneStatus):
+        self.handleHalloweenCostumeEnter()
+
         if doneStatus['state'] == 'lonely' and doneStatus['status'] == 'done':
             self.fsm.request('Walk')
         elif doneStatus['state'] == 'chatty' and doneStatus['status'] == 'done':
@@ -78,7 +78,6 @@ class DistributedDaleAI(DistributedCCharBaseAI.DistributedCCharBaseAI):
                 self.fsm.request('Lonely')
         
 
-    
     def enterOff(self):
         pass
 
@@ -147,15 +146,12 @@ class DistributedDaleAI(DistributedCCharBaseAI.DistributedCCharBaseAI):
             if self.fsm.getCurrentState().getName() != 'Walk':
                 pass
             
-        
-
     
     def chipEnteringState(self, newState):
         if newState == 'Walk':
             self.doFollowChip()
         
 
-    
     def chipLeavingState(self, oldState):
         pass
 

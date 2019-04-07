@@ -1,5 +1,3 @@
-# File: D (Python 2.4)
-
 from otp.ai.AIBaseGlobal import *
 import DistributedCCharBaseAI
 from direct.directnotify import DirectNotifyGlobal
@@ -71,21 +69,9 @@ class DistributedPlutoAI(DistributedCCharBaseAI.DistributedCCharBaseAI):
         self.fsm.request('Lonely')
 
     
-    def _DistributedPlutoAI__decideNextState(self, doneStatus):
-        if self.transitionToCostume == 1:
-            curWalkNode = self.walk.getDestNode()
-            if simbase.air.holidayManager:
-                if ToontownGlobals.HALLOWEEN_COSTUMES in simbase.air.holidayManager.currentHolidays and simbase.air.holidayManager.currentHolidays[ToontownGlobals.HALLOWEEN_COSTUMES]:
-                    simbase.air.holidayManager.currentHolidays[ToontownGlobals.HALLOWEEN_COSTUMES].triggerSwitch(curWalkNode, self)
-                    self.fsm.request('TransitionToCostume')
-                elif ToontownGlobals.APRIL_FOOLS_COSTUMES in simbase.air.holidayManager.currentHolidays and simbase.air.holidayManager.currentHolidays[ToontownGlobals.APRIL_FOOLS_COSTUMES]:
-                    simbase.air.holidayManager.currentHolidays[ToontownGlobals.APRIL_FOOLS_COSTUMES].triggerSwitch(curWalkNode, self)
-                    self.fsm.request('TransitionToCostume')
-                else:
-                    self.notify.warning('transitionToCostume == 1 but no costume holiday')
-            else:
-                self.notify.warning('transitionToCostume == 1 but no holiday Manager')
-        
+    def _DistributedPlutoAI__decideNextState(self, doneStatus):    
+        self.handleCostumes()
+    
         if doneStatus['state'] == 'lonely' and doneStatus['status'] == 'done':
             self.fsm.request('Walk')
         elif doneStatus['state'] == 'chatty' and doneStatus['status'] == 'done':
@@ -96,7 +82,6 @@ class DistributedPlutoAI(DistributedCCharBaseAI.DistributedCCharBaseAI):
             else:
                 self.fsm.request('Lonely')
         
-
     
     def enterOff(self):
         pass
@@ -158,19 +143,13 @@ class DistributedPlutoAI(DistributedCCharBaseAI.DistributedCCharBaseAI):
             if self.fsm.getCurrentState().getName() != 'Walk':
                 self.fsm.request('Lonely')
             
-        
 
-    
     def handleHolidays(self):
         DistributedCCharBaseAI.DistributedCCharBaseAI.handleHolidays(self)
         if hasattr(simbase.air, 'holidayManager'):
-            if ToontownGlobals.APRIL_FOOLS_COSTUMES in simbase.air.holidayManager.currentHolidays:
-                if simbase.air.holidayManager.currentHolidays[ToontownGlobals.APRIL_FOOLS_COSTUMES] != None and simbase.air.holidayManager.currentHolidays[ToontownGlobals.APRIL_FOOLS_COSTUMES].getRunningState():
-                    self.diffPath = TTLocalizer.Minnie
+            if simbase.air.holidayManager.isHolidayRunning(ToontownGlobals.APRIL_FOOLS_COSTUMES):
+                self.diffPath = TTLocalizer.Minnie
                 
-            
-        
-
     
     def enterTransitionToCostume(self):
         pass

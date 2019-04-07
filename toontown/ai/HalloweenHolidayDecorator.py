@@ -8,6 +8,8 @@ from toontown.town import Street
 from toontown.estate import Estate
 from panda3d.core import Vec4, TransformState, NodePath, TransparencyAttrib
 
+from toontown.dna.DNAParser import *
+
 class HalloweenHolidayDecorator(HolidayDecorator.HolidayDecorator):
     notify = DirectNotifyGlobal.directNotify.newCategory('HalloweenHolidayDecorator')
 
@@ -54,6 +56,7 @@ class HalloweenHolidayDecorator(HolidayDecorator.HolidayDecorator):
             base.cr.playGame.hood.endSpookySky()
 
     def decorate(self):
+        print "???"
         self.updateHoodDNAStore()
         self.swapIval = self.getSwapVisibleIval()
         if self.swapIval:
@@ -98,12 +101,12 @@ class HalloweenHolidayDecorator(HolidayDecorator.HolidayDecorator):
         if distributedEstate:
             distributedEstate.unloadWitch()
         holidayIds = base.cr.newsManager.getDecorationHolidayId()
-        if len(holidayIds) > 0:
+        if base.cr.newsManager.isHolidayRunning(ToontownGlobals.HALLOWEEN_PROPS):
             self.decorate()
             return
         storageFile = base.cr.playGame.hood.storageDNAFile
         if storageFile:
-            loadDNAFile(self.dnaStore, storageFile, CSDefault)
+            loadDNAFile(self.dnaStore, storageFile)
         self.swapIval = self.getSwapVisibleIval()
         if self.swapIval:
             self.swapIval.start()

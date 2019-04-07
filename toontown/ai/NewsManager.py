@@ -37,6 +37,8 @@ class NewsManager(DistributedObject.DistributedObject):
         self.population = 0
         self.invading = 0
 
+        self.usedOnce = False
+
         forcedHolidayDecorations = base.config.GetString('force-holiday-decorations', '')
         self.decorationHolidayIds = []
 
@@ -51,10 +53,7 @@ class NewsManager(DistributedObject.DistributedObject):
         self.holidayDecorator = None
         self.holidayIdList = []
         base.cr.newsManager = self
-        # NF
-        # NJF
-        # Don't know why this doesn't work... or what it's for...
-        #base.localAvatar.inventory.setInvasionCreditMultiplier(1)
+        base.localAvatar.inventory.setInvasionCreditMultiplier(1)
         self.weeklyCalendarHolidays = []
         return
 
@@ -185,14 +184,23 @@ class NewsManager(DistributedObject.DistributedObject):
                     if hasattr(base, 'localAvatar') and base.localAvatar and hasattr(base.localAvatar, 'chatMgr') and base.localAvatar.chatMgr:
                         base.localAvatar.chatMgr.chatInputSpeedChat.addWinterMenu()
                         self.setWackyWinterDecorationsStart()
+
+
+
                 if hasattr(base.cr.playGame, 'dnaStore') and hasattr(base.cr.playGame, 'hood') and hasattr(base.cr.playGame.hood, 'loader'):
+
                     if holidayId == ToontownGlobals.HALLOWEEN_COSTUMES or holidayId == ToontownGlobals.SPOOKY_COSTUMES:
                         self.holidayDecorator = HalloweenHolidayDecorator.HalloweenHolidayDecorator()
                     elif holidayId == ToontownGlobals.CRASHED_LEADERBOARD:
                         self.holidayDecorator = CrashedLeaderBoardDecorator.CrashedLeaderBoardDecorator()
                     else:
                         self.holidayDecorator = HolidayDecorator.HolidayDecorator()
+
                     self.holidayDecorator.decorate()
+
+
+
+
                     messenger.send('decorator-holiday-%d-starting' % holidayId)
             elif holidayId in promotionalSpeedChatHolidays:
                 if hasattr(base, 'TTSCPromotionalMenu'):
@@ -400,6 +408,7 @@ class NewsManager(DistributedObject.DistributedObject):
         messenger.send('setHolidayIdList', [holidayIdList])
 
     def getDecorationHolidayId(self):
+        print self.decorationHolidayIds
         return self.decorationHolidayIds
 
     def getHolidayIdList(self):
@@ -562,14 +571,14 @@ class NewsManager(DistributedObject.DistributedObject):
         base.localAvatar.setSystemMessage(0, TTLocalizer.IdesOfMarchStart)
 
     def holidayNotify(self):
-        for id in self.holidayIdList:
-            if id == 19:
+        for holidayId in self.holidayIdList:
+            if holidayId in (7, 19):
                 self.setBingoOngoing()
-            elif id == 20:
+            elif holidayId == 20:
                 self.setCircuitRaceOngoing()
-            elif id == 21:
+            elif holidayId in (17, 21):
                 self.setTrolleyHolidayOngoing()
-            elif id == 22:
+            elif holidayId == 22:
                 self.setRoamingTrialerWeekendOngoing()
 
     def setWeeklyCalendarHolidays(self, weeklyCalendarHolidays):

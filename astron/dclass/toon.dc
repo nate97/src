@@ -625,6 +625,8 @@ dclass DistributedToon : DistributedPlayer {
 dclass DistributedCCharBase : DistributedObject {
   setChat(uint32, uint32, uint32) broadcast;
   fadeAway() broadcast;
+  setHalloweenCostume() broadcast;
+  removeHalloweenCostume() broadcast;
   setWalk(string, string, int16) required broadcast ram;
   avatarEnter() airecv clsend;
   avatarExit() airecv clsend;

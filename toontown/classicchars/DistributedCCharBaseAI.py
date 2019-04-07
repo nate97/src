@@ -1,5 +1,3 @@
-# File: D (Python 2.4)
-
 from otp.ai.AIBaseGlobal import *
 from direct.distributed.ClockDelta import *
 from otp.avatar import DistributedAvatarAI
@@ -13,9 +11,8 @@ class DistributedCCharBaseAI(DistributedAvatarAI.DistributedAvatarAI):
         DistributedAvatarAI.DistributedAvatarAI.__init__(self, air)
         self.setName(name)
         self.exitOff()
-        self.transitionToCostume = 0
         self.diffPath = None
-
+        self.currentCostume = 0
 
     def delete(self):
         self.ignoreAll()
@@ -205,11 +202,58 @@ class DistributedCCharBaseAI(DistributedAvatarAI.DistributedAvatarAI):
         return self.CCChatter
 
 
+    def findHood(self):
+        wantedZoneId = self.zoneId
+        for hood in self.air.hoods:
+            zoneId = hood.zoneId
+            if zoneId == wantedZoneId:
+                return hood
+
+
     def fadeAway(self):
         self.sendUpdate('fadeAway', [])
 
 
-    def transitionCostume(self):
-        self.transitionToCostume = 1
+    def setCurrentCostume(self, costume):
+        self.currentCostume = costume
+
+
+    def handleCostumes(self):
+        if self.fsm.getCurrentState().getName() == 'Walk': # We don't want todo anything while the character is moving...
+            return
+
+        if simbase.air.holidayManager.isHolidayRunning(ToontownGlobals.HALLOWEEN_COSTUMES): # HALLOWEEN is running
+            if self.currentCostume != ToontownGlobals.HALLOWEEN_COSTUMES:
+                hood = self.findHood()
+                hood.swapOutClassicChar()
+
+        elif simbase.air.holidayManager.isHolidayRunning(ToontownGlobals.APRIL_FOOLS_COSTUMES): # APRIL FOOLS is running
+            if self.currentCostume != ToontownGlobals.APRIL_FOOLS_COSTUMES:
+                hood = self.findHood()
+                hood.swapOutClassicChar()
+
+        else: # No costume holiday running, check to see if they still have costumes!
+            if self.currentCostume != ToontownGlobals.NO_COSTUMES: # The costume is not default... RESET CHARACTER TO NO COSTUME
+                hood = self.findHood()
+                hood.swapOutClassicChar()
+                self.setCurrentCostume(1) # Purpose of this is so that we don't constantly regenerate the character
+
+
+    def handleHalloweenCostumeEnter(self):
+        if self.fsm.getCurrentState().getName() == 'Walk': # We don't want todo anything while the character is moving...
+            return
+
+        if simbase.air.holidayManager.isHolidayRunning(ToontownGlobals.HALLOWEEN_COSTUMES): # HALLOWEEN is running
+            hood = self.findHood()
+            hood.swapOutClassicChar()
+
+
+    def handleHalloweenCostumeExit(self):
+        if self.fsm.getCurrentState().getName() == 'Walk': # We don't want todo anything while the character is moving...
+            return
+
+        if not simbase.air.holidayManager.isHolidayRunning(ToontownGlobals.HALLOWEEN_COSTUMES): # HALLOWEEN is NOT running
+            hood = self.findHood()
+            hood.swapOutClassicChar()
 
 

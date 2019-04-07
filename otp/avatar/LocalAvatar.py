@@ -1223,6 +1223,15 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
     def canChat(self):
         return 0
 
+    def startAprilToonsControls(self):
+        gravity = ToontownGlobals.GravityValue * 0.75
+        base.localAvatar.controlManager.currentControls.setGravity(gravity)
+
+    def stopAprilToonsControls(self):
+        gravity = ToontownGlobals.GravityValue * 2.0
+        base.localAvatar.controlManager.currentControls.setGravity(gravity)
+
+
 
 @magicWord(category=CATEGORY_COMMUNITY_MANAGER)
 def run():

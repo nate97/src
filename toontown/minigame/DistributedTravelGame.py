@@ -8,7 +8,7 @@ from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownTimer
 import TravelGameGlobals
 import math
-from panda3d.core import rad2Deg
+from pandac.PandaModules import rad2Deg
 from toontown.toontowngui import TTDialog
 from direct.interval.IntervalGlobal import *
 import VoteResultsPanel
@@ -109,12 +109,12 @@ class DistributedTravelGame(DistributedMinigame):
         self.minigameLabels = []
         self.minigameIcons = []
         self.bonusLabels = []
-        self.trolleyAwaySfx = base.loader.loadSfx('phase_4/audio/sfx/SZ_trolley_away.ogg')
-        self.trolleyBellSfx = base.loader.loadSfx('phase_4/audio/sfx/SZ_trolley_bell.ogg')
-        self.turntableRotateSfx = base.loader.loadSfx('phase_4/audio/sfx/MG_sfx_travel_game_turntble_rotate_2.ogg')
-        self.wonGameSfx = base.loader.loadSfx('phase_4/audio/sfx/MG_sfx_travel_game_bonus.ogg')
-        self.lostGameSfx = base.loader.loadSfx('phase_4/audio/sfx/MG_sfx_travel_game_no_bonus_2.ogg')
-        self.noWinnerSfx = base.loader.loadSfx('phase_4/audio/sfx/MG_sfx_travel_game_no_bonus.ogg')
+        self.trolleyAwaySfx = base.loadSfx('phase_4/audio/sfx/SZ_trolley_away.ogg')
+        self.trolleyBellSfx = base.loadSfx('phase_4/audio/sfx/SZ_trolley_bell.ogg')
+        self.turntableRotateSfx = base.loadSfx('phase_4/audio/sfx/MG_sfx_travel_game_turntble_rotate_2.ogg')
+        self.wonGameSfx = base.loadSfx('phase_4/audio/sfx/MG_sfx_travel_game_bonus.ogg')
+        self.lostGameSfx = base.loadSfx('phase_4/audio/sfx/MG_sfx_travel_game_no_bonus_2.ogg')
+        self.noWinnerSfx = base.loadSfx('phase_4/audio/sfx/MG_sfx_travel_game_no_bonus.ogg')
         self.boardIndex = 0
         self.avNames = []
         self.disconnectedAvIds = []
@@ -133,6 +133,7 @@ class DistributedTravelGame(DistributedMinigame):
         self.notify.debug('load')
         DistributedMinigame.load(self)
         self.sky = loader.loadModel('phase_3.5/models/props/TT_sky')
+        self.sky.setZ(self.sky.getZ() + 5)
         self.gameBoard = loader.loadModel('phase_4/models/minigames/toon_cannon_gameground')
         self.gameBoard.setPosHpr(100, 0, 0, 0, 0, 0)
         self.gameBoard.setScale(1.0)
@@ -153,7 +154,7 @@ class DistributedTravelGame(DistributedMinigame):
             key = self.keys[i]
             key.setTwoSided(1)
             ref = self.trolleyCar.attachNewNode('key' + `i` + 'ref')
-            ref.setPosHpr(key, 0, 0, 0, 0, 0, 0)
+            ref.iPosHpr(key)
             self.keyRef.append(ref)
             self.keyInit.append(key.getTransform())
 
@@ -164,7 +165,7 @@ class DistributedTravelGame(DistributedMinigame):
         for i in xrange(self.numFrontWheels):
             wheel = self.frontWheels[i]
             ref = self.trolleyCar.attachNewNode('frontWheel' + `i` + 'ref')
-            ref.setPosHpr(wheel, 0, 0, 0, 0, 0, 0)
+            ref.iPosHpr(wheel)
             self.frontWheelRef.append(ref)
             self.frontWheelInit.append(wheel.getTransform())
 
@@ -175,7 +176,7 @@ class DistributedTravelGame(DistributedMinigame):
         for i in xrange(self.numBackWheels):
             wheel = self.backWheels[i]
             ref = self.trolleyCar.attachNewNode('backWheel' + `i` + 'ref')
-            ref.setPosHpr(wheel, 0, 0, 0, 0, 0, 0)
+            ref.iPosHpr(wheel)
             self.backWheelRef.append(ref)
             self.backWheelInit.append(wheel.getTransform())
 
@@ -249,7 +250,7 @@ class DistributedTravelGame(DistributedMinigame):
         turnTable.removeNode()
         self.loadGui()
         self.introMovie = self.getIntroMovie()
-        self.music = base.loader.loadMusic('phase_4/audio/bgm/MG_Travel.ogg')
+        self.music = base.loadMusic('phase_4/audio/bgm/MG_Travel.ogg')
         self.flashWinningBeansTrack = None
         return
 
@@ -380,14 +381,14 @@ class DistributedTravelGame(DistributedMinigame):
         del self.music
 
     def moveCameraToTop(self):
-        camera.reparentTo(render)
+        base.camera.reparentTo(render)
         p = self.cameraTopView
-        camera.setPosHpr(p[0], p[1], p[2], p[3], p[4], p[5])
+        base.camera.setPosHpr(p[0], p[1], p[2], p[3], p[4], p[5])
 
     def moveCameraToTrolley(self):
-        camera.reparentTo(self.trolleyCar)
-        camera.setPos(-25, 0, 7.5)
-        camera.setHpr(-90, 0, 0)
+        base.camera.reparentTo(self.trolleyCar)
+        base.camera.setPos(-25, 0, 7.5)
+        base.camera.setHpr(-90, 0, 0)
 
     def onstage(self):
         self.notify.debug('onstage')
@@ -575,7 +576,7 @@ class DistributedTravelGame(DistributedMinigame):
 
     def enterMoveTrolley(self):
         self.notify.debug('enterMoveTrolley')
-        camera.wrtReparentTo(render)
+        base.camera.wrtReparentTo(render)
         keyAngle = round(self.TrolleyMoveDuration) * 360
         dist = Vec3(self.trainSwitches[self.destSwitch].getPos() - self.trainSwitches[self.currentSwitch].getPos()).length()
         wheelAngle = dist / (2.0 * math.pi * 0.95) * 360
@@ -609,8 +610,8 @@ class DistributedTravelGame(DistributedMinigame):
         def focusOnTrolley(t, self = self):
             pos = self.trolleyCar.getPos()
             pos.setZ(pos.getZ() + 7.5)
-            camera.lookAt(pos)
-            self.lastFocusHpr = camera.getHpr()
+            base.camera.lookAt(pos)
+            self.lastFocusHpr = base.camera.getHpr()
 
         setRightHprTime = 0
         if self.FlyCameraUp:
@@ -621,10 +622,10 @@ class DistributedTravelGame(DistributedMinigame):
         finalHpr = Vec3(self.cameraTopView[3], self.cameraTopView[4], self.cameraTopView[5])
         if self.FlyCameraUp:
             if self.FocusOnTrolleyWhileMovingUp:
-                camIval1.append(LerpPosInterval(camera, duration - setRightHprTime, finalPos, name='cameraMove'))
-                camIval2 = Sequence(LerpHprInterval(camera, setRightHprTime, finalHpr, name='cameraHpr'))
+                camIval1.append(LerpPosInterval(base.camera, duration - setRightHprTime, finalPos, name='cameraMove'))
+                camIval2 = Sequence(LerpHprInterval(base.camera, setRightHprTime, finalHpr, name='cameraHpr'))
             else:
-                camIval2 = Sequence(LerpPosHprInterval(camera, setRightHprTime, finalPos, finalHpr, blendType='easeIn', name='cameraHpr'))
+                camIval2 = Sequence(LerpPosHprInterval(base.camera, setRightHprTime, finalPos, finalHpr, blendType='easeIn', name='cameraHpr'))
             camIval = Sequence(camIval1, camIval2)
         else:
             camIval = Sequence(camIval1)
@@ -755,7 +756,7 @@ class DistributedTravelGame(DistributedMinigame):
             self.scrollList.removeAllItems()
         self.indexToVotes = {}
         index = 0
-        for vote in xrange(available)[::-1]:
+        for vote in range(available)[::-1]:
             self.scrollList.addItem(str(-(vote + 1)))
             self.indexToVotes[index] = vote + 1
             index += 1

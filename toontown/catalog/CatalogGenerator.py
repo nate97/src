@@ -1515,13 +1515,22 @@ class CatalogGenerator:
         dayNumber = int(weekStart / (24 * 60))
         itemLists = self.__getMonthlyItemLists(dayNumber, weekStart)
         monthlyCatalog = CatalogItemList.CatalogItemList()
-        for list in itemLists:
+        for lists in itemLists:
+
             saleItem = 0
-            if isinstance(list, Sale):
-                list = list.args
+
+            if isinstance(lists, Sale):
+                lists = lists.args
                 saleItem = 1
-            for item in list:
+
+            try:
+                for item in lists: # Multiple items
+                    monthlyCatalog += self.__selectItem(avatar, item, [], saleItem=saleItem)
+            except: # One item
+                item = lists
                 monthlyCatalog += self.__selectItem(avatar, item, [], saleItem=saleItem)
+
+
 
         return monthlyCatalog
 

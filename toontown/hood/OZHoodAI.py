@@ -31,7 +31,7 @@ class OZHoodAI(HoodAI.HoodAI):
         self.createTimer()
         if simbase.config.GetBool('want-classic-chars', True):
             if simbase.config.GetBool('want-chip-and-dale', True):
-                self.createClassicChars()
+                self.createClassicChar()
         self.createPicnicTables()
         if simbase.config.GetBool('want-game-tables', True):
             self.createGameTables()
@@ -40,21 +40,48 @@ class OZHoodAI(HoodAI.HoodAI):
         self.timer = DistributedTimerAI(self.air)
         self.timer.generateWithRequired(self.zoneId)
 
-    def createClassicChars(self):
-        if simbase.air.wantHalloween:
-            self.classicCharChip = DistributedPoliceChipAI.DistributedPoliceChipAI(self.air) 
+    def createClassicChar(self):
+        if simbase.air.holidayManager.isHolidayRunning(ToontownGlobals.HALLOWEEN_COSTUMES):
+            self.classicCharChip = DistributedPoliceChipAI.DistributedPoliceChipAI(self.air)
+            self.classicCharChip.setCurrentCostume(ToontownGlobals.HALLOWEEN_COSTUMES) # We're using holidayIDs as costume IDs.
         else:
             self.classicCharChip = DistributedChipAI.DistributedChipAI(self.air)
+            self.classicCharChip.setCurrentCostume(ToontownGlobals.NO_COSTUMES) # We're using holidayIDs as costume IDs.
+
         self.classicCharChip.generateWithRequired(self.zoneId)
         self.classicCharChip.start()
         
-        if simbase.air.wantHalloween:
+
+        if simbase.air.holidayManager.isHolidayRunning(ToontownGlobals.HALLOWEEN_COSTUMES):
             self.classicCharDale = DistributedJailbirdDaleAI.DistributedJailbirdDaleAI(self.air, self.classicCharChip.doId)
+            self.classicCharDale.setCurrentCostume(ToontownGlobals.HALLOWEEN_COSTUMES) # We're using holidayIDs as costume IDs.
         else:
             self.classicCharDale = DistributedDaleAI.DistributedDaleAI(self.air, self.classicCharChip.doId)
+            self.classicCharDale.setCurrentCostume(ToontownGlobals.NO_COSTUMES) # We're using holidayIDs as costume IDs.
+
         self.classicCharDale.generateWithRequired(self.zoneId)
         self.classicCharDale.start()
         self.classicCharChip.setDaleId(self.classicCharDale.doId)
+
+
+    def swapOutClassicChar(self):
+        destNodeChip = self.classicCharChip.walk.getDestNode()
+        destNodeDale = self.classicCharDale.followChip.getDestNode()
+
+        self.classicCharChip.requestDelete()
+        self.classicCharDale.requestDelete()
+
+        self.createClassicChar()
+
+        self.classicCharChip.walk.setCurNode(destNodeChip)
+        self.classicCharDale.followChip.setCurNode(destNodeDale)
+
+        self.classicCharChip.fsm.request('Walk')
+        self.classicCharDale.fsm.request('Walk')
+
+        self.classicCharChip.fadeAway()
+        self.classicCharDale.fadeAway()
+
 
     def findPicnicTables(self, dnaGroup, zoneId, area, overrideDNAZone=False):
         picnicTables = []
@@ -120,3 +147,6 @@ class OZHoodAI(HoodAI.HoodAI):
                 foundGameTables = self.findGameTables(
                     dnaData, zoneId, area, overrideDNAZone=True)
                 self.gameTables.extend(foundGameTables)
+
+
+

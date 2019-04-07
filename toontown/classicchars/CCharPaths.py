@@ -385,11 +385,13 @@ def __getWaypointList(paths):
 
 
 def getNodePos(node, paths):
-    return paths[node][0]
+    nodePos = paths[node][0]
+    return nodePos
 
 
 def getAdjacentNodes(node, paths):
-    return paths[node][1]
+    adjacentNodes = paths[node][1]
+    return adjacentNodes
 
 
 def getWayPoints(fromNode, toNode, paths, wpts = None):

@@ -24,6 +24,7 @@ class DistributedPluto(DistributedCCharBase.DistributedCCharBase):
             self.fsm.enterInitialState()
             self.handleHolidays()
 
+
     def disable(self):
         self.fsm.requestFinalState()
         DistributedCCharBase.DistributedCCharBase.disable(self)
@@ -37,6 +38,7 @@ class DistributedPluto(DistributedCCharBase.DistributedCCharBase):
         del self.walkStartTrack
         self.fsm.requestFinalState()
 
+
     def delete(self):
         try:
             self.DistributedPluto_deleted
@@ -44,6 +46,7 @@ class DistributedPluto(DistributedCCharBase.DistributedCCharBase):
             self.DistributedPluto_deleted = 1
             del self.fsm
             DistributedCCharBase.DistributedCCharBase.delete(self)
+
 
     def generate(self):
         DistributedCCharBase.DistributedCCharBase.generate(self, self.diffPath)
@@ -59,57 +62,69 @@ class DistributedPluto(DistributedCCharBase.DistributedCCharBase):
         self.fsm.request('Neutral')
         return
 
+
     def stand(self):
         self.dropShadow.setScale(0.9, 1.35, 0.9)
         if hasattr(self, 'collNodePath'):
             self.collNodePath.setScale(1.0, 1.5, 1.0)
+
 
     def sit(self):
         self.dropShadow.setScale(0.9)
         if hasattr(self, 'collNodePath'):
             self.collNodePath.setScale(1.0)
 
+
     def enterOff(self):
         pass
 
+
     def exitOff(self):
         pass
+
 
     def enterNeutral(self):
         self.notify.debug('Neutral ' + self.getName() + '...')
         self.neutral.enter(self.neutralStartTrack)
         self.acceptOnce(self.neutralDoneEvent, self.__decideNextState)
 
+
     def exitNeutral(self):
         self.ignore(self.neutralDoneEvent)
         self.neutral.exit()
+
 
     def enterWalk(self):
         self.notify.debug('Walking ' + self.getName() + '...')
         self.walk.enter(self.walkStartTrack)
         self.acceptOnce(self.walkDoneEvent, self.__decideNextState)
 
+
     def exitWalk(self):
         self.ignore(self.walkDoneEvent)
         self.walk.exit()
 
+
     def __decideNextState(self, doneStatus):
         self.fsm.request('Neutral')
+
 
     def setWalk(self, srcNode, destNode, timestamp):
         if destNode and not destNode == srcNode:
             self.walk.setWalk(srcNode, destNode, timestamp)
             self.fsm.request('Walk')
 
+
     def walkSpeed(self):
         return ToontownGlobals.PlutoSpeed
+
 
     def handleHolidays(self):
         DistributedCCharBase.DistributedCCharBase.handleHolidays(self)
         if hasattr(base.cr, 'newsManager') and base.cr.newsManager:
-            holidayIds = base.cr.newsManager.getHolidayIdList()
-            if ToontownGlobals.APRIL_FOOLS_COSTUMES in holidayIds and isinstance(self.cr.playGame.hood, MMHood.MMHood):
+            if base.cr.newsManager.isHolidayRunning(ToontownGlobals.APRIL_FOOLS_COSTUMES):
                 self.diffPath = TTLocalizer.Minnie
+
 
     def getCCLocation(self):
         if self.diffPath == None:
@@ -117,3 +132,5 @@ class DistributedPluto(DistributedCCharBase.DistributedCCharBase):
         else:
             return 0
         return
+
+

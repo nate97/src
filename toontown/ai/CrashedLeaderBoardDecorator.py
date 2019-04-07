@@ -6,6 +6,8 @@ from toontown.toonbase import ToontownGlobals
 from panda3d.core import Vec4, TransformState, NodePath, TransparencyAttrib
 from toontown.hood import GSHood
 
+from toontown.dna.DNAParser import *
+
 class CrashedLeaderBoardDecorator(HolidayDecorator.HolidayDecorator):
     notify = DirectNotifyGlobal.directNotify.newCategory('CrashedLeaderBoardDecorator')
 
@@ -40,7 +42,7 @@ class CrashedLeaderBoardDecorator(HolidayDecorator.HolidayDecorator):
             return
         storageFile = base.cr.playGame.hood.storageDNAFile
         if storageFile:
-            loadDNAFile(self.dnaStore, storageFile, CSDefault)
+            loadDNAFile(self.dnaStore, storageFile)
         self.swapIval = self.getSwapVisibleIval()
         if self.swapIval:
             self.swapIval.start()

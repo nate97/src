@@ -22,6 +22,7 @@ class DistributedMinnie(DistributedCCharBase.DistributedCCharBase):
 
         self.handleHolidays()
 
+
     def disable(self):
         self.fsm.requestFinalState()
         DistributedCCharBase.DistributedCCharBase.disable(self)
@@ -32,6 +33,7 @@ class DistributedMinnie(DistributedCCharBase.DistributedCCharBase):
         self.fsm.requestFinalState()
         return
 
+
     def delete(self):
         try:
             self.DistributedMinnie_deleted
@@ -39,6 +41,7 @@ class DistributedMinnie(DistributedCCharBase.DistributedCCharBase):
             self.DistributedMinnie_deleted = 1
             del self.fsm
             DistributedCCharBase.DistributedCCharBase.delete(self)
+
 
     def generate(self):
         DistributedCCharBase.DistributedCCharBase.generate(self, self.diffPath)
@@ -52,42 +55,53 @@ class DistributedMinnie(DistributedCCharBase.DistributedCCharBase):
         self.fsm.request('Neutral')
         return
 
+
     def enterOff(self):
         pass
 
+
     def exitOff(self):
         pass
+
 
     def enterNeutral(self):
         self.neutral.enter()
         self.acceptOnce(self.neutralDoneEvent, self.__decideNextState)
 
+
     def exitNeutral(self):
         self.ignore(self.neutralDoneEvent)
         self.neutral.exit()
+
 
     def enterWalk(self):
         self.walk.enter()
         self.acceptOnce(self.walkDoneEvent, self.__decideNextState)
 
+
     def exitWalk(self):
         self.ignore(self.walkDoneEvent)
         self.walk.exit()
 
+
     def __decideNextState(self, doneStatus):
         self.fsm.request('Neutral')
+
 
     def setWalk(self, srcNode, destNode, timestamp):
         if destNode and not destNode == srcNode:
             self.walk.setWalk(srcNode, destNode, timestamp)
             self.fsm.request('Walk')
 
+
     def walkSpeed(self):
         return ToontownGlobals.MinnieSpeed
+
 
     def handleHolidays(self):
         DistributedCCharBase.DistributedCCharBase.handleHolidays(self)
         if hasattr(base.cr, 'newsManager') and base.cr.newsManager:
-            holidayIds = base.cr.newsManager.getHolidayIdList()
-            if ToontownGlobals.APRIL_FOOLS_COSTUMES in holidayIds and isinstance(self.cr.playGame.hood, BRHood.BRHood):
+            if base.cr.newsManager.isHolidayRunning(ToontownGlobals.APRIL_FOOLS_COSTUMES):
                 self.diffPath = TTLocalizer.Pluto
+
+

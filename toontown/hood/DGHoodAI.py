@@ -1,5 +1,6 @@
 from toontown.classicchars import DistributedDaisyAI
 from toontown.classicchars import DistributedSockHopDaisyAI
+from toontown.classicchars import DistributedMickeyAI
 from toontown.hood import HoodAI
 from toontown.safezone import ButterflyGlobals
 from toontown.safezone import DistributedButterflyAI
@@ -62,13 +63,33 @@ class DGHoodAI(HoodAI.HoodAI):
         self.flower.generateWithRequired(self.zoneId)
         self.flower.start()
 
-    def createClassicChar(self):
-        if simbase.air.wantHalloween:
+    def createClassicChar(self, test = None):
+        if simbase.air.holidayManager.isHolidayRunning(ToontownGlobals.HALLOWEEN_COSTUMES):
             self.classicChar = DistributedSockHopDaisyAI.DistributedSockHopDaisyAI(self.air)
+            self.classicChar.setCurrentCostume(ToontownGlobals.HALLOWEEN_COSTUMES) # We're using holidayIDs as costume IDs.
+
+        elif simbase.air.holidayManager.isHolidayRunning(ToontownGlobals.APRIL_FOOLS_COSTUMES):
+            self.classicChar = DistributedMickeyAI.DistributedMickeyAI(self.air)
+            self.classicChar.setCurrentCostume(ToontownGlobals.APRIL_FOOLS_COSTUMES) # We're using holidayIDs as costume IDs.
+
         else:
             self.classicChar = DistributedDaisyAI.DistributedDaisyAI(self.air)
+            self.classicChar.setCurrentCostume(ToontownGlobals.NO_COSTUMES) # We're using holidayIDs as costume IDs.
+
         self.classicChar.generateWithRequired(self.zoneId)
         self.classicChar.start()
+
+
+
+    def swapOutClassicChar(self):
+        destNode = self.classicChar.walk.getDestNode()
+        self.classicChar.requestDelete()
+
+        self.createClassicChar()
+        self.classicChar.walk.setCurNode(destNode)
+        self.classicChar.fsm.request('Walk')
+        self.classicChar.fadeAway()
+
 
     def createButterflies(self):
         playground = ButterflyGlobals.DG

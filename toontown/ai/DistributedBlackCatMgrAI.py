@@ -1,6 +1,8 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
 from toontown.toon.ToonDNA import ToonDNA
+from toontown.toonbase.ToontownGlobals import HALLOWEEN
+
 
 class DistributedBlackCatMgrAI(DistributedObjectAI):
     notify = DirectNotifyGlobal.directNotify.newCategory("DistributedBlackCatMgrAI")
@@ -8,7 +10,11 @@ class DistributedBlackCatMgrAI(DistributedObjectAI):
     def requestBlackCatTransformation(self):
         avId = self.air.getAvatarIdFromSender()
         av = self.air.doId2do.get(avId)
-        if not av: return
+        if not av:
+            return
+
+        if not simbase.air.wantHalloween and not simbase.air.holidayManager.isHolidayRunning(HALLOWEEN):
+            return
 
         if av.dna.getAnimal() == 'cat' and av.dna.headColor != 0x1a:
             newDNA = ToonDNA()

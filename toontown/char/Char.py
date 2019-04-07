@@ -5,6 +5,7 @@ from direct.task import Task
 import random
 from panda3d.core import *
 from direct.directnotify import DirectNotifyGlobal
+
 AnimDict = {'mk': (('walk', 'walk', 3),
         ('run', 'run', 3),
         ('neutral', 'wait', 3),
@@ -54,24 +55,37 @@ AnimDict = {'mk': (('walk', 'walk', 3),
  'pch': (('walk', 'walk', 6), ('neutral', 'idle', 6)),
  'da': (('walk', 'walk', 6), ('neutral', 'idle', 6)),
  'jda': (('walk', 'walk', 6), ('neutral', 'idle', 6))}
+
+
+
 ModelDict = {'mk': 'phase_3/models/char/mickey-',
  'vmk': 'phase_3.5/models/char/tt_a_chr_csc_mickey_vampire_',
+
  'mn': 'phase_3/models/char/minnie-',
  'wmn': 'phase_3.5/models/char/tt_a_chr_csc_witchMinnie_',
+
  'g': 'phase_6/models/char/TT_G',
  'sg': 'phase_6/models/char/tt_a_chr_csc_goofyCostume_',
+
  'd': 'phase_6/models/char/DL_donald-',
  'fd': 'phase_6/models/char/tt_a_chr_csc_donaldCostume_',
+
  'dw': 'phase_6/models/char/donald-wheel-',
+
  'p': 'phase_6/models/char/pluto-',
  'wp': 'phase_6/models/char/tt_a_chr_csc_plutoCostume_',
+
  'cl': 'phase_5.5/models/estate/Clara_pose2-',
+
  'dd': 'phase_4/models/char/daisyduck_',
  'shdd': 'phase_4/models/char/tt_a_chr_csc_daisyCostume_',
+
  'ch': 'phase_6/models/char/chip_',
  'pch': 'phase_6/models/char/tt_a_chr_csc_chipCostume_',
+
  'da': 'phase_6/models/char/dale_',
  'jda': 'phase_6/models/char/tt_a_chr_csc_daleCostume_'}
+
 LODModelDict = {'mk': [1200, 800, 400],
  'vmk': [1200, 800, 400],
  'wmn': [1200, 800, 400],
@@ -86,9 +100,9 @@ LODModelDict = {'mk': [1200, 800, 400],
  'cl': [],
  'dd': [1600, 800, 400],
  'shdd': ['default'],
- 'ch': [1000, 500, 250],
+ 'ch': [1000],
  'pch': ['default'],
- 'da': [1000, 500, 250],
+ 'da': [1000],
  'jda': ['default']}
 
 class Char(Avatar.Avatar):
@@ -114,7 +128,7 @@ class Char(Avatar.Avatar):
             Avatar.Avatar.delete(self)
 
     def updateCharDNA(self, newDNA):
-        if newDNA.name != self.style.name_:
+        if newDNA.name_ != self.style.name_:
             self.swapCharModel(newDNA)
 
     def setDNAString(self, dnaString):
@@ -172,7 +186,7 @@ class Char(Avatar.Avatar):
         elif self.name_ == 'pluto':
             height = 3.0
         elif self.name_ == 'western_pluto':
-            height = 4.5
+            height = 3.0
         elif self.name_ == 'clarabelle':
             height = 3.0
         elif self.name_ == 'chip':

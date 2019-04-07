@@ -3,7 +3,7 @@ from direct.distributed.ClockDelta import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import FSM
 from direct.gui.DirectGui import *
-from panda3d.core import *
+from pandac.PandaModules import *
 from direct.task import Task
 from toontown.fishing import BingoGlobals
 from toontown.fishing import BingoCardGui
@@ -49,8 +49,9 @@ class DistributedPondBingoManager(DistributedObject.DistributedObject, FSM.FSM):
         self.notify.debug('generate: DistributedPondBingoManager')
 
     def delete(self):
-        del self.pond.pondBingoMgr
-        self.pond.pondBingoMgr = None
+        if self.pond:
+            del self.pond.pondBingoMgr
+            self.pond.pondBingoMgr = None
         del self.pond
         self.pond = None
         FSM.FSM.cleanup(self)
@@ -121,17 +122,17 @@ class DistributedPondBingoManager(DistributedObject.DistributedObject, FSM.FSM):
             self.card.hide()
 
     def showCard(self):
-        if (self.state_ != 'Off' or self.state_ != 'CloseEvent') and self.card.getGame():
+        if (self.state != 'Off' or self.state != 'CloseEvent') and self.card.getGame():
             self.card.loadCard()
             self.card.show()
-        elif self.state_ == 'GameOver':
+        elif self.state == 'GameOver':
             self.card.show()
-        elif self.state_ == 'Reward':
+        elif self.state == 'Reward':
             self.card.show()
-        elif self.state_ == 'WaitCountdown':
+        elif self.state == 'WaitCountdown':
             self.card.show()
             self.card.showNextGameTimer(TTLocalizer.FishBingoNextGame)
-        elif self.state_ == 'Intermission':
+        elif self.state == 'Intermission':
             self.card.showNextGameTimer(TTLocalizer.FishBingoIntermission)
             self.card.show()
         self.hasEntered = 1
@@ -160,7 +161,7 @@ class DistributedPondBingoManager(DistributedObject.DistributedObject, FSM.FSM):
         self.pond.setPondBingoManager(self)
 
     def setState(self, state, timeStamp):
-        self.notify.debug('State change: %s -> %s' % (self.state_, state))
+        self.notify.debug('State change: %s -> %s' % (self.state, state))
         self.request(state, timeStamp)
 
     def setLastCatch(self, catch):
@@ -177,7 +178,6 @@ class DistributedPondBingoManager(DistributedObject.DistributedObject, FSM.FSM):
     def setJackpot(self, jackpot):
         self.jackpot = jackpot
 
-    #todo: fix crash
     def enterOff(self, args = None):
         self.notify.debug('enterOff: Enter Off State')
         del self.spot

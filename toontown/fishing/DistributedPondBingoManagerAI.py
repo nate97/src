@@ -1,22 +1,21 @@
-from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
+from direct.distributed.ClockDelta import *
+
 from toontown.fishing import BingoGlobals
 from toontown.fishing import FishGlobals
-from toontown.toonbase import ToontownGlobals
 from toontown.fishing.NormalBingo import NormalBingo
 from toontown.fishing.ThreewayBingo import ThreewayBingo
 from toontown.fishing.DiagonalBingo import DiagonalBingo
 from toontown.fishing.BlockoutBingo import BlockoutBingo
 from toontown.fishing.FourCornerBingo import FourCornerBingo
-from otp.ai.MagicWordGlobal import *
-from direct.task import Task
-from direct.distributed.ClockDelta import *
+
+from datetime import datetime
 import random
 RequestCard = {}
 
 
 class DistributedPondBingoManagerAI(DistributedObjectAI):
-    notify = DirectNotifyGlobal.directNotify.newCategory("DistributedPondBingoManagerAI")
+    notify = directNotify.newCategory("DistributedPondBingoManagerAI")
 
     def __init__(self, air):
         DistributedObjectAI.__init__(self, air)
@@ -29,6 +28,7 @@ class DistributedPondBingoManagerAI(DistributedObjectAI):
         self.shouldStop = False
         self.lastUpdate = globalClockDelta.getRealNetworkTime()
         self.cardId = 0
+        self.blockout = False
 
     def setPondDoId(self, pondId):
         self.pond = self.air.doId2do[pondId]
@@ -71,10 +71,21 @@ class DistributedPondBingoManagerAI(DistributedObjectAI):
             self.sendGameStateUpdate(cellId)
 
     def enableBingo(self):
-        createGame()
+        if self.state_ != 'Off':
+            return
+        self.createGame()
+        self.blockoutBingoTask()
+
+    def disableBingo(self):
+        if self.state_ != 'Off':
+            self.shouldStop = True
 
     def d_enableBingo(self):
         self.sendUpdate('enableBingo', [])
+
+    def b_enableBingo(self):
+        self.sendUpdate('enableBingo', [])
+        self.enableBingo()
 
     def handleBingoCall(self, cardId):
         avId = self.air.getAvatarIdFromSender()
@@ -110,28 +121,28 @@ class DistributedPondBingoManagerAI(DistributedObjectAI):
     def sendStateUpdate(self):
         self.lastUpdate = globalClockDelta.getRealNetworkTime()
         for spot in self.pond.spots:
-            if self.pond.spots[spot].avId == None or self.pond.spots[spot].avId == 0:
+            if self.pond.spots[spot].avId is None or self.pond.spots[spot].avId == 0:
                 continue
             avId = self.pond.spots[spot].avId
             self.sendUpdateToAvatarId(avId, 'setState', [self.state_, self.lastUpdate])
 
     def sendCardStateUpdate(self):
         for spot in self.pond.spots:
-            if self.pond.spots[spot].avId == None or self.pond.spots[spot].avId == 0:
+            if self.pond.spots[spot].avId is None or self.pond.spots[spot].avId == 0:
                 continue
             avId = self.pond.spots[spot].avId
             self.sendUpdateToAvatarId(avId, 'setCardState', [self.cardId, self.typeId, self.tileSeed, self.bingoCard.getGameState()])
 
     def sendGameStateUpdate(self, cellId):
         for spot in self.pond.spots:
-            if self.pond.spots[spot].avId == None or self.pond.spots[spot].avId == 0:
+            if self.pond.spots[spot].avId is None or self.pond.spots[spot].avId == 0:
                 continue
             avId = self.pond.spots[spot].avId
             self.sendUpdateToAvatarId(avId, 'updateGameState', [self.bingoCard.getGameState(), cellId])
 
     def sendCanBingo(self):
         for spot in self.pond.spots:
-            if self.pond.spots[spot].avId == None or self.pond.spots[spot].avId == 0:
+            if self.pond.spots[spot].avId is None or self.pond.spots[spot].avId == 0:
                 continue
             avId = self.pond.spots[spot].avId
             self.sendUpdateToAvatarId(avId, 'enableBingo', [])
@@ -140,7 +151,7 @@ class DistributedPondBingoManagerAI(DistributedObjectAI):
         self.state_ = 'Reward'
         self.sendStateUpdate()
         for spot in self.pond.spots:
-            if self.pond.spots[spot].avId == None or self.pond.spots[spot].avId == 0:
+            if self.pond.spots[spot].avId is None or self.pond.spots[spot].avId == 0:
                 continue
             av = self.air.doId2do[self.pond.spots[spot].avId]
             av.addMoney(self.jackpot)
@@ -150,13 +161,18 @@ class DistributedPondBingoManagerAI(DistributedObjectAI):
         taskMgr.doMethodLater(5, DistributedPondBingoManagerAI.startWait, 'startWait%d' % self.getDoId(), [self])
         taskMgr.remove('finishGame%d' % self.getDoId())
 
-
-
     def finishGame(self):
         self.state_ = 'GameOver'
         self.sendStateUpdate()
         if self.shouldStop:
             self.stopGame()
+            return
+        if type(self.bingoCard) == BlockoutBingo:
+            self.blockout = False
+            self.startIntermission()
+            return
+        if self.blockout:
+            self.startIntermission()
             return
         taskMgr.doMethodLater(5, DistributedPondBingoManagerAI.startWait, 'startWait%d' % self.getDoId(), [self])
 
@@ -167,6 +183,8 @@ class DistributedPondBingoManagerAI(DistributedObjectAI):
 
     def turnOff(self):
         self.state_ = 'Off'
+        self.shouldStop = False
+        taskMgr.remove('blockoutTask%d' % self.getDoId())
         self.sendStateUpdate()
 
     def startIntermission(self):
@@ -194,8 +212,11 @@ class DistributedPondBingoManagerAI(DistributedObjectAI):
             self.cardId = 0
         if not self.tileSeed:
             self.tileSeed = random.randrange(0, 65535)
-        if self.typeId == None:
-            self.typeId = random.randrange(0, 4)
+        if self.typeId is None:
+            if self.blockout:
+                self.typeId = 4
+            else:
+                self.typeId = random.randrange(0, 3)
         if self.typeId == BingoGlobals.NORMAL_CARD:
             self.bingoCard = NormalBingo()
         elif self.typeId == BingoGlobals.DIAGONAL_CARD:
@@ -206,9 +227,22 @@ class DistributedPondBingoManagerAI(DistributedObjectAI):
             self.bingoCard = FourCornerBingo()
         else:
             self.bingoCard = BlockoutBingo()
+            self.blockoutBingoTask()
         self.bingoCard.generateCard(self.tileSeed, self.pond.getArea())
         self.sendCardStateUpdate()
         self.b_setJackpot(BingoGlobals.getJackpot(self.typeId))
         self.state_ = 'Playing'
         self.sendStateUpdate()
-        taskMgr.doMethodLater(BingoGlobals.getGameTime(self.typeId), DistributedPondBingoManagerAI.finishGame, 'finishGame%d' % self.getDoId(), [self])
+        taskMgr.doMethodLater(
+            BingoGlobals.getGameTime(self.typeId), DistributedPondBingoManagerAI.finishGame,
+            'finishGame%d' % self.getDoId(), [self])
+
+    def blockoutBingoTask(self):
+        now = datetime.now()
+        timeLeft = abs(3300 - ((now.minute * 60) + now.second))
+        taskMgr.doMethodLater(timeLeft, self.startBlockoutWait, 'blockoutTask%d' % self.getDoId())
+
+    def startBlockoutWait(self, task=None):
+        self.blockout = True
+        if task:
+            return task.done

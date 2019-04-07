@@ -98,6 +98,8 @@ class DistributedCCharBase(DistributedChar.DistributedChar):
             DistributedChar.DistributedChar.delete(self)
 
     def generate(self, diffPath = None):
+        print diffPath
+        print "??????"
         DistributedChar.DistributedChar.generate(self)
         if diffPath == None:
             self.setPos(CCharPaths.getNodePos(CCharPaths.startNode, CCharPaths.getPaths(self.getName(), self.getCCLocation())))
@@ -269,14 +271,17 @@ class DistributedCCharBase(DistributedChar.DistributedChar):
             elif ToontownGlobals.SELLBOT_FIELD_OFFICE in holidayIds:
                 self.CCChatter = ToontownGlobals.SELLBOT_FIELD_OFFICE
 
+
     def fadeAway(self):
-        fadeOut = self.colorScaleInterval(0.5, Vec4(1, 1, 1, 0.5), startColorScale=Vec4(1, 1, 1, 1), blendType='easeInOut')
-        fadeOut.start()
-        self.loop('neutral')
-        if self.fsm:
-            self.fsm.addState(State.State('TransitionToCostume', self.enterTransitionToCostume, self.exitTransitionToCostume, ['Off']))
-            self.fsm.request('TransitionToCostume', force=1)
-        self.ignoreAll()
+        self.enterTransitionToCostume()
+        #fadeOut = self.colorScaleInterval(0.5, Vec4(1, 1, 1, 0), startColorScale=Vec4(1, 1, 1, 1), blendType='easeInOut')
+        #fadeOut.start()
+        #self.loop('neutral')
+        #self.enterTransitionToCostume()
+        #if self.fsm:
+        #    self.fsm.addState(State.State('TransitionToCostume', self.enterTransitionToCostume, self.exitTransitionToCostume, ['Off']))
+        #    self.fsm.request('TransitionToCostume', force=1)
+        #self.ignoreAll()
 
     def enterTransitionToCostume(self):
 

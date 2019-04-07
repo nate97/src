@@ -15,7 +15,7 @@ aux-display p3tinydisplay
 
 # Disable antialiasing
 #framebuffer-multisample 1
-#multisamples 2
+multisamples 2
 
 # Models:
 model-cache-models #t
@@ -47,14 +47,14 @@ backups-extension .json
 
 # Server:
 server-timezone EST/EDT/-6
-#server-port 7199 # Port for directly connecting to Astron
-server-port 7555 # Port used for reverse proxy server
+server-port 7199 # Port for directly connecting to Astron
+#server-port 7555 # Port used for reverse proxy server
 account-server-endpoint https://toontowninfinite.com/api/
 account-bridge-filename astron/databases/account-bridge.db
 
 # SSL
-server-force-ssl #t
-client-unverified-ssl #t
+#server-force-ssl #t
+#client-unverified-ssl #t
 
 # Performance:
 sync-video #f
@@ -108,7 +108,7 @@ want-goofy #t
 # Trolley minigames:
 want-minigames #t
 want-photo-game #t
-want-travel-game #f
+want-travel-game #t
 
 # Picnic table board games:
 want-game-tables #f

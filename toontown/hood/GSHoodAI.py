@@ -1,5 +1,6 @@
 from toontown.classicchars import DistributedGoofySpeedwayAI
 from toontown.classicchars import DistributedSuperGoofyAI
+from toontown.classicchars import DistributedDonaldAI
 from toontown.dna.DNAParser import DNAGroup, DNAVisGroup
 from toontown.hood import HoodAI
 from toontown.hood import ZoneUtil
@@ -176,9 +177,30 @@ class GSHoodAI(HoodAI.HoodAI):
 
 
     def createClassicChar(self):
-        if simbase.air.wantHalloween:
+        if simbase.air.holidayManager.isHolidayRunning(ToontownGlobals.HALLOWEEN_COSTUMES):
             self.classicChar = DistributedSuperGoofyAI.DistributedSuperGoofyAI(self.air)
+            self.classicChar.setCurrentCostume(ToontownGlobals.HALLOWEEN_COSTUMES) # We're using holidayIDs as costume IDs.
+
+        elif simbase.air.holidayManager.isHolidayRunning(ToontownGlobals.APRIL_FOOLS_COSTUMES):
+            self.classicChar = DistributedDonaldAI.DistributedDonaldAI(self.air)
+            self.classicChar.setCurrentCostume(ToontownGlobals.APRIL_FOOLS_COSTUMES) # We're using holidayIDs as costume IDs.
+
         else:
             self.classicChar = DistributedGoofySpeedwayAI.DistributedGoofySpeedwayAI(self.air)
+            self.classicChar.setCurrentCostume(ToontownGlobals.NO_COSTUMES) # We're using holidayIDs as costume IDs.
+
         self.classicChar.generateWithRequired(self.zoneId)
         self.classicChar.start()
+
+
+
+    def swapOutClassicChar(self):
+        destNode = self.classicChar.walk.getDestNode()
+        self.classicChar.requestDelete()
+
+        self.createClassicChar()
+        self.classicChar.walk.setCurNode(destNode)
+        self.classicChar.fsm.request('Walk')
+        self.classicChar.fadeAway()
+
+
