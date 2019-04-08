@@ -16,8 +16,8 @@ def send(zoneIds, petObserve):
             messenger.send(getEventName(zoneId), [petObserve])
 
 
-Phrases = Enum('HI, BYE, YES, NO, SOOTHE, PRAISE, CRITICISM, HAPPY,SAD, ANGRY, HURRY, QUESTION, FRIENDLY, LETS_PLAY,COME, FOLLOW_ME, STAY, NEED_LAFF, NEED_GAGS, NEED_JB,GO_AWAY, DO_TRICK,')
-Actions = Enum('FEED, SCRATCH,ATTENDED_START, ATTENDED_STOP,ATTENDING_START, ATTENDING_STOP,CHANGE_ZONE, LOGOUT,GARDEN')
+Phrases = Enum('HI, BYE, YES, NO, SOOTHE, PRAISE, CRITICISM, HAPPY,SAD, ANGRY, HURRY, QUESTION, FRIENDLY, LETS_PLAY,COME, FOLLOW_ME, STAY, NEED_LAFF, NEED_GAGS, NEED_JB, GO_AWAY, DO_TRICK,')
+Actions = Enum('FEED, SCRATCH,ATTENDED_START, ATTENDED_STOP,ATTENDING_START, ATTENDING_STOP, CHANGE_ZONE, LOGOUT,GARDEN')
 
 class PetObserve:
 
@@ -73,6 +73,7 @@ class PetPhraseObserve(PetObserve):
         return 1
 
     def _influence(self, petBrain):
+        print "influence phrase"
         petBrain._handlePhraseObserve(self)
 
     def __repr__(self):

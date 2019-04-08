@@ -17,7 +17,7 @@ from toontown.nametag import NametagGlobals
 from toontown.pets import PetDNA
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals
-
+from toontown.pets import PetBase
 
 Component2IconDict = {'boredom': 'Bored',
  'restlessness': None,
@@ -551,10 +551,10 @@ class Pet(Avatar.Avatar):
         return 0
 
     def isExcited(self):
-        return 0
+        return PetBase.PetBase.isExcited(self)
 
     def isSad(self):
-        return 0
+        return PetBase.PetBase.isSad(self)
 
     def startTrackAnimToSpeed(self):
         self.lastPos = self.getPos(render)

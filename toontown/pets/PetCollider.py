@@ -1,13 +1,13 @@
 from panda3d.core import *
 from direct.showbase.PythonUtil import reduceAngle
-from otp.movement import Impulse
+from otp.movement import CImpulse
 from otp.otpbase import OTPGlobals
 
-class PetCollider(Impulse.Impulse):
+class PetCollider(CImpulse.CImpulse):
     SerialNum = 0
 
     def __init__(self, petRadius, collTrav):
-        Impulse.Impulse.__init__(self)
+        CImpulse.CImpulse.__init__(self)
         self.petRadius = petRadius
         self.collTrav = collTrav
         self.vel = None
@@ -31,8 +31,8 @@ class PetCollider(Impulse.Impulse):
         self.accept(self._getCollisionEvent(), self.handleCollision)
         return
 
-    def _setMover(self, mover):
-        Impulse.Impulse._setMover(self, mover)
+    def setMover(self, mover):
+        CImpulse.CImpulse.setMover(self, mover)
         self.cLineNodePath.reparentTo(self.nodePath)
         self.vel = self.VecType(0)
         self.rotVel = self.VecType(0)
@@ -61,7 +61,6 @@ class PetCollider(Impulse.Impulse):
         return 'petFeeler-%s' % self._getSerialNum()
 
     def handleCollision(self, collEntry):
-        print 'collision!'
         cPoint = collEntry.getSurfacePoint(self.cLineNodePath)
         cNormal = collEntry.getSurfaceNormal(self.cLineNodePath)
         messenger.send(self.mover.getCollisionEventName(), [cPoint, cNormal])

@@ -21,6 +21,7 @@ class PetActionFSM(FSM.FSM):
         self.cleanup()
 
 
+
     def enterNeutral(self):
         PetActionFSM.notify.debug('enterNeutral')
 
@@ -28,72 +29,92 @@ class PetActionFSM(FSM.FSM):
         pass
 
 
+
+
     def enterChase(self, target):
         PetActionFSM.notify.debug('enterChase: %s' % target)
-        print ('enter chase fsm')
-        self.pet.mover.setPetAIMode('chase', target)
+        self.pet.inteligentMover.setTarget(target)
+        self.pet.inteligentMover.setDoodleMode('chase')
 
     def exitChase(self):
-        print ('exit chase fsm')
-        self.pet.mover.setPetAIMode('wander')
+        #self.pet.mover.removeImpulse('chase')
+        self.pet.inteligentMover.setDoodleMode("wander") # experiment
 
 
 
     def enterFlee(self, chaser):
-        print 'fsm flee'
         PetActionFSM.notify.debug('enterFlee: %s' % chaser)
-        self.pet.mover.setPetAIMode('flee', chaser)
+        self.pet.inteligentMover.setTarget(chaser)
+        self.pet.inteligentMover.setDoodleMode('flee')
 
     def exitFlee(self):
-        self.pet.mover.setPetAIMode('wander')
+        pass
+
+
 
 
 
     def enterWander(self):
-        print 'fsm wander'
         PetActionFSM.notify.debug('enterWander')
-        self.pet.mover.setPetAIMode('wander')
+        self.pet.inteligentMover.setDoodleMode("wander")
 
     def exitWander(self):
-        self.pet.mover.setPetAIMode('stick')
+        pass
+        #self.pet.mover.removeImpulse('wander')
 
 
 
 
     def enterUnstick(self):
         PetActionFSM.notify.debug('enterUnstick')
-        self.pet.mover.setPetAIMode('unstick')
-        self.pet.mover.setPetAIMode('wander')
+        #self.pet.mover.addImpulse('unstick', self.pet.wanderImpulse)
 
     def exitUnstick(self):
-        self.pet.mover.setPetAIMode('stick')
+        pass
+        #self.pet.mover.removeImpulse('unstick')
+
+
+
+
+    def enterInspectSpot(self, spot):
+        PetActionFSM.notify.debug('enterInspectSpot')
+        self.pet.inteligentMover.stay()
+
+    def exitInspectSpot(self):
+        self.pet.inteligentMover.endStay()
 
 
 
     def enterStay(self, avatar):
-        print 'fsm stay'
         PetActionFSM.notify.debug('enterStay')
+        self.pet.inteligentMover.stay()
 
     def exitStay(self):
-        pass
+        self.pet.inteligentMover.endStay()
+
 
 
 
     def enterHeal(self, avatar):
         PetActionFSM.notify.debug('enterHeal')
         avatar.toonUp(3)
-        self.pet.mover.setPetAIMode('unstick')
-        self.pet.mover.setPetAIMode('static_chase', avatar)
+        #self.pet.chaseImpulse.setTarget(avatar)
+        #self.pet.mover.addImpulse('chase', self.pet.chaseImpulse)
+
+
+
 
     def exitHeal(self):
-        self.pet.mover.setPetAIMode('stick')
+        pass
+        #self.pet.mover.removeImpulse('chase')
+
+
+
 
     def enterTrick(self, avatar, trickId):
         PetActionFSM.notify.debug('enterTrick')
-        # NF
-        # Broken
-        if not self.pet.mover.petLocked:
-            self.pet.mover.setPetAIMode('stick')
+        self.pet.inteligentMover.stay()
+        self.pet.inteligentMover.lockPet()
         self.pet.sendUpdate('doTrick', [trickId, globalClockDelta.getRealNetworkTime()])
 
         def finish(avatar = avatar, trickId = trickId, self = self):
@@ -109,9 +130,10 @@ class PetActionFSM(FSM.FSM):
                                 av.toonUp(healAmt)
 
                 self.pet._handleDidTrick(trickId)
-                if not self.pet.mover.petLocked:
-                    self.pet.mover.setPetAIMode('unstick')
-                    self.pet.mover.setPetAIMode('wander')
+                self.pet.inteligentMover.unlockPet()
+                self.pet.inteligentMover.endStay()
+
+
                 messenger.send(self.getTrickDoneEvent())
 
         self.trickDoneEvent = 'trickDone-%s-%s' % (self.pet.doId, self.trickSerialNum)
@@ -129,12 +151,9 @@ class PetActionFSM(FSM.FSM):
         if self.trickFinishIval.isPlaying():
             self.trickFinishIval.finish()
         del self.trickFinishIval
-        #if self.pet.isLockedDown():
-        #    self.pet.unlockPet()
 
-        if self.pet.mover.petLocked:
-            self.pet.mover.setPetAIMode('unstick')
-            self.pet.mover.setPetAIMode('wander')
+        self.pet.inteligentMover.unlockPet()
+        self.pet.inteligentMover.endStay()
         del self.trickDoneEvent
 
     def enterMovie(self):

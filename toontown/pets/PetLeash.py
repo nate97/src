@@ -1,15 +1,15 @@
 from panda3d.core import *
-from otp.movement import Impulse
+from otp.movement import CImpulse
 
-class PetLeash(Impulse.Impulse):
+class PetLeash(CImpulse.CImpulse):
 
     def __init__(self, origin, length):
-        Impulse.Impulse.__init__(self)
+        CImpulse.CImpulse.__init__(self)
         self.origin = origin
         self.length = length
 
-    def _process(self, dt):
-        Impulse.Impulse._process(self, dt)
+    def process(self, dt):
+        CImpulse.CImpulse.process(self, dt)
         myPos = self.nodePath.getPos()
         myDist = self.VecType(myPos - self.origin.getPos()).length()
         if myDist > self.length:

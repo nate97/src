@@ -1,20 +1,20 @@
 from panda3d.core import *
 from direct.showbase.PythonUtil import reduceAngle
-from otp.movement import Impulse
+from otp.movement import CImpulse
 from otp.otpbase import OTPGlobals
 
-class PetSphere(Impulse.Impulse):
+class PetSphere(CImpulse.CImpulse):
     SerialNum = 0
 
     def __init__(self, petRadius, collTrav):
-        Impulse.Impulse.__init__(self)
+        CImpulse.CImpulse.__init__(self)
         self.serialNum = PetSphere.SerialNum
         PetSphere.SerialNum += 1
         self.petRadius = petRadius
         self.collTrav = collTrav
 
-    def _setMover(self, mover):
-        Impulse.Impulse._setMover(self, mover)
+    def setMover(self, mover):
+        CImpulse.CImpulse.setMover(self, mover)
         self.cSphere = CollisionSphere(0.0, 0.0, 0.0, self.petRadius)
         cSphereNode = CollisionNode('PetSphere')
         cSphereNode.addSolid(self.cSphere)
@@ -31,7 +31,7 @@ class PetSphere(Impulse.Impulse):
         self.collTrav.addCollider(self.cSphereNodePath, self.pusher)
         self.accept(self._getCollisionEvent(), self._handleCollision)
 
-    def _clearMover(self, mover):
+    def clearMover(self, mover):
         self.ignore(self._getCollisionEvent())
         self.collTrav.removeCollider(self.cSphereNodePath)
         del self.cSphere
@@ -41,8 +41,10 @@ class PetSphere(Impulse.Impulse):
         del self.cSphereNodePath
 
     def _getCollisionEvent(self):
-        print "pet sphere"
         return 'petSphereColl-%s' % self.serialNum
 
     def _handleCollision(self, collEntry):
         messenger.send(self.mover.getCollisionEventName(), [collEntry])
+
+    def destroy(self):
+        pass

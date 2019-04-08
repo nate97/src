@@ -248,9 +248,9 @@ class DoTrick(InteractWithAvatar):
     def _chaseAvInInteractMode(self):
         return False
 
-    def startInteract(self, test):
-        test._doTrick(self.trickId, self.avatar)
-        self.trickDoneEvent = test.pet.actionFSM.getTrickDoneEvent()
+    def startInteract(self):
+        self.brain._doTrick(self.trickId, self.avatar)
+        self.trickDoneEvent = self.pet.actionFSM.getTrickDoneEvent()
         self.accept(self.trickDoneEvent, self.announceDone)
 
     def stopInteract(self):

@@ -36,7 +36,6 @@ class Mover():
         self.fwdSpeed = fwdSpeed
         self.sadFwdSpeed = self.fwdSpeed * self._sadMult
 
-
         # Temporary garbage
         self.taskOn = 0
 
@@ -138,11 +137,9 @@ class Mover():
 
 
     def petRotationFix(self):
-
         if self.petMode != 'stick':
             currentHPet = self.petNodePath.getH()
             correctedHPet = currentHPet - 180
-
             self.petNodePath.setH(correctedHPet)
 
 
@@ -159,7 +156,6 @@ class Mover():
 
 
     def setPetAIMode(self, petMode, target = nullTargetNodePath):
-
         self.petMode = petMode
         self.targetNodePath = target # This is in case we need to do something else with the target later
 

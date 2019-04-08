@@ -1,11 +1,11 @@
 from panda3d.core import *
 from direct.showbase.PythonUtil import reduceAngle
-from otp.movement import Impulse
+from otp.movement import CImpulse
 
-class PetFlee(Impulse.Impulse):
+class PetFlee(CImpulse.CImpulse):
 
     def __init__(self, chaser = None, maxDist = 50.0, moveAngle = 20.0):
-        Impulse.Impulse.__init__(self)
+        CImpulse.CImpulse.__init__(self)
         self.chaser = chaser
         self.maxDist = maxDist
         self.moveAngle = moveAngle
@@ -25,14 +25,14 @@ class PetFlee(Impulse.Impulse):
     def setChaser(self, chaser):
         self.chaser = chaser
 
-    def _setMover(self, mover):
-        Impulse.Impulse._setMover(self, mover)
+    def setMover(self, mover):
+        CImpulse.CImpulse.setMover(self, mover)
         self.lookAtNode.reparentTo(self.nodePath)
         self.vel = self.VecType(0)
         self.rotVel = self.VecType(0)
 
-    def _process(self, dt):
-        Impulse.Impulse._process(self, dt)
+    def process(self, dt):
+        CImpulse.CImpulse.process(self, dt)
         me = self.nodePath
         chaser = self.chaser
         chaserPos = chaser.getPos(me)

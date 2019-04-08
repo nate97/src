@@ -363,6 +363,10 @@ class PetBrain(DirectObject.DirectObject):
 
     def _handlePhraseObserve(self, observe):
 
+        print "observe handle phrase petbrain"
+        print observe.getPetPhrase()
+        print PetObserve.Phrases
+
         def _handleGettingFriendlyAttention(avId, self = self):
             self.pet.lerpMoods({'boredom': -.85,
              'restlessness': -.1,
@@ -404,6 +408,7 @@ class PetBrain(DirectObject.DirectObject):
              'sadness': 0.5 * ownerFactor})
 
         def _handleGoAway(avId, self = self):
+            print "go away!"
             avatar = simbase.air.doId2do.get(avId)
             if avatar is not None:
                 if self.getFocus() == avatar:
@@ -436,7 +441,9 @@ class PetBrain(DirectObject.DirectObject):
          OP.QUESTION,
          OP.FRIENDLY,
          OP.LETS_PLAY,
-         OP.DO_TRICK]):
+         OP.DO_TRICK,
+         OP.GO_AWAY,
+         OP.CRITICISM]):
             _handleGettingFriendlyAttention(avId)
         if phrase == OP.COME:
             _handleComeHere(avId)
