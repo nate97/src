@@ -34,10 +34,7 @@ class DistributedLaserFieldAI(BattleBlockerAI.BattleBlockerAI, NodePath, BasicEn
 
     def setGridGame(self, gameName):
         if gameName == 'Random':
-            gameName = random.choice(['MineSweeper',
-             'Roll',
-             'Avoid',
-             'Drag'])
+            gameName = random.choice(['MineSweeper', 'Roll', 'Avoid', 'Drag'])
         self.gridGame = gameName
         if hasattr(self, 'game'):
             self.game.delete()
