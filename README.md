@@ -30,6 +30,6 @@ Resources for this repository can be found here:
 https://github.com/nate97/resources
 
 #### Python dependencies ####
-It is recommended you acquire these packages with the usage of pip3.
+It is recommended you acquire these packages with the usage of pip.
 * PyYAML
 * semidbm
