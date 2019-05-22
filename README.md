@@ -21,10 +21,15 @@ Don't just start contributing. We talk about what we are about to do before we d
 This software requires a modified version of the Panda3D game engine to correctly function. This issue will be addressed at a later date.
 ##### Link: https://github.com/nate97/panda3d
 
-
 #### ASTRON
 This software requires a modified version of Astron to function with the latest version:
 ##### Link: https://github.com/nate97/Astron
 
+#### RESOURCES
+Resources for this repository can be found here:
+https://github.com/nate97/resources
+
 #### Python dependencies ####
-Please view the [dependencies](https://github.com/ToontownInfinite/src/wiki/Dependencies) page in the wiki for help starting Toontown.
+It is recommended you acquire these packages with the usage of pip3.
+* PyYAML
+* semidbm
